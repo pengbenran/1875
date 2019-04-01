@@ -75,7 +75,7 @@
 						addre: "洪城数码广场",
 						distance: "690m",
 						pic: 29,
-						pice: 99,
+						pice: 99
 					},
 					{
 						img: "/static/images/banner.jpg",

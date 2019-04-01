@@ -18,7 +18,7 @@
 					<div class="name">邀请</div>
 				</div>
 				<div class="list-li2" @click="listLi2">
-					<div class="iconfont icon">&#xe6b2;</div>
+					<div class="iconfont icon">&#xe629;</div>
 					<div class="name">红包 ({{num}})</div>
 				</div>
 				<div class="list-li3">

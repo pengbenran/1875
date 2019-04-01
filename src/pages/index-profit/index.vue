@@ -69,7 +69,7 @@
 						pice: 99,
 
 					},
-					{
+					{ 
 						img: "/static/images/banner.jpg",
 						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
 						address: "东湖区",

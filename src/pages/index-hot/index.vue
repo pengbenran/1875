@@ -14,7 +14,7 @@
 						<div class="cate-name">{{item.cateName}}</div>
 						<recNearby :recNearby="item.list"></recNearby>
 						<div @tap="jumpgoodslist(index)" class="more">{{item.more}} > </div>
-					</div> 
+					</div>
 				</div>
 			</swiper-item>
 			<!--人气-->
@@ -46,7 +46,7 @@
 	export default {
 		data() {
 			return {
-			    bg:"red",
+				bg: "red",
 				listcurr: 0,
 				bgImg: {
 					img: "/static/images/hotbg.gif"
@@ -70,11 +70,11 @@
 				],
 				cate: [{
 						cateName: '美食大咖',
-						 listbg:"#f91c1f",
+						listbg: "#f91c1f",
 						img: "/static/images/hot1bg.jpg",
 						more: "查看更多美食",
-						titbg:'#ff5703',
-						detailImg:"/static/images/detailImg1.png",
+						titbg: '#ff5703',
+						detailImg: "/static/images/detailImg1.png",
 						list: [{
 								img: "/static/images/banner.jpg",
 								tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
@@ -83,7 +83,6 @@
 								distance: "690m",
 								pic: 29,
 								pice: 99,
-
 							},
 							{
 								img: "/static/images/banner.jpg",
@@ -105,13 +104,13 @@
 							}
 						]
 					},
-					{ 
-				   cateName: '高端玩家',
-				       listbg:"#623af9",
-				        titbg:'#af03ff',
+					{
+						cateName: '高端玩家',
+						listbg: "#623af9",
+						titbg: '#af03ff',
 						img: "/static/images/hot1bg.jpg",
 						more: "查看更多玩乐  ",
-						detailImg:"/static/images/detailImg2.png",
+						detailImg: "/static/images/detailImg2.png",
 						list: [{
 							img: "/static/images/banner.jpg",
 							tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
@@ -124,11 +123,11 @@
 					},
 					{
 						cateName: '女神范儿',
-						listbg:"#fe7358",
-						 titbg:'#ffa05a',
+						listbg: "#fe7358",
+						titbg: '#ffa05a',
 						img: "/static/images/hot1bg.jpg",
 						more: "查看更多丽人  ",
-						detailImg:"/static/images/detailImg3.png",
+						detailImg: "/static/images/detailImg3.png",
 						list: [{
 							img: "/static/images/banner.jpg",
 							tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
@@ -141,9 +140,9 @@
 					},
 					{
 						cateName: '亲亲宝贝',
-					    listbg:"#a3bdff",
-						detailImg:"/static/images/detailImg4.png",
-						titbg:'#5985ff', 
+						listbg: "#a3bdff",
+						detailImg: "/static/images/detailImg4.png",
+						titbg: '#5985ff',
 						img: "/static/images/hot1bg.jpg",
 						more: "查看更多亲子  ",
 						list: [{
@@ -188,11 +187,11 @@
 				let cateName = that.cate[index].cateName
 				let titbg = that.cate[index].titbg
 				let listbg = that.cate[index].listbg
-				let detailImg =  that.cate[index].detailImg
+				let detailImg = that.cate[index].detailImg
 				wx.navigateTo({
-					url: "../index-hot-more/main?cateName="+cateName+'&titbg='+titbg+'&detailImg='+detailImg+'&listbg='+listbg
-				}) 
-			}, 
+					url: "../index-hot-more/main?cateName=" + cateName + '&titbg=' + titbg + '&detailImg=' + detailImg + '&listbg=' + listbg
+				})
+			},
 			//禁止滑动
 			stopTouchMove: function() {
 				return false;

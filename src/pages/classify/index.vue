@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
- <search :istoggle='istoggle' :hide='hide'></search>
-		<!--head--> 
+		<search :istoggle='istoggle' :hide='hide'></search>
+		<!--head-->
 		<div class="head">
 			<div class="head-left">
 				<span>全城</span>
@@ -74,8 +74,8 @@
 	export default {
 		data() {
 			return {
-				scrollTop:0,
-				istoggle:false,
+				scrollTop: 0,
+				istoggle: false,
 				windowWidth: 0,
 				scrollLeft: 0,
 				listcurr: 0,
@@ -124,6 +124,8 @@
 						distance: "690m",
 						pic: 29,
 						pice: 99,
+						jf: 20,
+						jjin: 12.34,
 
 					},
 					{
@@ -134,6 +136,8 @@
 						distance: "690m",
 						pic: 29,
 						pice: 99,
+						jf: 20,
+						jjin: 12.34,
 					},
 					{
 						img: "/static/images/banner.jpg",
@@ -143,6 +147,8 @@
 						distance: "690m",
 						pic: 29,
 						pice: 99,
+						jf: 20,
+						jjin: 12.34,
 					},
 					{
 						img: "/static/images/banner.jpg",
@@ -152,6 +158,8 @@
 						distance: "690m",
 						pic: 29,
 						pice: 99,
+						jf: 20,
+						jjin: 12.34,
 					},
 					{
 						img: "/static/images/banner.jpg",
@@ -161,6 +169,8 @@
 						distance: "690m",
 						pic: 29,
 						pice: 99,
+						jf: 20,
+						jjin: 12.34,
 					},
 					{
 						img: "/static/images/banner.jpg",
@@ -170,6 +180,8 @@
 						distance: "690m",
 						pic: 29,
 						pice: 99,
+						jf: 20,
+						jjin: 12.34,
 					},
 					{
 						img: "/static/images/banner.jpg",
@@ -179,6 +191,8 @@
 						distance: "690m",
 						pic: 29,
 						pice: 99,
+						jf: 20,
+						jjin: 12.34,
 					},
 				],
 			}
@@ -187,20 +201,20 @@
 			recTwo,
 			search,
 		},
-				//监听滚动条
+		//监听滚动条
 		onPageScroll(e) {
 			let that = this;
 			that.scrollTop = e.scrollTop;
 		},
 		methods: {
-			hide(){
-			 this.istoggle = false
-		   	 console.log(this.istoggle)
+			hide() {
+				this.istoggle = false
+				console.log(this.istoggle)
 			},
-		   isshow(){
-		   	 this.istoggle = true
-		   	 
-		   },
+			isshow() {
+				this.istoggle = true
+
+			},
 			listTab(e) {
 				this.listcurr = e
 			},
@@ -227,7 +241,6 @@
 </script>
 
 <style scoped lang="less">
-	
 	.head {
 		display: flex;
 		justify-content: space-between;
@@ -304,9 +317,10 @@
 			}
 		}
 	}
-	.posi{
+	
+	.posi {
 		position: fixed;
 		top: 0;
-		z-index: 88;		
+		z-index: 88;
 	}
 </style>
