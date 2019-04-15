@@ -9,11 +9,11 @@
 			<!--热卖-->
 			<swiper-item style="overflow: scroll;">
 				<div class="cates">
-					<div class="cate" v-for="(item,index) in cate">
-						<div class="img"><img :src="item.img" /></div>
-						<div class="cate-name">{{item.cateName}}</div>
-						<recNearby :recNearby="item.list"></recNearby>
-						<div @tap="jumpgoodslist(index)" class="more">{{item.more}} > </div>
+					<div class="cate" v-for="(item,index) in ExplosivesSale">
+						<div class="img"><img :src="item.url" /></div>
+						<div class="cate-name">{{item.catName}}</div>
+						<recNearby :recNearby="item.showGoodDTO"></recNearby>
+						<div @tap="jumpgoodslist(index)" class="more">查看更多 > </div>
 					</div>
 				</div>
 			</swiper-item>
@@ -21,20 +21,20 @@
 			<swiper-item style="overflow: scroll;">
 				<!--catchtouchmove="stopSwiper"-->
 				<div class="popularity-wp">
-					<div class="bg-img"><img :src="bgImg.img" /></div>
+					<div class="bg-img"><img :src="bcgImg" /></div>
 					<div class="tit">帮您挑选人气爆品</div>
 					<div class="banner">
 						<swiper autoplay="true" circular="true" display-multiple-items='1' previous-margin='10px' next-margin='10px'>
-							<div v-for="(item, index) in imagesUrl">
+							<div v-for="(item, index) in popularityBanner">
 								<swiper-item class='item'>
-									<img mode="aspectFill" :src="item.img" class="slide-image" />
+									<img mode="aspectFill" :src="item.url" class="slide-image" />
 								</swiper-item>
 							</div>
 						</swiper>
 					</div>
 				</div>
 				<div class="popularity-li">
-					<recNearby :recNearby="popularity"></recNearby>
+					<recNearby :recNearby="showGoodDTOS"></recNearby>
 				</div>
 			</swiper-item>
 		</swiper>
@@ -43,14 +43,17 @@
 
 <script>
 	import recNearby from '@/components/recNearby'
+	import Api from '@/api/kind'
 	export default {
 		data() {
 			return {
 				bg: "red",
 				listcurr: 0,
-				bgImg: {
-					img: "/static/images/hotbg.gif"
-				},
+				bcgImg:"/static/images/hotbg.gif",
+				pages:1,
+				limit:4,
+				popuPages:1,
+				popuLimit:6,
 				hotList: [{
 						name: "热卖"
 					},
@@ -58,123 +61,9 @@
 						name: "人气"
 					},
 				],
-				imagesUrl: [{
-						img: "/static/images/list.jpg"
-					},
-					{
-						img: "/static/images/list.jpg"
-					},
-					{
-						img: "/static/images/list.jpg"
-					}
-				],
-				cate: [{
-						cateName: '美食大咖',
-						listbg: "#f91c1f",
-						img: "/static/images/hot1bg.jpg",
-						more: "查看更多美食",
-						titbg: '#ff5703',
-						detailImg: "/static/images/detailImg1.png",
-						list: [{
-								img: "/static/images/banner.jpg",
-								tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-								address: "秦山湖区",
-								addre: "一二三四五六七八九十",
-								distance: "690m",
-								pic: 29,
-								pice: 99,
-							},
-							{
-								img: "/static/images/banner.jpg",
-								tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-								address: "东湖区",
-								addre: "洪城数码广场",
-								distance: "690m",
-								pic: 29,
-								pice: 99,
-							},
-							{
-								img: "/static/images/banner.jpg",
-								tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-								address: "东湖区",
-								addre: "洪城数码广场",
-								distance: "690m",
-								pic: 29,
-								pice: 99,
-							}
-						]
-					},
-					{
-						cateName: '高端玩家',
-						listbg: "#623af9",
-						titbg: '#af03ff',
-						img: "/static/images/hot1bg.jpg",
-						more: "查看更多玩乐  ",
-						detailImg: "/static/images/detailImg2.png",
-						list: [{
-							img: "/static/images/banner.jpg",
-							tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-							address: "东湖区",
-							addre: "洪城数码广场",
-							distance: "690m",
-							pic: 29,
-							pice: 99,
-						}, ],
-					},
-					{
-						cateName: '女神范儿',
-						listbg: "#fe7358",
-						titbg: '#ffa05a',
-						img: "/static/images/hot1bg.jpg",
-						more: "查看更多丽人  ",
-						detailImg: "/static/images/detailImg3.png",
-						list: [{
-							img: "/static/images/banner.jpg",
-							tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-							address: "东湖区",
-							addre: "洪城数码广场",
-							distance: "690m",
-							pic: 29,
-							pice: 99,
-						}, ],
-					},
-					{
-						cateName: '亲亲宝贝',
-						listbg: "#a3bdff",
-						detailImg: "/static/images/detailImg4.png",
-						titbg: '#5985ff',
-						img: "/static/images/hot1bg.jpg",
-						more: "查看更多亲子  ",
-						list: [{
-							img: "/static/images/banner.jpg",
-							tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-							address: "东湖区",
-							addre: "洪城数码广场",
-							distance: "690m",
-							pic: 29,
-							pice: 99,
-						}, ],
-					}
-				],
-				popularity: [{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-					},
-				],
+				popularityBanner: [],
+				ExplosivesSale: [],
+				showGoodDTOS: [],
 			}
 		},
 
@@ -192,6 +81,27 @@
 					url: "../index-hot-more/main?cateName=" + cateName + '&titbg=' + titbg + '&detailImg=' + detailImg + '&listbg=' + listbg
 				})
 			},
+			getExplosivesSale(){
+				let params={}
+				let that=this
+				params.page=that.pages
+				params.limit=that.limit
+				params.catBackgroundId=0
+				Api.getExplosivesSale(params).then(function(res){
+					that.ExplosivesSale=res.ExplosivesSale
+				})
+			},
+			getExplosivesPopularity(){
+				let params={}
+				let that=this
+				params.page=that.popuPages
+				params.limit=that.popuLimit
+				Api.getExplosivesPopularity(params).then(function(res){
+					that.popularityBanner=res.popularityBanner
+					that.showGoodDTOS=res.showGoodDTOS
+					// that.ExplosivesPopularity=res.ExplosivesSale
+				})
+			},
 			//禁止滑动
 			stopTouchMove: function() {
 				return false;
@@ -203,9 +113,11 @@
 				this.listcurr = e.mp.detail.current;
 			},
 		},
-		onLoad() {
+		mounted() {
 			let that = this;
 			that.listcurr = 0;
+			that.getExplosivesSale()
+			that.getExplosivesPopularity()
 
 		}
 	}
