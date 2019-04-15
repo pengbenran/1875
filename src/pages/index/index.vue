@@ -28,14 +28,14 @@
 		<!--baner-->
 		<div class="box">
 			<swiper class="swiper" @change="changeImg" :autoplay="true" :circular="true" current=0>
-				<div v-for="(item, index) in imagesUrl">
+				<div v-for="(item, index) in banner">
 					<swiper-item class="item">
-						<img mode="aspectFill" :src="item.img" class="slide-image" />
+						<img mode="aspectFill" :src="item.url" class="slide-image" />
 					</swiper-item>
 				</div>
 			</swiper>
-			<span class="item-num" v-if="showLength>1">{{activeIndex+1}}/{{imagesUrl.length}}</span>
-			<span class="item-num" v-else>1/{{imagesUrl.length}}</span>
+			<span class="item-num" v-if="showLength>1">{{activeIndex+1}}/{{showLength}}</span>
+			<span class="item-num" v-else>1/{{showLength}}</span>
 		</div>
 		<!---->
 		<div class="packet">
@@ -97,9 +97,17 @@
 				<!--精品-->
 				<swiper-item>
 					<div class="goods">
-						<div class="goods-li" v-for="(item,index) in goods" @click="jumpgoods(item.urls)">
-							<span class="img"><img :src="item.img"/></span>
-							<span class="name">{{item.name}}</span>
+						<div class="goods-li" @click="jumpgoods('../index-hot/main')">
+							<span class="img"><img :src="kindBackGround.explosive"/></span>
+							<span class="name">今日爆品</span>
+						</div>
+						<div class="goods-li"  @click="jumpgoods('../index-news/main')">
+							<span class="img"><img :src="kindBackGround.favoriteFood"/></span>
+							<span class="name">最新好物</span>
+						</div>
+						<div class="goods-li"  @click="jumpgoods('../index-profit/main')">
+							<span class="img"><img :src="kindBackGround.costEffective"/></span>
+							<span class="name">特别划算</span>
 						</div>
 
 					</div>
@@ -149,12 +157,15 @@
 				</swiper-item>
 			</swiper>
 		</div>
+		<loginModel ref="loginModel"></loginModel>
 	</div>
 </template>
 
 <script>
 	import recNearby from '@/components/recNearby'
 	import search from '@/components/search'
+	import loginModel from "@/components/loginModel";
+	import Api from "@/api/home"
 	export default {
 		data() {
 			return {
@@ -178,22 +189,6 @@
 					},
 					{
 						name: "一二三四五"
-					},
-				],
-				goods: [{
-						name: "今日爆品",
-						img: "/static/images/list.jpg",
-						urls: "../index-hot/main"
-					},
-					{
-						name: "最新好物",
-						img: "/static/images/list.jpg",
-						urls: "../index-news/main"
-					},
-					{
-						name: "特别划算",
-						img: "/static/images/list.jpg",
-						urls: "../index-profit/main"
 					},
 				],
 				recommendWp: [{
@@ -223,16 +218,8 @@
 						name: "其他"
 					}
 				],
-				imagesUrl: [{
-						img: "/static/images/banner.jpg"
-					},
-					{
-						img: "/static/images/banner.jpg"
-					},
-					{
-						img: "/static/images/banner.jpg"
-					}
-				],
+				banner: [],
+				kindBackGround:{},
 				packet: [{
 						img: "/static/images/index-btn-a.gif",
 						name: '签到红包',
@@ -342,21 +329,38 @@
 		components: {
 			recNearby,
 			search,
+			loginModel
 		},
 		computed: {
 			showLength() {
-				return this.imagesUrl.length
+				return this.banner.length
 			},
-
 		},
 		onLoad() {
 			let that = this;
-			that.listtop();
+			that.listtop();	
+		},
+		mounted(){
+			let that = this;
+			that.getUserInfo()
+			that.getIndexImage()
 		},
 		methods: {
+			// 获取用户信息
+			async getUserInfo() {
+				let that = this
+				await that.$refs.loginModel.userLogin()
+ 				wx.stopPullDownRefresh()
+			},
+			getIndexImage(){
+				let that=this
+				Api.getIndexImage().then(function(res){
+					that.banner=res.indexBanner
+					that.kindBackGround=res.indexBackGround
+				})
+			},
 			hide() {
 				this.istoggle = false
-				console.log(this.istoggle)
 			},
 			isshow() {
 				this.istoggle = true

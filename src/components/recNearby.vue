@@ -2,15 +2,15 @@
 	<div class="rec-product">
 		<div class="rec-product-li" v-for="(item,index) in recNearby">
 			<div class="left">
-				<img :src="item.img" />
+				<img :src="item.thumbnail" />
 			</div>
 			<div class="right">
-				<div class="tit">{{item.tit}}</div>
+				<div class="tit">{{item.goodName}}</div>
 
 				<div class="address">
-					<span>{{item.address}}</span>
+					<span>西湖区</span>
 					<span>丨</span>
-					<span>{{item.addre}}</span>
+					<span>八一广场店</span>
 				</div>
 				<div class="pic">
 					<div class="pic-left">
@@ -20,7 +20,7 @@
 						</p>
 						<p>¥99</p>
 					</div>
-					<div class="pic-right">{{item.distance}}</div>
+					<div class="pic-right">200m</div>
 				</div>
 
 			</div>
