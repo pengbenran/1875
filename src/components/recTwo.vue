@@ -2,25 +2,25 @@
 	<div class="rec-product">
 		<div class="rec-product-li" v-for="(item,index) in recTwo">
 			<div class="top">
-				<img :src="item.img" />
+				<img :src="item.thumbnail" />
 			</div>
 			<div class="bottom">
-				<div class="tit">{{item.tit}}</div>
+				<div class="tit">{{item.goodName}}</div>
 				<div class="address">
-					<span>{{item.address}}</span>
+					<span>西湖区</span>
 					<span>丨</span>
-					<span>{{item.addre}}</span>
+					<span>系马桩店</span>
 				</div>
 
-				<div class="piced">¥99</div>
+				<div class="piced">¥{{item.showPrice}}</div>
 				<div class="pic">
 					<div class="pic-left">
 						<p>
 							<span class="rmb">¥</span>
-							<span>29</span>
+							<span>{{item.price}}</span>
 						</p>
 					</div>
-					<div class="pic-right">{{item.distance}}人购买</div>
+					<div class="pic-right">{{item.showSales}}人购买</div>
 				</div>
 
 			</div>

@@ -1,15 +1,15 @@
 <template>
 	<div class="container">
 		<div class="cates">
-			<div class="cate" v-for="(item,index) in cate">
-				<div class="img"><img :src="item.bgimg" /></div>
-				<div class="cate-name">{{item.cateName}}</div>
+			<div class="cate" v-for="(item,index) in ExplosivesSale">
+				<div class="img"><img :src="item.url" /></div>
+				<div class="cate-name">{{item.catName}}</div>
 				<div class="cate-list">
-					<div class="cate-list-li" v-for="(list,index1) in item.list">
-						<img :src="list.img" />
+					<div class="cate-list-li" v-for="(list,index1) in item.showGoodDTO">
+						<img :src="list.thumbnail" />
 					</div>
 				</div>
-				<div class="more">
+				<div class="more" v-if="item.showGoodDTO.length==6">
 					<span>查看更多 > </span>
 				</div>
 
@@ -18,118 +18,36 @@
 	</div>
 </template>
 <script>
+	import Api from '@/api/kind'
 	export default {
 		data() {
 			return {
-
-				cate: [{
-						cateName: '热门商圈',
-						bgimg: "/static/images/list.jpg",
-						more: "查看更多美食",
-						list: [{
-								img: "/static/images/banner.jpg",
-							},
-							{
-								img: "/static/images/banner.jpg",
-							},
-							{
-								img: "/static/images/banner.jpg",
-							},
-							{
-								img: "/static/images/banner.jpg",
-							},
-							{
-								img: "/static/images/banner.jpg",
-							},
-							{
-								img: "/static/images/banner.jpg",
-							}
-						]
-					},
-					{
-						cateName: '休闲娱乐',
-						bgimg: "/static/images/list.jpg",
-						more: "查看更多玩乐  ",
-						list: [{
-								img: "/static/images/banner.jpg",
-							},
-							{
-								img: "/static/images/banner.jpg",
-							},
-							{
-								img: "/static/images/banner.jpg",
-							},
-							{
-								img: "/static/images/banner.jpg",
-							},
-							{
-								img: "/static/images/banner.jpg",
-							},
-
-						],
-					},
-					{
-						cateName: '新世纪女神',
-						bgimg: "/static/images/list.jpg",
-						more: "查看更多丽人  ",
-						list: [{
-								img: "/static/images/banner.jpg",
-							},
-							{
-								img: "/static/images/banner.jpg",
-							},
-							{
-								img: "/static/images/banner.jpg",
-							},
-							{
-								img: "/static/images/banner.jpg",
-							},
-							{
-								img: "/static/images/banner.jpg",
-							},
-							{
-								img: "/static/images/banner.jpg",
-							},
-						],
-					},
-					{
-						cateName: '其它',
-						bgimg: "/static/images/list.jpg",
-						more: "查看更多亲子  ",
-						list: [{
-								img: "/static/images/banner.jpg",
-
-							},
-							{
-								img: "/static/images/banner.jpg",
-
-							},
-							{
-								img: "/static/images/banner.jpg",
-
-							},
-							{
-								img: "/static/images/banner.jpg",
-							},
-							{
-								img: "/static/images/banner.jpg",
-							},
-							{
-								img: "/static/images/banner.jpg",
-							},
-						],
-					}
-				],
+				page:1,
+				limit:6,
+				ExplosivesSale:[]
 			}
 		},
-
 		components: {},
 		methods: {
+			// 获取最新好物分类及商品列表
+			getFavorite(){
+				let params={}
+				let that=this
+				params.page=that.page
+				params.limit=that.limit
+				params.catBackgroundId=0
+				Api.getFavorite(params).then(function(res){
+					that.ExplosivesSale=res.ExplosivesSale
+				})
+			},
 			//禁止滑动
 			stopTouchMove: function() {
-				return false;
-				
+				return false;	
 			},
+		},
+		mounted() {
+			let that = this;
+			that.getFavorite()
 		}
 	}
 </script>
@@ -167,6 +85,7 @@
 			.cate-list {
 				display: flex;
 				/*justify-content: space-between;*/
+				height: 248px;
 				flex-flow: wrap;
 				.cate-list-li {
 					width: 101px;
@@ -191,7 +110,6 @@
 					font-size: 15px;
 					border-radius: 33px;
 					color: #FFFFFF;
-					margin-top: 16px;
 					margin-right: 12px;
 				}
 			}
