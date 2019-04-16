@@ -22,7 +22,6 @@
 					</div>
 					<div class="pic-right">{{item.showSales}}人购买</div>
 				</div>
-
 			</div>
 		</div>
 	</div>

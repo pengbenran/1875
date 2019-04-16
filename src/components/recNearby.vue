@@ -8,9 +8,9 @@
 				<div class="tit">{{item.goodName}}</div>
 
 				<div class="address">
-					<span>西湖区</span>
+					<span>{{item.address}}</span>
 					<span>丨</span>
-					<span>八一广场店</span>
+					<span>{{item.subway}}</span>
 				</div>
 				<div class="pic">
 					<div class="pic-left">
@@ -18,7 +18,7 @@
 							<span class="rmb">¥</span>
 							<span>{{item.price}}</span>
 						</p>
-						<p>¥99</p>
+						<p>¥{{item.showPrice}}</p>
 					</div>
 					<div class="pic-right">200m</div>
 				</div>
