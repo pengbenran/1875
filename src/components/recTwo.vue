@@ -11,7 +11,6 @@
 					<span>丨</span>
 					<span>{{item.subway}}</span>
 				</div>
-
 				<div class="piced">¥{{item.price}}</div>
 				<div class="pic">
 					<div class="pic-left">

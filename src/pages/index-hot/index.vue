@@ -1,8 +1,11 @@
 <template>
 	<div class="container">
 		<div class="hot-list">
-			<div class="recommend-list-li" v-for="(item,index) in hotList" @click="listTab(index)" :class="listcurr==index?'list-on':''">
-				<span class="name">{{item.name}}</span>
+			<div class="recommend-list-li"  @click="listTab(0)" :class="listcurr==0?'list-on':''">
+				<span class="name">热卖</span>
+			</div>
+			<div class="recommend-list-li"  @click="listTab(1)" :class="listcurr==1?'list-on':''">
+				<span class="name">人气</span>
 			</div>
 		</div>
 		<swiper style="height:100vh" duration='350' :current="listcurr" @change="changeTab">
@@ -54,13 +57,6 @@
 				limit:4,
 				popuPages:1,
 				popuLimit:6,
-				hotList: [{
-						name: "热卖"
-					},
-					{
-						name: "人气"
-					},
-				],
 				popularityBanner: [],
 				ExplosivesSale: [],
 				showGoodDTOS: [],
@@ -118,7 +114,10 @@
 			that.listcurr = 0;
 			that.getExplosivesSale()
 			that.getExplosivesPopularity()
-
+		},
+		onUnload(){
+			let that = this;
+			that.listcurr = 0;
 		}
 	}
 </script>
