@@ -85,36 +85,14 @@
 					</div>
 					<!--2级类目附近数据-->
 					<swiper style="height:100vh;padding-bottom: 100px;" duration='350' :current="listcurr" @change="changeTab">
-						<swiper-item style="overflow: scroll;">
-							<!--不能删，空swiper判断index为0转到大swiper第一个页面-->
-						</swiper-item>
-						<!--1-->
-						<swiper-item>
-							<scroll-view :scroll-y='scrolls' style="height: 100vh;">
-								<recNearby :recNearby="recNearby"></recNearby>
-							</scroll-view>
-						</swiper-item>
-						<!--2-->
-						<swiper-item>
-							<scroll-view :scroll-y='scrolls' style="height: 100vh;">
-								<recNearby :recNearby="recNearby"></recNearby>
-							</scroll-view>
-						</swiper-item>
-						<swiper-item>
-							<scroll-view :scroll-y='scrolls' style="height: 100vh;">
-								<recNearby :recNearby="recNearby"></recNearby>
-							</scroll-view>
-						</swiper-item>
-						<swiper-item>
-							<scroll-view :scroll-y='scrolls' style="height: 100vh;">
-								<recNearby :recNearby="recNearby"></recNearby>
-							</scroll-view>
-						</swiper-item>
-						<swiper-item>
-							<scroll-view :scroll-y='scrolls' style="height: 100vh;">
-								<recNearby :recNearby="recNearby"></recNearby>
-							</scroll-view>
-						</swiper-item>
+                        <blockquote v-for="(item,index) in recommendList" :index='index' :key="item.catId">
+							<swiper-item>
+								<scroll-view :scroll-y='scrolls' style="height: 100vh;">
+									<recNearby :recNearby="item.options"></recNearby>
+								</scroll-view>
+							</swiper-item>
+						</blockquote>
+
 					</swiper>
 				</swiper-item>
 			</swiper>
@@ -126,10 +104,12 @@
 <script>
 	import recNearby from '@/components/recNearby'
     import addres from "@/components/addresMap";
-	import search from '@/components/search'
+	import search from '@/components/search';
+	import Lib from '@/utils/Lib';
 	import loginModel from "@/components/loginModel";
 	import Api from "@/api/home"
 	import Business from '@/components/Business'
+	import API_k from '@/api/kind'
 	export default {
 		components: {
 			recNearby,
@@ -167,27 +147,12 @@
 					{
 						name: "附近"
 					},
-
 				],
-				recommendList: [{
-						name: "" //不能删，空name判断index为0转到大name第一个页面
-					},
-					{
-						name: "吃喝"
-					},
-					{
-						name: "玩乐"
-					},
-					{
-						name: "丽人"
-					},
-					{
-						name: "亲子"
-					},
-					{
-						name: "其他"
-					}
-				],
+				listQuery:{
+					page: 1,
+					limit: 10,
+				},
+				recommendList: [],
 				banner: [],
 				kindBackGround:{},
 				packet: [{
@@ -206,84 +171,7 @@
 						//						urls: '../index-redpacket/main'
 					}
 				],
-				recNearby: [{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "秦山湖区",
-						addre: "一二三四五六七八九十",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-                        jf:20,
-                        jjin:12.34,
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf:20,
-                        jjin:12.34,
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf:20,
-                        jjin:12.34,
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf:20,
-                        jjin:12.34,
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf:20,
-                        jjin:12.34,
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf:20,
-                        jjin:12.34,
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf:20,
-                        jjin:12.34,
-					}
-				],
+				recNearby: [],
 			}
 		},
 		//监听滚动条
@@ -309,6 +197,9 @@
 			let that = this;
 			that.getUserInfo()
 			that.getIndexImage()
+
+			///////////
+			that.GetGoodsCat();
 		},
 		methods: {
 			// 获取用户信息
@@ -381,8 +272,45 @@
 				}
 
 			},
-		
-			
+            GetGoodsCat(){
+				let that = this;
+			    API_k.getGoodCatData().then(res => {
+					if(res.code == 0){
+						that.recommendList =[{name:''}].concat(res.goodCats.map(Mres => {
+							Mres.options = [];  //控制视图的前提是必须注册进入视图；
+							return Mres;
+						})); 	
+						that.GetGoodsList(res.goodCats[0].catId);//不影响视觉的加载第一个
+						that.ItemGoodsList(); //排除第一个加载所有的数据
+					}else{
+						Lib.showToast('失败','none')						
+					}
+				}).catch(err => {
+                    Lib.showToast('失败','none')
+				});
+			},
+
+			ItemGoodsList(){
+				let that = this;
+				that.recommendList.filter(Fres => Fres.catId != that.recommendList[0].catId).map((Mres,index) => {
+					that.GetGoodsList(Mres.catId)
+				})
+			},
+
+			//获取指定分类下的商品
+			 GetGoodsList(catId,bool){
+				let that = this;
+				API_k.getGoodsList(Object.assign({},that.listQuery,{catId:catId})).then(res => {
+					if(res.code == 0){
+						 that.recommendList.find(Fres => Fres.catId == catId).options = res.page.rows
+					}else{
+                        Lib.showToast('失败','none');						
+					}
+				})
+			},
+
+
+
 		},
 	}
 </script>
@@ -601,7 +529,7 @@
 				position: relative;
 				text-align: center;
 				&:nth-child(1) {
-					visibility: hidden;
+					margin-left: 10px;
 				}
 				&:nth-child(2) {
 					margin-left: 10px;
