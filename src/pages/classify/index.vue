@@ -4,7 +4,7 @@
 		<!--head-->
 		<div class="head">
 			<div class="head-left">
-				<span>全城</span>
+				<span>{{city}}</span>
 				<span class="iconfont">&#xe6bd;</span>
 			</div>
 			<div class="head-right" @click="isshow">
@@ -14,7 +14,7 @@
 		</div>
 		<!--类目-->
 		<scroll-view :class="scrollTop>0?'posi':''" @scroll='catescroll' id="toplist" scroll-x style="width: 100%" class="recommend-list" :scroll-left="scrollLeft">
-			<div class="recommend-list-li" v-for="(item,index) in recommendList" @click="listTab(index)" :class="listcurr==index?'list-on':''">
+			<div class="recommend-list-li" v-for="(item,index) in recommendList" @click="listTab(index,item.catId)" :class="listcurr==index?'list-on':''">
 				<div class="name">
 					{{item.name}}
 				</div>
@@ -23,52 +23,18 @@
 
 		<swiper style="height:100vh" duration='350' :current="listcurr" @change="changeTab">
 			<!--1-->
-			<swiper-item style="overflow: scroll;">
-				<recTwo :recTwo='recTwo'></recTwo>
-			</swiper-item>
-
-			<swiper-item style="overflow: scroll;">
-				<recTwo :recTwo='recTwo'></recTwo>
-			</swiper-item>
-
-			<swiper-item style="overflow: scroll;">
-				<recTwo :recTwo='recTwo'></recTwo>
-			</swiper-item>
-
-			<swiper-item style="overflow: scroll;">
-				<recTwo :recTwo='recTwo'></recTwo>
-			</swiper-item>
-
-			<swiper-item style="overflow: scroll;">
-				<recTwo :recTwo='recTwo'></recTwo>
-			</swiper-item>
-
-			<swiper-item style="overflow: scroll;">
-				<recTwo :recTwo='recTwo'></recTwo>
-			</swiper-item>
-			<swiper-item style="overflow: scroll;">
-				<recTwo :recTwo='recTwo'></recTwo>
-			</swiper-item>
-			<swiper-item style="overflow: scroll;">
-				<recTwo :recTwo='recTwo'></recTwo>
-			</swiper-item>
-			<swiper-item style="overflow: scroll;">
-				<recTwo :recTwo='recTwo'></recTwo>
-			</swiper-item>
-			<swiper-item style="overflow: scroll;">
-				<recTwo :recTwo='recTwo'></recTwo>
-			</swiper-item>
-			<swiper-item style="overflow: scroll;">
-				<recTwo :recTwo='recTwo'></recTwo>
-			</swiper-item>
-			<swiper-item style="overflow: scroll;">
-				<recTwo :recTwo='recTwo'></recTwo>
-			</swiper-item>
+			<blockquote v-for="(item,index) in recommendList" :index='index' :key="item.catId">
+				<swiper-item style="overflow: scroll;">
+					<recTwo :recTwo='item.options'></recTwo>
+				</swiper-item>
+			</blockquote>
 		</swiper>
 
 	</div>
 </template>
 <script>
+	import API from '@/api/kind'
+	import Lib from '@/utils/Lib'
 	import recTwo from '@/components/recTwo'
 	import search from '@/components/search'
 	export default {
@@ -79,122 +45,13 @@
 				windowWidth: 0,
 				scrollLeft: 0,
 				listcurr: 0,
-				recommendList: [{
-						name: "吃喝"
-					},
-					{
-						name: "玩乐"
-					},
-					{
-						name: "丽人"
-					},
-					{
-						name: "亲子"
-					},
-					{
-						name: "其他"
-					},
-					{
-						name: "玩乐"
-					},
-					{
-						name: "吃喝"
-					},
-					{
-						name: "吃喝"
-					},
-					{
-						name: "其他"
-					},
-					{
-						name: "玩乐"
-					},
-					{
-						name: "其他"
-					},
-					{
-						name: "吃喝"
-					},
-				],
-				recTwo: [{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "秦山湖区",
-						addre: "一二三四五六七八九十",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf: 20,
-						jjin: 12.34,
-
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf: 20,
-						jjin: 12.34,
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf: 20,
-						jjin: 12.34,
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf: 20,
-						jjin: 12.34,
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf: 20,
-						jjin: 12.34,
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf: 20,
-						jjin: 12.34,
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf: 20,
-						jjin: 12.34,
-					},
-				],
+				city:'',
+				listQuery:{
+					page: 1,
+					limit: 10,
+				},
+				recommendList: [],
+				recTwo: []
 			}
 		},
 		components: {
@@ -212,11 +69,14 @@
 				console.log(this.istoggle)
 			},
 			isshow() {
-				this.istoggle = true
-
+				wx.navigateTo({
+					url:'../search/main', 
+				})
+                
 			},
-			listTab(e) {
+			listTab(e,catId) {
 				this.listcurr = e
+				console.log("商品分类",catId)
 			},
 			changeTab(e) {
 				let that = this
@@ -227,6 +87,46 @@
 			catescroll(e) {
 				let that = this;
 			},
+
+			////////////////////////////////////////////////////////////////////
+			//获取商品的分类信息
+			 GetGoodsCat(){
+				let that = this;
+			    API.getGoodCatData().then(res => {
+					if(res.code == 0){
+						that.recommendList = res.goodCats.map(Mres => {
+							Mres.options = [];  //控制视图的前提是必须注册进入视图；
+							return Mres;
+						});			
+						that.GetGoodsList(res.goodCats[0].catId);//不影响视觉的加载第一个
+			
+						that.ItemGoodsList(); //排除第一个加载所有的数据
+					}else{
+						Lib.showToast('失败','none')						
+					}
+				}).catch(err => {
+                    Lib.showToast('失败','none')
+				});
+			},
+
+			ItemGoodsList(){
+				let that = this;
+				that.recommendList.filter(Fres => Fres.catId != that.recommendList[0].catId).map((Mres,index) => {
+					that.GetGoodsList(Mres.catId)
+				})
+			},
+
+			//获取指定分类下的商品
+			 GetGoodsList(catId,bool){
+				let that = this;
+				API.getGoodsList(Object.assign({},that.listQuery,{catId:catId})).then(res => {
+					if(res.code == 0){
+						 that.recommendList.find(Fres => Fres.catId == catId).options = res.page.rows
+					}else{
+                    Lib.showToast('失败','none')						
+					}
+				})
+			},
 		},
 		onLoad() {
 			let that = this
@@ -236,6 +136,8 @@
 					that.windowWidth = res.windowWidth
 				},
 			})
+			wx.getStorageSync('City') ? this.city = wx.getStorageSync('City') : this.city = '全城'
+			this.GetGoodsCat();
 		}
 	}
 </script>

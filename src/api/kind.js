@@ -15,5 +15,13 @@ export default {
 	// 获取特别划算分类数据
 	getCost(params){
 		return API.GET('/api/advertisement/getCost',params)
+	},
+	//获取所有的分类
+	getGoodCatData(params){
+		return API.GET('/api/goodCat/cats',params)
+	},
+	//获取指定分类的商品
+	getGoodsList(params){
+		return API.GET('/api/good/goods',params)
 	}
 }
