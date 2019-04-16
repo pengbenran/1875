@@ -16,7 +16,7 @@
 					<div class="pic-left">
 						<p>
 							<span class="rmb">¥</span>
-							<span>29</span>
+							<span>{{item.price}}</span>
 						</p>
 						<p>¥99</p>
 					</div>
@@ -31,6 +31,11 @@
 <script>
 	export default {
 		props: ['recNearby'],
+		watch: {
+           recNearby(val){
+              console.log("监听了一波数据",val)
+		   }
+		},
 		data() {
 			return {}
 		},

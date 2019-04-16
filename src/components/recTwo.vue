@@ -1,26 +1,26 @@
 <template>
 	<div class="rec-product">
-		<div class="rec-product-li" v-for="(item,index) in recTwo">
+		<div class="rec-product-li" v-for="(item,index) in recTwo" @click="toGoodsDetail(item.goodId)">
 			<div class="top">
-				<img :src="item.img" />
+				<img :src="item.thumbnail" />
 			</div>
 			<div class="bottom">
-				<div class="tit">{{item.tit}}</div>
+				<div class="tit fontHidden">{{item.goodName}}</div>
 				<div class="address">
 					<span>{{item.address}}</span>
 					<span>丨</span>
-					<span>{{item.addre}}</span>
+					<span>{{item.subway}}</span>
 				</div>
 
-				<div class="piced">¥99</div>
+				<div class="piced">¥{{item.price}}</div>
 				<div class="pic">
 					<div class="pic-left">
 						<p>
 							<span class="rmb">¥</span>
-							<span>29</span>
+							<span>{{item.showPrice}}</span>
 						</p>
 					</div>
-					<div class="pic-right">{{item.distance}}人购买</div>
+					<div class="pic-right">{{item.showSales}}人购买</div>
 				</div>
 
 			</div>
@@ -35,7 +35,14 @@
 			return {}
 		},
 
-		methods: {},
+		methods: {
+			//跳转详情页
+			toGoodsDetail(goodsId){
+				wx.navigateTo({
+					// url:'../pages/'
+				})
+			}
+		},
 	}
 </script>
 
@@ -73,11 +80,13 @@
 					padding-top: 8px;
 				}
 				.address {
+					border:1px solid #ff4b27;
+					border-radius: 4px;
 					color: #999999;
 					font-size: 11px;
 					overflow: hidden;
 					text-overflow: ellipsis;
-					display: -webkit-box;
+					display: inline-block;
 					-webkit-line-clamp: 1;
 					-webkit-box-orient: vertical;
 					margin: 10px 0;

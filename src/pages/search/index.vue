@@ -1,5 +1,5 @@
 <template>
-	<div class="cont" catchtouchmove v-if='istoggle'>
+	<div  >
 		<form action="" method="post">
 			<div class="popup">
 				<div class="popup-left">
@@ -10,6 +10,7 @@
 					<div class="submit" @click="SearchClick()">搜索</div>
 				</div>
 			</div>
+            <div class="More" v-if="!NoMores">我也是有极限的~~~~~</div>
 		</form>
 			<blockquote v-if="GoodsList.length > 0">
 				<recTwo :recTwo='GoodsList'/>
@@ -44,7 +45,8 @@
 </template>
 <script>   
 	import API from '@/api/kind'
-	import Lib from '@/utils/Lib'
+    import Lib from '@/utils/Lib'
+    
 	import recTwo from '@/components/recTwo'
 	export default {
 		props: ['istoggle','hide'],
@@ -112,7 +114,6 @@
                     Lib.ShowToast('没有更多数据！','none')
 				}
 			},
-	    
 		}
 	}
 </script>
@@ -126,7 +127,13 @@
 		left: 50%;
 		font-size: 30px;
 		color: #999999;
-	}
+    }
+    
+    .More{
+        text-align: center;
+        font-size: 15px;
+        color: #ff6e6e;
+    }
 	
 	.cont {
 		position: fixed;

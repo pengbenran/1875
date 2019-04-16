@@ -5,7 +5,7 @@
 		<!--头部-->
 		<div class="head">
 			<div class="head-left">
-				<span>南昌</span>
+				<span> <addres/> </span>
 				<span class="iconfont">&#xe640;</span>
 			</div>
 			<div class="head-right">
@@ -163,10 +163,17 @@
 
 <script>
 	import recNearby from '@/components/recNearby'
+    import addres from "@/components/addresMap";
 	import search from '@/components/search'
 	import loginModel from "@/components/loginModel";
 	import Api from "@/api/home"
 	export default {
+		components: {
+			recNearby,
+			search,
+			loginModel,
+		    addres
+		},
 		data() {
 			return {
 				isRed: false,
@@ -326,11 +333,6 @@
 				that.scrolls = false
 			}
 		},
-		components: {
-			recNearby,
-			search,
-			loginModel
-		},
 		computed: {
 			showLength() {
 				return this.banner.length
@@ -419,7 +421,8 @@
 			hideRed() {
 				let that = this
 				that.isRed = false
-			}
+			},
+			
 		},
 	}
 </script>
@@ -608,10 +611,12 @@
 			flex-flow: nowrap;
 			width: 100%;
 			background-color: #FFFFFF;
-			padding: 0 20px;
+			padding: 0 10px;
 			height: 49px;
 			box-sizing: border-box;
 			.head-left {
+				display: flex;
+				align-items: center;
 				span {
 					color: #333333;
 					font-size: 15px;
