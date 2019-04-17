@@ -136,6 +136,8 @@
 </template>
 
 <script>
+    import state from '@/store/store'
+    import API from '@/api/good'
 	export default {
 		data() {
 			return {
@@ -151,6 +153,7 @@
 				activeIndex: 0,
 				hint: false,
 				hint1: false,
+				distributorStatus:'',
 				red: [{
 						num: 2.22
 					},
@@ -191,12 +194,18 @@
 				}
 			}
 		},
+		mounted(){
+			console.log(state.state.userInfo,"用户的详情信息","小程序获取来的传值：",this.$root.$mp.query)
+			this.distributorStatus = state.state.userInfo.distributorStatus
+			let data ; 
+            this.distributorStatus  != 1 ? data = {goodId:this.$root.$mp.query.goodsId} : data = {goodId:this.$root.$mp.query.goodsId}
+			this.GetGoodsInfo(data)
+		},
 
 		methods: {
 			changeImg(e) {
 				let that = this
 				that.activeIndex = e.target.current
-
 			},
 			//			小点
 			dot(e) {
@@ -249,7 +258,18 @@
 			},
 			shophide() {
 				this.show = 1
-			}
+			},
+
+			/////////////////////////
+			//获取商品详情
+			GetGoodsInfo(data){
+				let that = this;
+				API.GetGoodDetail(data).then(res => {
+					console.log("查看数据",res)
+				}).catch(err => {
+				    console.log("错误数据",err)	
+				})
+			},
 		},
 		   onShow() {
 		   	//重置

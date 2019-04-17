@@ -37,7 +37,7 @@
 			//跳转详情页
 			toGoodsDetail(goodsId){
 				wx.navigateTo({  
-                 url:'../product-detail/main'			  	
+                 url:'../product-detail/main?goodsId='+goodsId		  	
 			  })
 			}
 		},
