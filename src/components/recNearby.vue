@@ -1,6 +1,6 @@
 <template>
 	<div class="rec-product">
-		<div class="rec-product-li" v-for="(item,index) in recNearby">
+		<div class="rec-product-li" v-for="(item,index) in recNearby" @click="jumpdetail">
 			<div class="left">
 				<img :src="item.img" />
 			</div>
@@ -35,7 +35,13 @@
 			return {}
 		},
 
-		methods: {},
+		methods: {
+			jumpdetail(){
+			  wx.navigateTo({
+                 url:'../product-detail/main'			  	
+			  })
+			}
+		},
 	}
 </script>
 

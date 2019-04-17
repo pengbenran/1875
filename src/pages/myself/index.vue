@@ -6,30 +6,29 @@
 			<div class="name">{{userinfo.name}}</div>
 			<div class="id">圈号: {{userinfo.id}}</div>
 			<div class="vip">
-				<span class="iconfont">&#xe600;</span>
-				<span class="iconfont">&#xe625;</span>
+			    <span style="width: 500px;height: 200px;"><img src="/static/images/vip.gif"/></span>
 			</div>
 		</div>
 		<div class="container-bottom">
 			<!--list-->
 			<div class="list">
-				<div class="list-li1">
+				<div class="list-li1" @click="listLi1">
 					<div class="iconfont icon"> &#xe62d;</div>
 					<div class="name">邀请</div>
-				</div>
+				</div>  
 				<div class="list-li2" @click="listLi2">
 					<div class="iconfont icon">&#xe629;</div>
 					<div class="name">红包 ({{num}})</div>
 				</div>
-				<div class="list-li3">
+				<div class="list-li3" @click="listLi3">
 					<div class="iconfont icon">&#xe627;</div>
 					<div class="name">订单 ({{num}})</div>
 				</div>
-				<div class="list-li4">
+				<div class="list-li4" @click="listLi4">
 					<div class="iconfont icon">&#xe626;</div>
 					<div class="name">喜欢 ({{num}})</div>
 				</div>
-				<div class="list-li5">
+				<div class="list-li5" @click="listLi5">
 					<div class="iconfont icon">&#xe62b;</div>
 					<div class="name">团队({{num}})</div>
 				</div>

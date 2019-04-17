@@ -9,7 +9,11 @@
 		"pages/classify/main",
 		"pages/equities/main",
 		"pages/myself/main",
-		"pages/myself-red/main"
+		"pages/myself-order/main",
+		"pages/myself-team/main",
+		"pages/myself-like/main",
+		"pages/myself-red/main" ,
+		"pages/product-detail/main"
 	],
 	"window": {
 		"backgroundTextStyle": "light",
