@@ -6,7 +6,7 @@
 			<div class="tit">消费降价生活不降价</div>
 			<div class="banner">
 				<swiper autoplay="true" circular="true" display-multiple-items='1' previous-margin='10px' next-margin='10px'>
-					<div v-for="(item, index) in popularityBanner">
+					<div v-for="(item, index) in costBanner">
 						<swiper-item class='item'>
 							<img mode="aspectFill" :src="item.url" class="slide-image" />
 						</swiper-item>
@@ -31,7 +31,7 @@
 					img: "/static/images/hotbg.gif"
 				},
 				showGoodDTOS:[],
-				popularityBanner:[]
+				costBanner:[]
 			}
 		},
 		components: {
@@ -50,7 +50,7 @@
 				params.page=that.page
 				params.limit=that.limit
 				Api.getCost(params).then(function(res){
-					that.popularityBanner=res.popularityBanner
+					that.costBanner=res.costBanner
 					that.showGoodDTOS=res.showGoodDTOS
 				})
 			}
