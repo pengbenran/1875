@@ -197,8 +197,6 @@
 			let that = this;
 			that.getUserInfo()
 			that.getIndexImage()
-
-			///////////
 			that.GetGoodsCat();
 		},
 		methods: {
