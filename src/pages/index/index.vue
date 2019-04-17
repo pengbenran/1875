@@ -5,7 +5,7 @@
 		<!--头部-->
 		<div class="head">
 			<div class="head-left">
-				<span>南昌</span>
+				<span> <addres/> </span>
 				<span class="iconfont">&#xe640;</span>
 			</div>
 			<div class="head-right">
@@ -28,14 +28,14 @@
 		<!--baner-->
 		<div class="box">
 			<swiper class="swiper" @change="changeImg" :autoplay="true" :circular="true" current=0>
-				<div v-for="(item, index) in imagesUrl">
+				<div v-for="(item, index) in banner">
 					<swiper-item class="item">
-						<img mode="aspectFill" :src="item.img" class="slide-image" />
+						<img mode="aspectFill" :src="item.url" class="slide-image" />
 					</swiper-item>
 				</div>
 			</swiper>
-			<span class="item-num" v-if="showLength>1">{{activeIndex+1}}/{{imagesUrl.length}}</span>
-			<span class="item-num" v-else>1/{{imagesUrl.length}}</span>
+			<span class="item-num" v-if="showLength>1">{{activeIndex+1}}/{{showLength}}</span>
+			<span class="item-num" v-else>1/{{showLength}}</span>
 		</div>
 		<!---->
 		<div class="packet">
@@ -45,45 +45,7 @@
 			</div>
 		</div>
 		<!--商家合作弹窗-->
-		<div class="rule-pop" v-if="isRed" catchtouchmove>
-			<div class="rule-pop-li">
-				<div class="ybqw">
-					<div class="img"><img src="/static/images/1875quan.png" /> </div>
-				</div>
-				<div class="cant">
-					<p class="tit">
-						<span>商家合作</span>
-						<span></span>
-						<!--线-->
-					</p>
-					<p class="tex">您如果需要与本平台进行合作可以微信咨询或者拨打电话：</p>
-					<!---->
-					<div class="weixin">
-						<div class="left">
-							<span class="iconfont">&#xe64f;</span>
-							<span>yqy8888504</span>
-						</div>
-						<div class="right">
-							复制
-						</div>
-					</div>
-					<!---->
-					<div class="phone">
-						<div class="left"> 
-							<span class="iconfont">&#xe6d4;</span>
-							<span>159566442323</span>                
-						</div>
-						<div class="right">
-							拨打
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="cha">
-				<span></span>
-				<span @click="hideRed" class="iconfont">&#xe809;</span>
-			</div>
-		</div>
+		<Business ref="business"></Business>
 		<!--推荐-->
 		<div class="recommend">
 			<!--1级类目-->
@@ -97,9 +59,17 @@
 				<!--精品-->
 				<swiper-item>
 					<div class="goods">
-						<div class="goods-li" v-for="(item,index) in goods" @click="jumpgoods(item.urls)">
-							<span class="img"><img :src="item.img"/></span>
-							<span class="name">{{item.name}}</span>
+						<div class="goods-li" @click="jumpgoods('../index-hot/main')">
+							<span class="img"><img :src="kindBackGround.explosive"/></span>
+							<span class="name">今日爆品</span>
+						</div>
+						<div class="goods-li"  @click="jumpgoods('../index-news/main')">
+							<span class="img"><img :src="kindBackGround.favoriteFood"/></span>
+							<span class="name">最新好物</span>
+						</div>
+						<div class="goods-li"  @click="jumpgoods('../index-profit/main')">
+							<span class="img"><img :src="kindBackGround.costEffective"/></span>
+							<span class="name">特别划算</span>
 						</div>
 
 					</div>
@@ -115,50 +85,41 @@
 					</div>
 					<!--2级类目附近数据-->
 					<swiper style="height:100vh;padding-bottom: 100px;" duration='350' :current="listcurr" @change="changeTab">
-						<swiper-item style="overflow: scroll;">
-							<!--不能删，空swiper判断index为0转到大swiper第一个页面-->
-						</swiper-item>
-						<!--1-->
-						<swiper-item>
-							<scroll-view :scroll-y='scrolls' style="height: 100vh;">
-								<recNearby :recNearby="recNearby"></recNearby>
-							</scroll-view>
-						</swiper-item>
-						<!--2-->
-						<swiper-item>
-							<scroll-view :scroll-y='scrolls' style="height: 100vh;">
-								<recNearby :recNearby="recNearby"></recNearby>
-							</scroll-view>
-						</swiper-item>
-						<swiper-item>
-							<scroll-view :scroll-y='scrolls' style="height: 100vh;">
-								<recNearby :recNearby="recNearby"></recNearby>
-							</scroll-view>
-						</swiper-item>
-						<swiper-item>
-							<scroll-view :scroll-y='scrolls' style="height: 100vh;">
-								<recNearby :recNearby="recNearby"></recNearby>
-							</scroll-view>
-						</swiper-item>
-						<swiper-item>
-							<scroll-view :scroll-y='scrolls' style="height: 100vh;">
-								<recNearby :recNearby="recNearby"></recNearby>
-							</scroll-view>
-						</swiper-item>
+                        <blockquote v-for="(item,index) in recommendList" :index='index' :key="item.catId">
+							<swiper-item>
+								<scroll-view :scroll-y='scrolls' style="height: 100vh;">
+									<recNearby :recNearby="item.options"></recNearby>
+								</scroll-view>
+							</swiper-item>
+						</blockquote>
+
 					</swiper>
 				</swiper-item>
 			</swiper>
 		</div>
+		<loginModel ref="loginModel"></loginModel>
 	</div>
 </template>
 
 <script>
 	import recNearby from '@/components/recNearby'
-	import search from '@/components/search'
+    import addres from "@/components/addresMap";
+	import search from '@/components/search';
+	import Lib from '@/utils/Lib';
+	import loginModel from "@/components/loginModel";
+	import Api from "@/api/home"
+	import Business from '@/components/Business'
+	import API_k from '@/api/kind'
 	export default {
+		components: {
+			recNearby,
+			search,
+			loginModel,
+		    addres,
+		    Business
+		},
 		data() {
 			return {
-				isRed: false,
 				istoggle: false,
 				scrolls: false,
 				scrollTop: '',
@@ -180,59 +141,20 @@
 						name: "一二三四五"
 					},
 				],
-				goods: [{
-						name: "今日爆品",
-						img: "/static/images/list.jpg",
-						urls: "../index-hot/main"
-					},
-					{
-						name: "最新好物",
-						img: "/static/images/list.jpg",
-						urls: "../index-news/main"
-					},
-					{
-						name: "特别划算",
-						img: "/static/images/list.jpg",
-						urls: "../index-profit/main"
-					},
-				],
 				recommendWp: [{
 						name: "精品推荐"
 					},
 					{
 						name: "附近"
 					},
-
 				],
-				recommendList: [{
-						name: "" //不能删，空name判断index为0转到大name第一个页面
-					},
-					{
-						name: "吃喝"
-					},
-					{
-						name: "玩乐"
-					},
-					{
-						name: "丽人"
-					},
-					{
-						name: "亲子"
-					},
-					{
-						name: "其他"
-					}
-				],
-				imagesUrl: [{
-						img: "/static/images/banner.jpg"
-					},
-					{
-						img: "/static/images/banner.jpg"
-					},
-					{
-						img: "/static/images/banner.jpg"
-					}
-				],
+				listQuery:{
+					page: 1,
+					limit: 10,
+				},
+				recommendList: [],
+				banner: [],
+				kindBackGround:{},
 				packet: [{
 						img: "/static/images/index-btn-a.gif",
 						name: '签到红包',
@@ -249,84 +171,7 @@
 						//						urls: '../index-redpacket/main'
 					}
 				],
-				recNearby: [{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "秦山湖区",
-						addre: "一二三四五六七八九十",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-                        jf:20,
-                        jjin:12.34,
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf:20,
-                        jjin:12.34,
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf:20,
-                        jjin:12.34,
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf:20,
-                        jjin:12.34,
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf:20,
-                        jjin:12.34,
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf:20,
-                        jjin:12.34,
-					},
-					{
-						img: "/static/images/banner.jpg",
-						tit: '这是28px大小平方字体并且做了加粗处理行间距是字体大小的1.5倍#33...',
-						address: "东湖区",
-						addre: "洪城数码广场",
-						distance: "690m",
-						pic: 29,
-						pice: 99,
-						jf:20,
-                        jjin:12.34,
-					}
-				],
+				recNearby: [],
 			}
 		},
 		//监听滚动条
@@ -339,24 +184,39 @@
 				that.scrolls = false
 			}
 		},
-		components: {
-			recNearby,
-			search,
-		},
 		computed: {
 			showLength() {
-				return this.imagesUrl.length
+				return this.banner.length
 			},
-
 		},
 		onLoad() {
 			let that = this;
-			that.listtop();
+			that.listtop();	
+		},
+		mounted(){
+			let that = this;
+			that.getUserInfo()
+			that.getIndexImage()
+
+			///////////
+			that.GetGoodsCat();
 		},
 		methods: {
+			// 获取用户信息
+			async getUserInfo() {
+				let that = this
+				await that.$refs.loginModel.userLogin()
+ 				wx.stopPullDownRefresh()
+			},
+			getIndexImage(){
+				let that=this
+				Api.getIndexImage().then(function(res){
+					that.banner=res.indexBanner
+					that.kindBackGround=res.indexBackGround
+				})
+			},
 			hide() {
 				this.istoggle = false
-				console.log(this.istoggle)
 			},
 			isshow() {
 				this.istoggle = true
@@ -404,7 +264,7 @@
 			jumppacket(urls, index) {
 				let that = this
 				if(index == 2) {
-					that.isRed = true
+					that.$refs.business.showOpen()
 				} else {
 					wx.navigateTo({
 						url: urls
@@ -412,142 +272,51 @@
 				}
 
 			},
-			hideRed() {
-				let that = this
-				that.isRed = false
-			}
+            GetGoodsCat(){
+				let that = this;
+			    API_k.getGoodCatData().then(res => {
+					if(res.code == 0){
+						that.recommendList =[{name:''}].concat(res.goodCats.map(Mres => {
+							Mres.options = [];  //控制视图的前提是必须注册进入视图；
+							return Mres;
+						})); 	
+						that.GetGoodsList(res.goodCats[0].catId);//不影响视觉的加载第一个
+						that.ItemGoodsList(); //排除第一个加载所有的数据
+					}else{
+						Lib.showToast('失败','none')						
+					}
+				}).catch(err => {
+                    Lib.showToast('失败','none')
+				});
+			},
+
+			ItemGoodsList(){
+				let that = this;
+				that.recommendList.filter(Fres => Fres.catId != that.recommendList[0].catId).map((Mres,index) => {
+					that.GetGoodsList(Mres.catId)
+				})
+			},
+
+			//获取指定分类下的商品
+			 GetGoodsList(catId,bool){
+				let that = this;
+				API_k.getGoodsList(Object.assign({},that.listQuery,{catId:catId})).then(res => {
+					if(res.code == 0){
+						 that.recommendList.find(Fres => Fres.catId == catId).options = res.page.rows
+					}else{
+                        Lib.showToast('失败','none');						
+					}
+				})
+			},
+
+
+
 		},
 	}
 </script>
 
 <style scoped lang="less">
-	/*商家合作弹窗*/
-	
-	.rule-pop {
-		position: fixed;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		background: rgba(0, 0, 0, .3);
-		z-index: 99;
-		.rule-pop-li {
-			width: 335px;
-			height: 410px;
-			background: #FFFFFF;
-			margin: 66px auto 0 auto;
-			overflow: hidden;
-			border-radius: 12px;
-			.ybqw {
-				width: 100%;
-				height: 100px;
-				background: #ff6666;
-				padding-top: 37.5px;
-				box-sizing: border-box;
-				.img {
-					width: 205px;
-					height: 25px;
-					margin: 0 auto;
-					img {
-						width: 100%;
-						height: 100%;
-					}
-				}
-			}
-			.cant {
-				padding: 0 32px;
-				box-sizing: border-box;
-				.tit {
-					text-align: center;
-					padding: 30px 0;
-					box-sizing: border-box;
-					span {
-						display: block;
-						&:nth-child(1) {
-							color: #333333;
-							font-size: 17px;
-							font-weight: bold;
-						}
-						&:nth-child(2) {
-							width: 33px;
-							height: 2px;
-							background: #ff4b27;
-							margin-top: 6px;
-							border-radius: 1px;
-							margin: 3px auto 0 auto;
-						}
-					}
-				}
-				.tex {
-					font-size: 15px;
-					color: #333333;
-					line-height: 28px;
-				}
-				.weixin,
-				.phone {
-					display: flex;
-					align-items: center;
-					justify-content: space-between;
-					.left {
-						display: flex;
-						align-items: center;
-						span {
-							display: block;
-							&:nth-child(1) {
-								font-size: 20px;
-							}
-							&:nth-child(2){
-								color: #333333;
-								margin-left: 12px;
-								font-size: 15px;
-							}
-						}
-					}
-					.right {
-						width: 60px;
-						height: 33px;
-						background: #ff6666;
-						border-radius: 16.5px;
-						line-height: 33px;
-						text-align: center;
-						color: #ff6666;
-						font-size: 15px;
-					}
-				}
-				.weixin{
-					margin-top: 27px;
-				    .right{
-				    	background: #FFFFFF;
-				    	border:1px solid #ff6666 ;
-				    }
-				}
-				.phone{
-					margin-top: 20px;
-					 .right{
-				    	color: #FFFFFF;
-				    	border:1px solid #ff6666 ;
-				    }
-					
-				}
-			}
-		}
-		.cha {
-			span {
-				display: block;
-				text-align: center;
-				&:nth-child(1) {
-					width: 2px;
-					height: 30px;
-					background: #FFFFFF;
-					margin: 0 auto;
-				}
-				&:nth-child(2) {
-					line-height: 35px;
-					font-size: 40px;
-					color: #FFFFFF;
-				}
-			}
-		}
-	}
+
 	/*banner*/
 	
 	.detail {
@@ -604,10 +373,12 @@
 			flex-flow: nowrap;
 			width: 100%;
 			background-color: #FFFFFF;
-			padding: 0 20px;
+			padding: 0 10px;
 			height: 49px;
 			box-sizing: border-box;
 			.head-left {
+				display: flex;
+				align-items: center;
 				span {
 					color: #333333;
 					font-size: 15px;
@@ -758,7 +529,7 @@
 				position: relative;
 				text-align: center;
 				&:nth-child(1) {
-					visibility: hidden;
+					margin-left: 10px;
 				}
 				&:nth-child(2) {
 					margin-left: 10px;

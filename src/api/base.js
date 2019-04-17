@@ -41,8 +41,8 @@ fly.interceptors.response.use(
     }
 )
 // let base='https://zhifenxiang.guqinet.com'
-let base='http://192.168.0.115/1875'
-
+   let base='http://192.168.0.114/1875'
+//let base='http://192.168.0.116/1875'
 export const GetCode=(url, params)=>{
    return fly.get(`${url}`,params).then(res => res.data)  
 }

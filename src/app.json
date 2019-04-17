@@ -13,8 +13,14 @@
 		"pages/myself-team/main",
 		"pages/myself-like/main",
 		"pages/myself-red/main" ,
-		"pages/product-detail/main"
+		"pages/product-detail/main",
+		"pages/search/main"
 	],
+	"permission":{
+		"scope.userLocation":{
+			"desc":"请点击确认"
+		}
+	},
 	"window": {
 		"backgroundTextStyle": "light",
 		"navigationBarBackgroundColor": "#fff",

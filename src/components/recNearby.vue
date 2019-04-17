@@ -2,25 +2,25 @@
 	<div class="rec-product">
 		<div class="rec-product-li" v-for="(item,index) in recNearby" @click="jumpdetail">
 			<div class="left">
-				<img :src="item.img" />
+				<img :src="item.thumbnail" />
 			</div>
 			<div class="right">
-				<div class="tit">{{item.tit}}</div>
+				<div class="tit">{{item.goodName}}</div>
 
 				<div class="address">
 					<span>{{item.address}}</span>
 					<span>丨</span>
-					<span>{{item.addre}}</span>
+					<span>{{item.subway}}</span>
 				</div>
 				<div class="pic">
 					<div class="pic-left">
 						<p>
 							<span class="rmb">¥</span>
-							<span>29</span>
+							<span>{{item.price}}</span>
 						</p>
-						<p>¥99</p>
+						<p>¥{{item.showPrice}}</p>
 					</div>
-					<div class="pic-right">{{item.distance}}</div>
+					<div class="pic-right">200m</div>
 				</div>
 
 			</div>
@@ -31,6 +31,11 @@
 <script>
 	export default {
 		props: ['recNearby'],
+		watch: {
+           recNearby(val){
+              console.log("监听了一波数据",val)
+		   }
+		},
 		data() {
 			return {}
 		},
