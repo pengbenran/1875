@@ -36,9 +36,9 @@
 		methods: {
 			//跳转详情页
 			toGoodsDetail(goodsId){
-				wx.navigateTo({
-					// url:'../pages/'
-				})
+				wx.navigateTo({  
+                 url:'../product-detail/main'			  	
+			  })
 			}
 		},
 	}
@@ -61,7 +61,7 @@
 				width: 100%;
 				height: 170px;
 				overflow: hidden;
-			}
+			} 
 			.bottom {
 				width: 100%;
 				padding: 0 6px;

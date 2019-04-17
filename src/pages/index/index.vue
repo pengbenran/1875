@@ -16,7 +16,7 @@
 				<div class="jia">
 					<span class="iconfont">&#xe608;</span>
 				</div>
-			</div>
+			</div> 
 		</div>
 		<!--推荐搜索-->
 		<div class="searches">
@@ -197,8 +197,6 @@
 			let that = this;
 			that.getUserInfo()
 			that.getIndexImage()
-
-			///////////
 			that.GetGoodsCat();
 		},
 		methods: {
