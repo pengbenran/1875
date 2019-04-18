@@ -1,7 +1,5 @@
 <template>
 	<div class="container">
-		<!--搜索弹窗-->
-		<search :istoggle='istoggle' :hide='hide'></search>
 		<!--头部-->
 		<div class="head">
 			<div class="head-left">
@@ -213,12 +211,10 @@
 					that.kindBackGround=res.indexBackGround
 				})
 			},
-			hide() {
-				this.istoggle = false
-			},
 			isshow() {
-				this.istoggle = true
-
+				wx.navigateTo({
+					url:'../search/main', 
+				})
 			},
 			changeImg(e) {
 				let that = this

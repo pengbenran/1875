@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<div class="cates">
-			<div class="cate" v-for="(item,index) in ExplosivesSale">
+			<div class="cate" v-for="(item,index) in FavoriteGoods">
 				<div class="img"><img :src="item.url" /></div>
 				<div class="cate-name">{{item.catName}}</div>
 				<div class="cate-list">
@@ -24,7 +24,7 @@
 			return {
 				page:1,
 				limit:6,
-				ExplosivesSale:[]
+				FavoriteGoods:[]
 			}
 		},
 		components: {},
@@ -37,7 +37,7 @@
 				params.limit=that.limit
 				params.catBackgroundId=0
 				Api.getFavorite(params).then(function(res){
-					that.ExplosivesSale=res.ExplosivesSale
+					that.FavoriteGoods=res.FavoriteGoods
 				})
 			},
 			//禁止滑动
