@@ -16,9 +16,9 @@
 			<div class="total">
 			<!--喜欢 -->
 			<div class="like" @click="tootle">
-				<div class="img" v-if="love"><img src="/static/images/love.png" /></div>
-				<div class="img" v-else><img src="/static/images/love1.png" /></div>
-				<div class="num">1111</div>
+				<div class="img" v-if="good.isFavorite == 1"><img src="/static/images/love1.png" /></div>
+				<div class="img" v-else><img src="/static/images/love.png" /></div>
+				<div class="num">{{good.favorites}}</div>
 			</div>
              <!--转发-->
              <div class="tra">
@@ -98,12 +98,15 @@
 				distributorStatus:'',
 				good:{},	
 				isPoster:false,	
+				goodId:''	
 			}
 		},
 		mounted(){
-			this.distributorStatus =store.state.userInfo.distributorStatus
-			let data ; 
-            this.distributorStatus  != 1 ? data = {goodId:this.$root.$mp.query.goodsId} : data = {goodId:this.$root.$mp.query.goodsId}
+			this.goodId = this.$root.$mp.query.goodsId;
+			let data = {
+					goodId:this.goodId,
+					memberId:store.state.userInfo.memberId,
+				}; 
             // if(this.$root.$mp.query.goodsId)
 			this.GetGoodsInfo(data)
 		},
@@ -126,9 +129,16 @@
 				let that = this
 				that.activeIndex = e
 			},
+
+			//点击收藏指定商品
 			tootle() {
 				let that = this
-				that.love = !that.love
+				if(that.good.isFavorite == 1){
+                    that.DeletePostCollectionShop();
+				}else{
+                    that.PostCollectionShop();
+				}
+
 			},
 			jumphome() {
 				mpvue.reLaunch({
@@ -181,6 +191,44 @@
 						icon:"none",
 						duration:1500
 					})
+				})
+			},
+
+			//点击收藏指定商品
+			PostCollectionShop(){
+				let that = this
+				let data = {
+					memberId:store.state.userInfo.memberId,
+					goodId:this.goodId
+				}
+				API.CollectionShop(data).then(res =>{
+					if(res.code == 0) {
+						that.good.isFavorite = 1
+						wx.showToast({title:'成功',icon:"success",duration:1500})
+					}else{
+						wx.showToast({title:'网络错误',icon:"none",duration:1500})
+					}
+				}).catch(err => {
+						wx.showToast({title:'网络错误',icon:"none",duration:1500})
+				})
+			},
+
+			//点击取消收藏
+			DeletePostCollectionShop(){
+				let that = this
+				let data = {
+					memberId:store.state.userInfo.memberId,
+					goodId:this.goodId
+				}
+				API.DeleteCollectionShop(data).then(res =>{
+					if(res.code == 0) {
+						that.good.isFavorite = 2
+						wx.showToast({title:'成功',icon:"success",duration:1500})
+					}else{
+						wx.showToast({title:'网络错误',icon:"none",duration:1500})
+					}
+				}).catch(err => {
+						wx.showToast({title:'网络错误',icon:"none",duration:1500})
 				})
 			},
 		},

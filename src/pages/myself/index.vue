@@ -97,6 +97,11 @@
 					url:url
 				})
 			},
+			listLi4(){
+				wx.navigateTo({
+				   url:"../collection/main"
+				})			
+			}
 		}
 	}
 </script>
