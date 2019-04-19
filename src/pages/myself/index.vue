@@ -97,6 +97,11 @@
 				wx.navigateTo({
              url:"../myself-red/main"
 				})
+			},
+			listLi4(){
+				wx.navigateTo({
+				   url:"../collection/main"
+				})			
 			}
 		}
 	}
