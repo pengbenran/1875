@@ -32,7 +32,6 @@
 			</div>
 			
 		</div>
-
 		<!--详情-->
 		<div class="list">
 			<div class="name">{{good.goodName}}</div>
@@ -62,12 +61,23 @@
 				<wxParse :content="good.content" @preview="preview" @navigate="navigate" />
 			</div>
 		</div>
+		<!-- 保存图片分享好友 -->
+		<div class="footer" v-if="isPoster">
+			<div class="rec">保存图片</div>
+			<span class="buy">分享好友</span>
+		</div>
 		<!--底部-->
-		<div class="footer">
+		<div class="footer" v-else>
 			<div @click="jumphome" class="home"><span><img src="/static/images/homeselect.png"/></span><span>首页</span></div>
-			<div class="rec">推荐分享</div>
+			<div class="rec" @click="drawPoster">推荐分享</div>
 			<span class="buy" @click="openModel">立即购买</span>
 		</div>
+		
+
+		<!-- 分享海报 -->
+		<goodPoster ref="goodPoster"></goodPoster>
+	
+
 		<!--购买弹窗-->
 		<goodDetailModel ref="goodModel"></goodDetailModel>
 	</div>
@@ -78,6 +88,7 @@
     import API from '@/api/good'
     import goodDetailModel from '@/components/goodDetailModel'
     import wxParse from 'mpvue-wxparse'
+    import goodPoster from '@/components/goodPoster'
 	export default {
 		data() {
 			return {
@@ -85,7 +96,8 @@
 				curr: 0,
 				activeIndex: 0,
 				distributorStatus:'',
-				good:{},		
+				good:{},	
+				isPoster:false,	
 			}
 		},
 		mounted(){
@@ -97,9 +109,14 @@
 		},
 		components: {
 			goodDetailModel,
-			wxParse
+			wxParse,
+			goodPoster
 		},
 		methods: {
+			drawPoster(){
+				let that=this
+				that.$refs.goodPoster.getErCode(38)
+			},
 			changeImg(e) {
 				let that = this
 				that.activeIndex = e.target.current
@@ -121,6 +138,7 @@
 			// 打开立即购买模态框
 			openModel() {
 				let that=this
+				that.isPoster=true
 				that.$refs.goodModel.openModel()
 			},
 			// 打开地图导航

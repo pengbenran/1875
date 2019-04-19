@@ -12,7 +12,7 @@
 		<div class="container-bottom">
 			<!--list-->
 			<div class="list">
-				<div class="list-li1" @click="listLi1">
+				<div class="list-li1" @click="jump('../poster/main')">
 					<div class="iconfont icon"> &#xe62d;</div>
 					<div class="name">邀请</div>
 				</div>  
@@ -91,13 +91,12 @@
 				},
 			}
 		},
-		onLoad() {},
 		methods: {
-			listLi2() {
+			jump(url){
 				wx.navigateTo({
-             url:"../myself-red/main"
+					url:url
 				})
-			}
+			},
 		}
 	}
 </script>

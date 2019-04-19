@@ -1,6 +1,6 @@
 {
 	"pages": [ 
-		"pages/poster/main",
+		"pages/product-detail/main",
 		"pages/index/main",
 		"pages/index-hot/main",
 		"pages/index-hot-more/main",
@@ -14,8 +14,8 @@
 		"pages/myself-team/main",
 		"pages/myself-like/main",
 		"pages/myself-red/main" ,
-		"pages/product-detail/main",
-		"pages/search/main"
+		"pages/search/main",
+		"pages/poster/main"
 	],
 	"permission":{
 		"scope.userLocation":{

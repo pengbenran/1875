@@ -10,7 +10,8 @@
 <script>
 	import canvasdrawer from '@/components/canvasdrawer'
 	import store from '@/store/store'
-	import {ShowToast } from '@/utils/Lib'
+	// import {ShowToast } from '@/utils/Lib'
+	import  Api from '@/api/member'
 	export default{
 		data(){
 			return{
@@ -26,19 +27,18 @@
 			canvasdrawer
 		},
 		methods:{
-			async getErCode(){
-				let that=this
-				that.eventDraw('https://image.aiychbaby.cn/81e974c3-53a0-4f5a-a3e1-cb9be8dd765c.png','/static/images/174a31e3460026b13ff87f87ede8db9.png')
-				// let params={}
-				// params.params=that.userInfo.unionid
-				// let QrcodeRes=await Api.get_Qrcode(params).catch(err => {
-    //                  ShowToast('失败','none')
-				// })
-				// if(QrcodeRes.code==0){
-					
-				// }else{
-    //                  ShowToast('失败','none')
-				// }
+			getErCode(){
+				let that=this	
+				let params={}
+				params.params=`${that.userInfo.unionid},0,2`
+				Api.publicQRCode(params).then(function(QrcodeRes){
+					if(QrcodeRes.code==0){
+						that.eventDraw(QrcodeRes.quick,'/static/images/174a31e3460026b13ff87f87ede8db9.png')
+					}else{
+						ShowToast('失败','none')
+					}
+				})
+				
 			},
 			//点击生成海报
 			async eventDraw(codeUrl,bcgImg){
@@ -51,14 +51,13 @@
 			   		height: that.Height,
 			   		clear: true,
 			   		views: [
-			   			{
+			   		{
 			   			type:'rect',
 			   			background:'#fd4032',
 			   			top:0,
 			   			left:0,
 			   			width:that.Width,
 			   			height:that.Height
-
 			   		},
 			   		{
 			   			type: 'image',
@@ -71,7 +70,7 @@
 			   		{
 			   			type: 'image',
 			   			url: 'https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKmCBv37GHG8z7ichticReYicHbxzNJqOhxrD50DHx1icmZ1icbmtPuAgqpakPxQ63hBFCHlUuzGSsCnjQ/132',
-			   			top: that.bcgHeight+25,
+			   			top: that.bcgHeight+20,
 			   			left: (that.Width-that.bcgHeight)/2,
 			   			width:60,
 			   			height:60,
@@ -80,24 +79,72 @@
 			   		{
 			   			type: 'image',
 			   			url: codeUrl,
-			   			top: that.bcgHeight+5,
-			   			left: that.Width-that.Height+that.bcgHeight+10,
-			   			width: that.Height-that.bcgHeight-20,
-			   			height: that.Height-that.bcgHeight-20
+			   			top: that.bcgHeight+25,
+			   			left: (that.Width-that.bcgHeight)/2+220,
+			   			width:110,
+			   			height: 110
 			   		},
 			   		{
 			   			type: 'text',
-			   			content:that.userInfo.name,
-			   			fontSize: 13,
+			   			content:'银牌推荐师银牌推荐师',
+			   			fontSize: 18,
 			   			color: '#fff',
 			   			textAlign: 'left',
 			   			breakWord: true,
-			   			top: that.bcgHeight+70,
-			   			left:30,
-			   			width:150,
-			   			MaxLineNumber:2,
+			   			top: that.bcgHeight+45,
+			   			left:(that.Width-that.bcgHeight)/2+80,
+			   			width:110,
+			   			MaxLineNumber:1,
 			   			isCenter:false
-			   		}
+			   		},
+			   		{
+			   			type: 'text',
+			   			content:'我是一个超级无敌牛逼的银牌推荐师',
+			   			fontSize: 16,
+			   			color: '#fff',
+			   			textAlign: 'left',
+			   			breakWord: true,
+			   			top: that.bcgHeight+90,
+			   			left:(that.Width-that.bcgHeight)/2,
+			   			width:200,
+			   			MaxLineNumber:1,
+			   			isCenter:false
+			   		},
+			   		{
+			   			type:'rect',
+			   			background:'#fff',
+			   			top:that.bcgHeight+125,
+			   			left:(that.Width-that.bcgHeight)/2,
+			   			width:200,
+			   			height:40,
+			   			borderRadius:10
+			   		},
+			   		{
+			   			type: 'text',
+			   			content:'我正在玩  扫码一起',
+			   			fontSize: 16,
+			   			color: '#fd4032',
+			   			textAlign: 'left',
+			   			breakWord: true,
+			   			top: that.bcgHeight+135,
+			   			left:(that.Width-that.bcgHeight)/2+30,
+			   			width:200,
+			   			MaxLineNumber:1,
+			   			isCenter:false
+			   		},
+			   		{
+			   			type: 'text',
+			   			content:'微信扫一扫',
+			   			fontSize: 16,
+			   			color: '#fff',
+			   			textAlign: 'left',
+			   			breakWord: true,
+			   			top:  that.bcgHeight+145,
+			   			left:(that.Width-that.bcgHeight)/2+240,
+			   			width:200,
+			   			MaxLineNumber:1,
+			   			isCenter:false
+			   		},
 			   		]
 			   	}
 			   	this.$refs.canvas.readyPigment()
@@ -147,32 +194,20 @@
 	}
 </script>
 <style scoped lang="less">
-	.businessCard{
-		width: 100%;
-		height:100vh;
-		background-color: #fd4032;
-	}
-	.paintImg{
-		width: 290px;
-		height: 413px;
-		background-color: #fff;
-		margin: 0 auto;
-	}
 	img{
 		width: 100%;
 		height: 100%;
 		display: block;
 	}
 	.btn{
-			margin-top: 30px;
 			width: 290px;
 			height: 49px;
 			line-height: 49px;
 			text-align: center;
-			margin:  30px auto 0 auto;
+			margin:  10px auto 0 auto;
 			color: #fff;
 			font-size: 16px;
-			background-color: #FF3D3A;
+			background-color: #fd4032;
 			border-radius: 3px;
 		}
 </style>
