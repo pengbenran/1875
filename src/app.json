@@ -1,5 +1,10 @@
 {
 	"pages": [ 
+<<<<<<< HEAD
+=======
+		"pages/myself/main",
+		"pages/product-detail/main",
+>>>>>>> 5dbc1f6714cf0fb1995797d3918696ac2b7a3fde
 		"pages/index/main",
 		"pages/index-hot/main",
 		"pages/index-hot-more/main",
@@ -7,13 +12,17 @@
 		"pages/index-profit/main", 
 		"pages/index-redpacket/main", 
 		"pages/classify/main",
-		"pages/equities/main",
-		"pages/myself/main",
+		"pages/equities/main",	
+	    "pages/myself-income/main",
 		"pages/myself-order/main",
+		"pages/myself-order-detail/main",
 		"pages/myself-team/main",
 		"pages/myself-like/main",
 		"pages/myself-red/main" ,
+<<<<<<< HEAD
 		"pages/product-detail/main",
+=======
+>>>>>>> 5dbc1f6714cf0fb1995797d3918696ac2b7a3fde
 		"pages/search/main",
 		"pages/poster/main",
 		"pages/collection/main"

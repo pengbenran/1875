@@ -6,8 +6,11 @@
 			<div class="name">{{userinfo.name}}</div>
 			<div class="id">圈号: {{userinfo.id}}</div>
 			<div class="vip">
-			    <span style="width: 500px;height: 200px;"><img src="/static/images/vip.gif"/></span>
-			</div>
+				<div class="vip-img" v-if="vip==1"><img src="/static/images/VIP1.gif"/></div>
+				<div class="vip-img" v-if="vip==2"><img src="/static/images/VIP2.gif"/></div>
+				<div class="vip-img" v-if="vip==3"><img src="/static/images/VIP3.gif"/></div>	 			
+				<div class="iconfont icon">&#xe625;</div> 
+			</div> 
 		</div>
 		<div class="container-bottom">
 			<!--list-->
@@ -15,7 +18,7 @@
 				<div class="list-li1" @click="jump('../poster/main')">
 					<div class="iconfont icon"> &#xe62d;</div>
 					<div class="name">邀请</div>
-				</div>  
+				</div>
 				<div class="list-li2" @click="listLi2">
 					<div class="iconfont icon">&#xe629;</div>
 					<div class="name">红包 ({{num}})</div>
@@ -25,7 +28,7 @@
 					<div class="name">订单 ({{num}})</div>
 				</div>
 				<div class="list-li4" @click="listLi4">
-					<div class="iconfont icon">&#xe626;</div>
+					<div class="iconfont icon">&#xe626;</div> 
 					<div class="name">喜欢 ({{num}})</div>
 				</div>
 				<div class="list-li5" @click="listLi5">
@@ -34,7 +37,7 @@
 				</div>
 			</div>
 			<!--收支总览-->
-			<div class="income">
+			<div class="income"  @click="income">
 				<div class="tit">
 					<div class="tit-left">
 						<span>收支总览</span>
@@ -83,6 +86,7 @@
 	export default {
 		data() {
 			return {
+				vip:1,
 				num: 99,
 				userinfo: {
 					img: '/static/images/list.jpg',
@@ -92,6 +96,31 @@
 			}
 		},
 		methods: {
+			listLi2() {
+				wx.navigateTo({
+					url: "../myself-red/main"
+				})
+			},
+			listLi3() {
+				wx.navigateTo({
+					url: "../myself-order/main"
+				})
+			},
+			listLi4() {
+				wx.navigateTo({
+					url: "../myself-like/main"
+				})
+			},
+			listLi5() {
+				wx.navigateTo({
+					url: "../myself-team/main"
+				})
+			},
+			income() {
+				wx.navigateTo({
+					url: "../myself-income/main"
+				})
+			},
 			jump(url){
 				wx.navigateTo({
 					url:url
@@ -150,15 +179,16 @@
 			margin: 0 auto;
 			border-radius: 16.5px;
 			display: flex;
-			justify-content: center;
+			justify-content: space-between;
 			align-items: center;
-			span {
-				display: block;
-				color: #fdedd4;
-				font-size: 24px;
-				&:nth-child(2) {
-					font-size: 12px;
-				}
+			.vip-img {
+               	width: 61px;height: 23px; 
+               	margin-left: 16px;
+			}
+			.icon{
+				font-size: 12px;
+				color: #ffe5e5;
+				margin-right: 16px;
 			}
 		}
 	}
