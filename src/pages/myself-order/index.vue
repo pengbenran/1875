@@ -9,54 +9,127 @@
 			</div>
 		</div>
 		<swiper style="height:100vh" duration='350' :current="listcurr" @change="changeTab">
-			<!--可使用-->
-			<swiper-item style="overflow: scroll;">  
-				<div class="list1">
-					<div class="list-li" v-for="(item,index) in list1">
-						<div class="list-left">
-							<span>¥</span>
-							<span>{{item.pic}}</span>
+			<!--全部-->
+			<swiper-item style="overflow: scroll;">
+
+			</swiper-item>
+			<!--待付款-->
+			<swiper-item style="overflow: scroll;">
+				<div class="cates0" @click="jumpdetail">
+					<div class="cate-list" v-for="(child,cindex) in childList0">
+						<div class="top">
+							<div class="img"><img :src="child.img" /></div>
+							<div class="cant">
+								<div class="name">{{child.name}}</div>
+								<div class="add">
+									<span>{{child.adds}}</span>
+									<span>丨</span>
+									<span>{{child.add}}</span>
+								</div>
+								<div class="pic">应付 : ¥{{child.pic}}</div>
+								<div class="xdday">下单时间 : {{child.xdday}}</div>
+							</div>
 						</div>
-						<div class="list-cant">
-							<p>签到红包</p>
-							<p>使用时间</p>
-							<p>{{item.time}}</p>
+						<div class="condition">
+							<div class="condition-left">
+								<span>{{child.condition}}</span>
+								<span>{{child.conditionday}}</span>
+							</div>
+							<div class="condition-right">
+								<span>取消</span>
+								<span>立即付款</span>
+							</div>
 						</div>
-						<div class="list-right">{{item.status}}</div>
+					</div>
+				</div>
+			</swiper-item>
+			<!--待使用-->
+			<swiper-item style="overflow: scroll;">
+				<div class="cates1">
+					<div class="cate-list" v-for="(child,cindex) in childList1">
+						<div class="top">
+							<div class="img"><img :src="child.img" /></div>
+							<div class="cant">
+								<div class="name">{{child.name}}</div>
+								<div class="add">
+									<span>{{child.adds}}</span>
+									<span>丨</span>
+									<span>{{child.add}}</span>
+								</div>
+								<div class="pic">实付 : ¥{{child.pic}}</div>
+								<div class="xdday">下单时间 : {{child.xdday}}</div>
+							</div>
+						</div>
+						<div class="condition">
+							<div class="condition-left">
+								<span>{{child.condition}}</span>
+								<span>{{child.conditionday}}</span>
+							</div>
+							<div class="condition-right">
+								<!--<span>取消</span>-->
+								<span>订单详情</span>
+							</div>
+						</div>
 					</div>
 				</div>
 			</swiper-item>
 			<!--已使用-->
 			<swiper-item style="overflow: scroll;">
-				<div class="list2">
-					<div class="list-li" v-for="(item,index) in list2">
-						<div class="list-left">
-							<span>¥</span>
-							<span>{{item.pic}}</span>
+				<div class="cates2">
+					<div class="cate-list" v-for="(child,cindex) in childList2">
+						<div class="top">
+							<div class="img"><img :src="child.img" /></div>
+							<div class="cant">
+								<div class="name">{{child.name}}</div>
+								<div class="add">
+									<span>{{child.adds}}</span>
+									<span>丨</span>
+									<span>{{child.add}}</span>
+								</div>
+								<div class="pic">实付 : ¥{{child.pic}}</div>
+								<div class="xdday">下单时间 : {{child.xdday}}</div>
+							</div>
 						</div>
-						<div class="list-cant">
-							<p>签到红包</p>
-							<p>使用时间</p>
-							<p>{{item.time}}</p>
+						<div class="condition">
+							<div class="condition-left">
+								<span>{{child.condition}}</span>
+								<span>{{child.conditionday}}</span>
+							</div>
+							<div class="condition-right">
+								<span>删除</span>
+								<span>订单详情</span>
+							</div>
 						</div>
-						<div class="list-right">{{item.status}}</div>
 					</div>
 				</div>
 			</swiper-item>
 			<!--已过期-->
 			<swiper-item style="overflow: scroll;">
-				<div class="list3">
-					<div class="list-li" v-for="(item,index) in list3">
-						<div class="list-left">
-							<span>¥</span>
-							<span>{{item.pic}}</span>
+				<div class="cates3">
+					<div class="cate-list" v-for="(child,cindex) in childList3">
+						<div class="top">
+							<div class="img"><img :src="child.img" /></div>
+							<div class="cant">
+								<div class="name">{{child.name}}</div>
+								<div class="add">
+									<span>{{child.adds}}</span>
+									<span>丨</span>
+									<span>{{child.add}}</span>
+								</div>
+								<div class="pic">实付 : ¥{{child.pic}}</div>
+								<div class="xdday">下单时间 : {{child.xdday}}</div>
+							</div>
 						</div>
-						<div class="list-cant">
-							<p>签到红包</p>
-							<p>使用时间</p>
-							<p>{{item.time}}</p>
+						<div class="condition">
+							<div class="condition-left">
+								<span>{{child.condition}}</span>
+								<span>{{child.conditionday}}</span>
+							</div>
+							<div class="condition-right">
+								<span>删除</span>
+								<span>订单详情</span>
+							</div>
 						</div>
-						<div class="list-right">{{item.status}}</div>
 					</div>
 				</div>
 			</swiper-item>
@@ -70,20 +143,14 @@
 		data() {
 			return {
 				listcurr: 0,
-				list1:[
-				   {pic:"2.22",time:"2019.03.29-2019.03.30",status:"去使用"},
-				   {pic:"2.22",time:"2019.03.29-2019.03.30",status:"去使用"}
-				],
-				list2:[
-				   {pic:"2.22",time:"2019.03.29-2019.03.30",status:"已使用"},
-				   {pic:"2.22",time:"2019.03.29-2019.03.30",status:"已使用"}
-				],
-				list3:[
-				   {pic:"2.22",time:"2019.03.29-2019.03.30",status:"已过期"},
-				   {pic:"2.22",time:"2019.03.29-2019.03.30",status:"已过期"}
-				],
 				recommendList: [{
-						name: "可使用"
+						name: "全部"
+					},
+					{
+						name: "待付款"
+					},
+					{
+						name: "待使用"
 					},
 					{
 						name: "已使用"
@@ -92,12 +159,64 @@
 						name: "已过期"
 					},
 				],
+				//待付款
+
+				childList0: [{
+					img: "/static/images/ku5p0efhhxr5.jpg",
+					name: "这是28px大小平方字体并且做了加粗处理行间距是42px哦了加粗处理行间距是42px哦",
+					adds: "青山湖区 ",
+					add: "一二三四五六七八九十",
+					pic: "39.9",
+					xdday: "2019-03-22 12:55",
+					condition: '待付款',
+					conditionday: '00:29:59'
+
+				}, ],
+				// 待使用 
+
+				childList1: [{
+					img: "/static/images/ku5p0efhhxr5.jpg",
+					name: "这是28px大小平方字体并且做了加粗处理行间距是42px哦了加粗处理行间距是42px哦",
+					adds: "青山湖区 ",
+					add: "一二三四五六七八九十",
+					pic: "39.9",
+					xdday: "2019-03-22 12:55",
+					condition: '待使用',
+					conditionday: '00:29:59'
+
+				}, ],
+				//					已使用
+
+				childList2: [{
+					img: "/static/images/ku5p0efhhxr5.jpg",
+					name: "这是28px大小平方字体并且做了加粗处理行间距是42px哦了加粗处理行间距是42px哦",
+					adds: "青山湖区 ",
+					add: "一二三四五六七八九十",
+					pic: "39.9",
+					xdday: "2019-03-22 12:55",
+					condition: '已使用',
+					conditionday: '00:29:59'
+
+				}, ],
+				//					已过期
+
+				childList3: [{
+					img: "/static/images/ku5p0efhhxr5.jpg",
+					name: "这是28px大小平方字体并且做了加粗处理行间距是42px哦了加粗处理行间距是42px哦",
+					adds: "青山湖区 ",
+					add: "一二三四五六七八九十",
+					pic: "39.9",
+					xdday: "2019-03-22 12:55",
+					condition: '已过期',
+					conditionday: '00:29:59'
+
+				}, ],
 			}
 		},
-       	onLoad(){
+		onLoad() {
 			let that = this
 			//重置
-			that.listcurr=0
+			that.listcurr = 0
 		},
 		methods: {
 			listTab(e) {
@@ -107,33 +226,37 @@
 				let that = this
 				that.listcurr = e.mp.detail.current
 			},
+			jumpdetail() {
+				wx.navigateTo({
+					url: "../myself-order-detail/main"
+				})
+			},
 		},
 	}
 </script>
 
 <style scoped lang="less">
-.container{
+	.container {
 		background: #F4F4F4;
-}
-swiper-item{
-	width: 100%;
-	padding-bottom: 40px;
-}
+	}
+	/*类目*/
+	
 	.recommend-list {
 		background: #FFFFFF;
 		height: 49px;
 		width: 100%;
 		display: flex;
-		justify-content:space-around;
-		.recommend-list-li{
-			
+		justify-content: space-around;
+		position: fixed;
+		top: 0;
+		z-index: 99;
+		.recommend-list-li {
 			height: 49px;
 			line-height: 49px;
 			position: relative;
 			display: block;
 			text-align: center;
-			span { 
-				 
+			span {
 				display: inline-block;
 			}
 			.name {
@@ -147,7 +270,7 @@ swiper-item{
 				border-bottom: 6px solid transparent;
 			}
 		}
-		.list-on { 
+		.list-on {
 			.name {
 				transition: all 0.5s;
 				border-bottom: 6px solid #ff6e6e;
@@ -155,66 +278,149 @@ swiper-item{
 			}
 		}
 	}
-	.list1,.list2,.list3{
-		padding: 0 12px;
-		width: 100%;
+	/**/	
+	.cates0,
+	.cates1,
+	.cates2,
+	.cates3 {
+		padding: 49px 12px;
 		box-sizing: border-box;
-		.list-li{
-			color: #333333;
-			width:100%;
-			height: 110px;
+		width: 100%;
+		.cate-list {
 			background: #FFFFFF;
 			border-radius: 12px;
-			margin-top: 12px;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			padding: 0 12px 0 25px;
+			width: 100%;
+			padding: 12px 12px 16px 12px;
 			box-sizing: border-box;
-			.list-left{
-				font-weight: bold;
-				span{
-					&:nth-child(1){
-						font-size: 14px;
-					}
-					&:nth-child(2){
-							font-size: 30px;
-					}
+			margin-top: 12px;
+			.top {
+				display: flex;
+				width: 100%;
+				.img {
+					width: 60px;
+					height: 60px;
+					border-radius: 4px;
+					overflow: hidden;
 				}
-			}
-			.list-cant{
-				p{
-					display: block;
-					&:nth-child(1){
+				.cant {
+					width: 216px;
+					margin-left: 12px;
+					overflow: hidden;
+					.name {
 						font-size: 15px;
+						color: #333333;
 						font-weight: bold;
+						line-height: 21px;
+						display: -webkit-box;
+						-webkit-box-orient: vertical;
+						-webkit-line-clamp: 2;
+						overflow: hidden;
 					}
-						&:nth-child(2){
-							padding: 20px 0 8px 0;
-							font-size: 13px;
-						}
-						&:nth-child(3){
-							font-size: 12px;
-						}
+					.add {
+						font-size: 14px;
+						color: #666666;
+						display: -webkit-box;
+						-webkit-box-orient: vertical;
+						-webkit-line-clamp: 1;
+						overflow: hidden;
+						margin: 10px 0;
+					}
+					.pic {
+						font-size: 14px;
+						color: #666666;
+						/*font-weight: bold;*/
+					}
+					.xdday {
+						font-size: 14px;
+						color: #666666;
+						margin-top: 10px;
+					}
 				}
 			}
-			.list-right{
-				width: 80px;
-				height: 33px;
-				background: #ff6e6e;
-				border-radius: 16.5px;
-				line-height: 33px;
-				text-align: center;
-				color: #ffffff;
-				font-size: 14px;
+			.condition {
+				margin-top: 22px;
+				width: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				.condition-left {
+					font-size: 15px;
+					color: #ff6e6e;
+					font-weight: bold;
+					span {
+						&:nth-child(2) {
+							margin-left: 11px;
+						}
+					}
+				}
+				.condition-right {
+					display: flex;
+					span {
+						display: block;
+						border-radius: 16.5px;
+						text-align: center;
+						line-height: 33px;
+						width: 64px;
+						height: 32px;
+						font-size: 14px;
+						&:nth-child(1) {
+							border: 1px solid #dedede;
+							background: #FFFFFF;
+							color: #333333;
+							margin-right: 8px;
+						}
+						&:nth-child(2) {
+							width: 90px;
+							border: 1px solid #ff6e6e;
+							background: #ff6e6e;
+							color: #ffffff;
+						}
+					}
+				}
 			}
 		}
 	}
-		.list2,.list3{
-		.list-li{
-			color:#999999;
-			.list-right{
-				background: #999999;
+	
+	.cates0 {
+		.cate-list {
+				.top{
+					.cant{
+						.pic{
+							color: #333333;
+							font-weight: bold;
+						}
+					}
+				}
+			}
+		}
+ /*待付款*/	
+	.cates1 {
+		.cate-list {
+			.condition {
+				.condition-right {
+					span {
+						width: 90px;
+						border: 1px solid #ff6e6e;
+						background: #ff6e6e;
+						color: #ffffff;
+					}
+				}
+			}
+		}
+	}
+	/*已使用  已完成*/
+	.cates2,.cates3, {
+		.cate-list {
+			.condition {
+				.condition-right {
+					span {
+						&:nth-child(2) {
+							background: #FFFFFF;
+							border: 1px solid #dedede;
+							color: #333333;
+						}
+					}
+				}
 			}
 		}
 	}
