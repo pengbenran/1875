@@ -31,6 +31,12 @@
 		  canvasdrawer,	
 		},
 		methods: {
+			// 关闭模态框
+			closeClick(){
+				let that=this
+				that.paintOk=false
+				that.$emit('closePoster')
+			},
 			// 保存图片到本地
 			saveImg(){
 				let that=this
@@ -48,7 +54,6 @@
 			// 获取二维码
 			getErCode(goodsId){
 				let that=this
-				let width=
 				that.Left=(wx.getSystemInfoSync().windowWidth-300)/2
 				that.userInfo = store.state.userInfo	
 				let params={}
@@ -209,10 +214,12 @@
 		   },
 		    eventGetImage(event) {
 		   	wx.hideLoading()
+		   	let that=this
 		   	const { tempFilePath, errMsg } = event
 		   	if (errMsg === 'canvasdrawer:ok') {
-		   		this.paintOk=true
-		   		this.shareImage=tempFilePath
+		   		that.paintOk=true
+		   		that.shareImage=tempFilePath
+		   		that.$emit('paintOk',that.shareImage)
 		    }
 			},
 		},

@@ -10,7 +10,9 @@ export default new Vuex.Store({
   state:{
   	userInfo:{},
     ExplosivesSaleObj:{},
-    goodDetail:{}
+    goodDetail:{},
+    distribInfo:{},
+    config:{}
   },
   mutations:{
    storeUserInfo(state,userInfo){
@@ -21,6 +23,12 @@ export default new Vuex.Store({
    },
    storeGoodDetail(state,goodDetail){
     state.goodDetail=goodDetail
+   },
+   storeDistribInfo(state,distribInfo){
+    state.distribInfo=distribInfo
+   },
+   storeConfig(state,config){
+    state.config=config
    }
 }
 })

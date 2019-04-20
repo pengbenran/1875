@@ -4,4 +4,8 @@ export default {
 	orderSave(params){
 		return API.POST('/api/order/save',params)
 	},
+	 // 微信支付
+    prepay:params=>{
+       return API.GET('/api/order/getPrepayId',params) 
+    }
 }

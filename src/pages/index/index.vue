@@ -108,6 +108,7 @@
 	import Api from "@/api/home"
 	import Business from '@/components/Business'
 	import API_k from '@/api/kind'
+	import store from '@/store/store'
 	export default {
 		components: {
 			recNearby,
@@ -196,6 +197,7 @@
 			that.getUserInfo()
 			that.getIndexImage()
 			that.GetGoodsCat();
+			that.getConfig()
 		},
 		methods: {
 			// 获取用户信息
@@ -203,6 +205,16 @@
 				let that = this
 				await that.$refs.loginModel.userLogin()
  				wx.stopPullDownRefresh()
+			},
+			// 获取全局配置
+			getConfig(){
+				Api.getConfig().then(function(res){
+					console.log(res);
+					store.commit("storeConfig",{pointDeduction:0.01})
+					// if(res.code==0){
+					// 	store.commit("storeConfig",res.globalConfigEntity)
+					// }
+				})
 			},
 			getIndexImage(){
 				let that=this

@@ -42,8 +42,8 @@
 			</div>
 			<div class="pic">
 				<p><span class="rmb">¥</span><span>{{good.price}}</span></p>
-				<p>分享可得{{good.buyIntegral}}积分</p>
-				<p v-if="distributorStatus==1">分享可得奖金:{{commission}}元</p>
+				<p>分享可得{{good.shareIntegral}}积分</p>
+				<p v-if="userInfo.distributorStatus==1">分享可得奖金:{{good.commission}}元</p>
 			</div>
 			<div class="oldpic">
 				<p>¥{{good.showPrice}}</p>
@@ -63,8 +63,8 @@
 		</div>
 		<!-- 保存图片分享好友 -->
 		<div class="footer" v-if="isPoster">
-			<div class="rec">保存图片</div>
-			<span class="buy">分享好友</span>
+			<div class="saveImg" @click="eventSave">保存图片</div>
+			<div class="shareFriend">分享好友</div>
 		</div>
 		<!--底部-->
 		<div class="footer" v-else>
@@ -75,7 +75,7 @@
 		
 
 		<!-- 分享海报 -->
-		<goodPoster ref="goodPoster"></goodPoster>
+		<goodPoster ref="goodPoster" @closePoster='closePoster' @paintOk='paintOk'></goodPoster>
 	
 
 		<!--购买弹窗-->
@@ -95,19 +95,22 @@
 				love: true,
 				curr: 0,
 				activeIndex: 0,
-				distributorStatus:'',
+				userInfo:{},
 				good:{},	
 				isPoster:false,	
-				goodId:''	
+				goodId:'',
+				shareImg:''	
 			}
 		},
 		mounted(){
-			this.goodId = this.$root.$mp.query.goodsId;
+			let that=this
+			that.goodId = that.$root.$mp.query.goodsId;
+			that.userInfo=store.state.userInfo
 			let data = {
-					goodId:this.goodId,
-					memberId:store.state.userInfo.memberId,
+					goodId:that.goodId,
+					memberId:that.userInfo.memberId,
 				}; 
-            // if(this.$root.$mp.query.goodsId)
+			that.$refs.goodPoster.closeClick()
 			this.GetGoodsInfo(data)
 		},
 		components: {
@@ -119,6 +122,30 @@
 			drawPoster(){
 				let that=this
 				that.$refs.goodPoster.getErCode(38)
+			},
+			// 保存图片
+			eventSave() {
+				let that=this
+				wx.saveImageToPhotosAlbum({
+					filePath: that.shareImg,
+					success(res) {
+						wx.showToast({
+							title: '保存图片成功',
+							icon: 'success',
+							duration: 2000
+						})
+					}
+				})
+			},
+			// 绘制好了触发事件
+			paintOk(shareImg){
+				let that=this
+				that.isPoster=true
+				that.shareImg=shareImg
+			},
+			closePoster(){
+				let that=this
+				that.isPoster=false
 			},
 			changeImg(e) {
 				let that = this
@@ -148,7 +175,6 @@
 			// 打开立即购买模态框
 			openModel() {
 				let that=this
-				that.isPoster=true
 				that.$refs.goodModel.openModel()
 			},
 			// 打开地图导航
@@ -424,7 +450,6 @@
 		}
 	}
 	/*底部*/
-	
 	.footer {
 		display: flex;
 		align-items: center;
@@ -433,6 +458,24 @@
 		position: fixed;
 		bottom: 0;
 		z-index: 88;
+		.saveImg{
+			width:50%;
+			background: #ff9999;
+			line-height: 57px;
+			text-align: center;	
+			color: #ffffff;
+			font-size: 17px;
+			font-weight: bold;
+		}
+		.shareFriend{
+			width:50%;
+			background: #ff6666;
+			line-height: 57px;
+			text-align: center;	
+			color: #ffffff;
+			font-size: 17px;
+			font-weight: bold;
+		}
 		.home {
 			width: 58px;
 			height: 100%;

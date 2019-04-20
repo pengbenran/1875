@@ -46,14 +46,6 @@ export default {
                     that.isSubmit=false
                     that.isMember=false
                     that.userLogin()
-                    if(wx.getStorageSync('distribeId')==null){
-
-                    }
-                    else{
-                      // Api.promotion(res.data.memberId,wx.getStorageSync('distribeId')).then(function(res){
-                       
-                      // })
-                    }
                   }
                 }) 
               }
@@ -72,6 +64,9 @@ export default {
             Api.getCode(res.code).then(function(memberRes){
               if(memberRes.code!=500){
                 wx.showTabBar({})
+                if(memberRes.memberEntity.distributorStatus==1){
+                  store.commit("storeDistribInfo",memberRes.distributorInfo)
+                }
                 store.commit("storeUserInfo",memberRes.memberEntity)
               }
               else {

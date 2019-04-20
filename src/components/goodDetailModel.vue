@@ -16,30 +16,30 @@
 					<!--会员折扣-->
 					<div class="discount-member">
 						<span>会员折扣 :</span>
-						<span>29.00元</span>
+						<span>{{userInfo.discount*10}}折</span>
 					</div>
 					<!--积分折扣-->
 					<div class="discount-jf">
 						<div class="top">
 							<span>积分抵扣 :</span>
 							<span>(可用积分{{userInfo.point}})</span>
-							<span v-if="hint">不能大于200</span>
+							<span v-if="hint">{{jftip}}</span>
 						</div>
 						<div class="bottom">
-							<span><input  @input='inputjf' type="number" placeholder-style='color:#dedede;font-size: 13px;' placeholder="最高可用200积分" v-model="jf"/></span>
+							<span><input  @input='inputjf' type="number" v-model="jf" placeholder-style='color:#dedede;font-size: 13px;' placeholder="请输入抵扣积分"/></span>
 							<span>抵扣</span>
-							<span v-if="isjf">{{jf}}元</span>
+							<span v-if="isjf">{{jf*config.pointDeduction}}元</span>
 						</div>
 					</div>
 					<!--奖金折扣-->
-					<div class="discount-bonus">
+					<div class="discount-bonus" v-if="userInfo.distributorStatus==1">
 						<div class="top">
 							<span>奖金抵扣 :</span>
-							<span>(可用积分1000)</span>
-							<span v-if="hint1">不能大于200</span>
+							<span>(可用奖金{{distribInfo.balance}})</span>
+							<span v-if="hint1">{{bonusTip}}</span>
 						</div>
 						<div class="bottom">
-							<span><input @input='inputBonus' type="number" placeholder-style='color:#dedede;font-size: 13px;' placeholder="最高可用200奖金" v-model="bonus"/></span>
+							<span><input @input='inputBonus' type="number" placeholder-style='color:#dedede;font-size: 13px;' placeholder="请输入抵扣金额" v-model="bonus"/></span>
 							<span>抵扣</span>
 							<span v-if="isbonus">{{bonus}}元</span>
 						</div>
@@ -47,7 +47,7 @@
 				</div>
 				<!--提交订单-->
 				<div class="btn" @click="submit">
-					<span>¥23.68</span>
+					<span>¥{{totalPrice}}</span>
 					<span>提交订单</span>
 				</div>
 				<!--红包折扣-->
@@ -64,23 +64,47 @@
 <script>   
 	import store from '@/store/store'
 	import Api from '@/api/order'
+	import utils from '@/utils/index'
 	export default {
 		data() {
 			return {
 				isbonus: false,
 				isjf: false,
-				jf: '',
-				bonus: '',
+				jf:'',
+				bonus:'',
 				hint: false,
 				hint1: false,
 				showModel:false,
 				goodDetail:{},
 				userInfo:{},
 				isSubmit:false,
+				distribInfo:{},
+				config:{},
+				jftip:'',
+				bonusTip:'',
+				order:{}
 			}
 		},
 		mounted(){
 			
+		},
+		computed: {
+			totalPrice(){
+				let that=this
+				let jf=that.jf==''?0:that.jf
+				let bonus=that.bonus==''?0:that.bonus
+				// 会员折扣之后的价格减去分享师优惠金额
+				let accSubRes=utils.accSub(that.goodDetail.price*that.userInfo.discount,that.goodDetail.commission)
+				// 减去积分抵扣之后的金额
+				let accSubRes1=utils.accSub(accSubRes,jf*that.config.pointDeduction)>0?utils.accSub(accSubRes,jf*that.config.pointDeduction):0.01
+				if(accSubRes1-bonus<0){
+					bonus=accSubRes1-0.01
+					that.bonus=accSubRes1-0.01
+					that.hint1 = true
+					that.bonusTip="已抵扣最大金额"
+				}
+				return utils.accSub(accSubRes1,bonus)>0?utils.accSub(accSubRes1,bonus):0.01
+			}
 		},
 		methods: {
 			openModel() {
@@ -88,33 +112,42 @@
 				that.showModel=true
 				that.goodDetail=store.state.goodDetail
 				that.userInfo=store.state.userInfo
-				console.log(that.userInfo);
+				that.config=store.state.config
+				if(that.userInfo.distributorStatus==1){
+					that.distribInfo=store.state.distribInfo
+				}
 			},
 			hideModel(){
 				let that=this
 				that.showModel=false
 			},
 			inputjf() {
-				if(this.jf > 200) {
-					this.jf = ''
-					this.hint = true
-				} else {
-					this.hint = false
+				let that=this
+				if(that.jf*that.config.pointDeduction> that.goodDetail.pointAmount) {
+					that.jf =that.goodDetail.pointAmount/that.config.pointDeduction
+					that.hint = true
+					that.jftip='最多可抵扣'+that.goodDetail.pointAmount+'元'
 				}
-
-				//
-				if(this.jf == '') {
-					this.isjf = false
-				} else {
-					this.isjf = true
+				else if(that.jf>that.userInfo.point){
+					that.jf =that.userInfo.point
+					that.hint = true
+					that.jftip='积分不足'
 				}
-
+				 else {
+					that.hint = false
+				}
+				if(that.jf == '') {
+					that.isjf = false
+				} else {
+					that.isjf = true
+				}
 			},
 			inputBonus() {
 				//
-				if(this.bonus > 200) {
-					this.bonus = ''
-					this.hint1 = true
+				let that=this
+				if(that.bonus >that.distribInfo.balance) {
+					that.hint1 = true
+					that.bonusTip="余额不足"
 				} else {
 					this.hint1 = false
 				}
@@ -147,15 +180,23 @@
 						params.shareIntegration=0
 					}		
 					params.unionId=that.userInfo.unionid
-					params.paymentType=1
-					params.consumepoint=0
+					if(that.bonus==''){
+						// 未使用余额抵扣
+						params.paymentType=1
+					}
+					else{
+						// 使用余额抵扣
+						params.paymentType=2
+					}
+					params.consumepoint=that.jf==''?0:that.jf
 					params.shopsId=that.goodDetail.shopId
 					params.goodsAmount=that.goodDetail.price
-					params.orderAmount=1
+					params.orderAmount=that.totalPrice
 					params.gainedpoint=that.goodDetail.buyIntegral
-					params.discount=''
-					params.needPayMoney=1
-					params.balance=2
+					params.discount=that.userInfo.discount
+					params.needPayMoney=that.totalPrice
+					params.balance=that.bonus==''?0:that.bonus
+                    
 					params.recommend=0
 					params.goodsId=that.goodDetail.goodId
 					params.thumbnail=that.goodDetail.thumbnail
@@ -165,15 +206,64 @@
 					Api.orderSave(params).then(function(saveRes){
 						if(saveRes.code==0){
 							wx.hideLoading()
-							console.log(saveRes);
-							// that.order=saveRes.orderDO
-							// that.getQRCode()
+							that.order=saveRes.OrderEntity
+							that.weixinPay()
 						}
 					})
 						
 				}
 				
-			}
+			},
+			weixinPay(){
+				let params={}
+				let that=this
+				params.orderId = that.order.orderId
+				params.openId=that.userInfo.xopenid
+	            // params.total_fee = that.order.needPayMoney*100
+	            params.payAmount=1
+	            Api.prepay(params).then(function(parRes){
+	            	wx.requestPayment({
+	            		timeStamp: parRes.timeStamp,
+	            		nonceStr: parRes.nonceStr,
+	            		package: parRes.package,
+	            		signType: parRes.signType, 
+	            		paySign: parRes.paySign,
+	            		success: function (res) {
+	            			wx.showToast({
+	            				title: '支付成功',
+	            				icon: 'success',
+	            				duration: 2000
+	            			})
+	            			that.payOrder()
+	            		},
+	            		fail: function (res) {
+		                        // fail
+		                        wx.showToast({
+		                        	title: '支付失败',
+		                        	icon: 'success',
+		                        	duration: 2000
+		                        })
+		                    },
+		                    complete: function (complete) {
+		                        // complete   
+		                        that.isSubmit=false
+		                    }
+		                })
+	            })
+	        },
+	        async payOrder(){
+	        	// 订单支付成功之后修改订单状态
+	        	let that=this
+	        	let statuParam={}
+	        	statuParam.orderId=that.order.orderId
+	        	let payOrder=await Api.payOrder(statuParam)
+	        	if(payOrder.code==0){
+	        		util.updateUserInfo()
+	        		wx.redirectTo({
+	        			url: '../order-detail/main?orderId='+that.order.orderId
+	        		})
+	        	}
+	        }
 
 		}
 	}

@@ -15,5 +15,9 @@ export default {
 	// 获取首页banner图跟分类背景图
 	getIndexImage(params){
 		return API.GET('/api/advertisement/getIndexImage',params)
+	},
+	// 获取小程序全局设置
+	getConfig(){
+		return API.GET('/api/member/getGlobalConfig')
 	}
 }

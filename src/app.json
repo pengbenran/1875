@@ -1,10 +1,7 @@
 {
-	"pages": [ 
-<<<<<<< HEAD
-		"pages/product-detail/main",
-=======
->>>>>>> 1bd052a3c797f55e93ac3dccd673f20ea3222eef
+	"pages":[ 
 		"pages/index/main",
+		"pages/product-detail/main",	
 		"pages/index-hot/main",
 		"pages/index-hot-more/main",
 		"pages/index-news/main",
@@ -17,15 +14,9 @@
 		"pages/myself-team/main",
 		"pages/myself-like/main",
 		"pages/myself-red/main" ,
-<<<<<<< HEAD
-		"pages/search/main",
-		"pages/poster/main"
-=======
-		"pages/product-detail/main",
 		"pages/search/main",
 		"pages/poster/main",
 		"pages/collection/main"
->>>>>>> 1bd052a3c797f55e93ac3dccd673f20ea3222eef
 	],
 	"permission":{
 		"scope.userLocation":{
