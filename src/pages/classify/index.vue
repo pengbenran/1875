@@ -83,6 +83,11 @@
 				that.listcurr = e.mp.detail.current
 				var singleNavWidth = that.windowWidth / 5;
 				that.scrollLeft = (that.listcurr - 2) * singleNavWidth
+
+				//查看触发数据
+				that.recommendList[e.mp.detail.current].options.length == 0 
+				? that.GetGoodsList(that.recommendList[e.mp.detail.current].catId) : ''
+				
 			},
 			catescroll(e) {
 				let that = this;
@@ -96,11 +101,14 @@
 					if(res.code == 0){
 						that.recommendList = res.goodCats.map(Mres => {
 							Mres.options = [];  //控制视图的前提是必须注册进入视图；
+							Mres.filg = true;
+							Mres.page = 1;
+					        Mres.limit = 4;
 							return Mres;
 						});			
 						that.GetGoodsList(res.goodCats[0].catId);//不影响视觉的加载第一个
 			
-						that.ItemGoodsList(); //排除第一个加载所有的数据
+						// that.ItemGoodsList(); //排除第一个加载所有的数据
 					}else{
 						Lib.showToast('失败','none')						
 					}
@@ -109,24 +117,44 @@
 				});
 			},
 
-			ItemGoodsList(){
-				let that = this;
-				that.recommendList.filter(Fres => Fres.catId != that.recommendList[0].catId).map((Mres,index) => {
-					that.GetGoodsList(Mres.catId)
-				})
-			},
+			// ItemGoodsList(){
+			// 	let that = this;
+			// 	that.recommendList.filter(Fres => Fres.catId != that.recommendList[0].catId).map((Mres,index) => {
+			// 		that.GetGoodsList(Mres.catId)
+			// 	})
+			// },
 
 			//获取指定分类下的商品
-			 GetGoodsList(catId,bool){
+			 GetGoodsList(catId){
 				let that = this;
-				API.getGoodsList(Object.assign({},that.listQuery,{catId:catId})).then(res => {
-					if(res.code == 0){
-						 that.recommendList.find(Fres => Fres.catId == catId).options = res.page.rows
-					}else{
-                    Lib.showToast('失败','none')						
-					}
-				})
+				wx.showLoading({title: '加载中'})
+				let ItmeOptions = that.recommendList.find(Fres => Fres.catId == catId);
+				if(ItmeOptions.filg){
+					API.getGoodsList(Object.assign({},{page:ItmeOptions.page,limit:ItmeOptions.limit},{catId:catId})).then(res => {
+						if(res.code == 0){
+							if(res.page.rows.length < ItmeOptions.limit){
+								ItmeOptions.filg = false
+							}
+							ItmeOptions.options = ItmeOptions.options.concat(res.page.rows)
+						}else{
+							Lib.showToast('失败','none')						
+						}
+						 wx.hideLoading()
+					})
+				}else{
+					// wx.hideLoading()
+					wx.showToast({title: '没有更多信息',icon: 'none',duration: 2000})
+				}
 			},
+		},
+
+		//小程序触底加载
+		onReachBottom:function(){
+			console.log("上拉触发 显示")
+			let that = this;
+			let Item = that.recommendList[that.listcurr];
+			Item.page += 1; 
+			that.GetGoodsList(Item.catId);
 		},
 		onLoad() {
 			let that = this

@@ -9,10 +9,18 @@ export default new Vuex.Store({
   },
   state:{
   	userInfo:{},
+    ExplosivesSaleObj:{},
+    goodDetail:{}
   },
   mutations:{
    storeUserInfo(state,userInfo){
    	state.userInfo=userInfo
+   },
+   storeExplosivesSaleObj(state,ExplosivesSaleObj){
+    state.ExplosivesSaleObj=ExplosivesSaleObj
+   },
+   storeGoodDetail(state,goodDetail){
+    state.goodDetail=goodDetail
    }
 }
 })

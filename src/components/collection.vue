@@ -1,6 +1,7 @@
 <template>
 	<div class="rec-product">
-		<div class="rec-product-li" v-for="(item,index) in recNearby" @click="jumpdetail">
+		<div  class="rec-product-warp" v-for="(item,index) in recNearby">
+		<div class="rec-product-li" >
 			<div class="left">
 				<img :src="item.thumbnail" />
 			</div>
@@ -20,10 +21,14 @@
 						</p>
 						<p>¥{{item.showPrice}}</p>
 					</div>
-					<div class="pic-right">200m</div>
+					<!-- <div class="pic-right">200m</div> -->
 				</div>
-
 			</div>
+		</div>
+		<div class="bar">
+               <div class="bar_left"><div class="bar_Img"><img src="/static/images/love1.png" /></div> <span>{{item.favorites}}人喜欢</span> </div>
+			   <div class="bar_right"><span @click="jumpdetail(item.goodId)">立即购买</span></div>
+		</div>
 		</div>
 	</div>
 </template>
@@ -41,9 +46,9 @@
 		},
 
 		methods: {
-			jumpdetail(){
+			jumpdetail(goodsId){
 			  wx.navigateTo({
-                 url:'../product-detail/main'			  	
+                url:'../product-detail/main?goodsId='+goodsId		  			  	
 			  })
 			}
 		},
@@ -51,17 +56,21 @@
 </script>
 
 <style scoped lang="less">
-	.rec-product {
-		padding: 0 12px 50px 12px;
-		box-sizing: border-box;
-		.rec-product-li {
-			background: #FFFFFF;
-			display: flex;
+.rec-product-warp{
+	background: #FFFFFF;
 			box-sizing: border-box;
 			padding: 8px 0 8px 8px;
 			box-shadow: 0 2px 4px 2px #f4f4f4;
 			border-radius: 4px;
 			margin-top: 4px;
+}
+	.rec-product {
+		padding: 0 12px 50px 12px;
+		box-sizing: border-box;
+		.rec-product-li {
+			
+			display: flex;
+            margin-bottom: 4px;
 			
 			.left {
 				width: 134px;
@@ -72,6 +81,7 @@
 			.right {
 				margin-left: 8px;
 				width: 186px;
+				border-bottom: 1px solid #f5f5f5;
 				.tit {
 					font-size: 14px;
 					color: #333333;
@@ -118,5 +128,14 @@
 				}
 			}
 		}
+	}
+	.bar{
+		
+		padding: 0 8px; display: flex;align-items: center;justify-content: space-between;
+		.bar_right span{display: inline-block;padding: 2px 15px;background: #ff4b27;color:#fff;border-radius: 15px;}
+	}
+	.bar_left{display:flex;align-items: center;
+		.bar_Img{width: 25px;height: 25px;}
+		.bar_Img{vertical-align:middle;}
 	}
 </style>

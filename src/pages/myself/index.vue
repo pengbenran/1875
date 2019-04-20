@@ -15,7 +15,7 @@
 		<div class="container-bottom">
 			<!--list-->
 			<div class="list">
-				<div class="list-li1" @click="listLi1"> 
+				<div class="list-li1" @click="jump('../poster/main')">
 					<div class="iconfont icon"> &#xe62d;</div>
 					<div class="name">邀请</div>
 				</div>
@@ -95,9 +95,7 @@
 				},
 			}
 		},
-		onLoad() {},
 		methods: {
-			listLi1() {},
 			listLi2() {
 				wx.navigateTo({
 					url: "../myself-red/main"
@@ -123,6 +121,16 @@
 					url: "../myself-income/main"
 				})
 			},
+			jump(url){
+				wx.navigateTo({
+					url:url
+				})
+			},
+			listLi4(){
+				wx.navigateTo({
+				   url:"../collection/main"
+				})			
+			}
 		}
 	}
 </script>

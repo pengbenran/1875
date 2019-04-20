@@ -31,18 +31,20 @@ fly.interceptors.response.use(
         } else if (err.status == 401) {
             return "用户未登录"
         } else {
-            if (err.response.data.message) {
-                return err.response.data.message
-            } else {
-                return '请求数据失败,请稍后再试'
-            }
+          if (err.response.data.message) {
+            return err.response.data.message
+          } else {
+            return '请求数据失败,请稍后再试'
+          }
         };
         // Do something with response error
     }
 )
 // let base='https://zhifenxiang.guqinet.com'
-   let base='http://192.168.0.114/1875'
-//let base='http://192.168.0.116/1875'
+let base='http://192.168.0.114/1875'
+
+   // let base='http://192.168.0.108/1875'
+
 export const GetCode=(url, params)=>{
    return fly.get(`${url}`,params).then(res => res.data)  
 }

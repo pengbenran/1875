@@ -16,13 +16,14 @@
 						<div class="img"><img :src="item.url" /></div>
 						<div class="cate-name">{{item.catName}}</div>
 						<recNearby :recNearby="item.showGoodDTO"></recNearby>
-						<div @tap="jumpgoodslist(index)" class="more">查看更多 > </div>
+						<div @tap="jumpgoodslist(index)" class="more" v-if="item.showGoodDTO.length==4">查看更多 > </div>
 					</div>
 				</div>
 			</swiper-item>
 			<!--人气-->
 			<swiper-item style="overflow: scroll;">
 				<!--catchtouchmove="stopSwiper"-->
+				<scroll-view scroll-y='true' style="height:100%" @scrolltolower='lowerMore'>
 				<div class="popularity-wp">
 					<div class="bg-img"><img :src="bcgImg" /></div>
 					<div class="tit">帮您挑选人气爆品</div>
@@ -39,6 +40,7 @@
 				<div class="popularity-li">
 					<recNearby :recNearby="showGoodDTOS"></recNearby>
 				</div>
+				</scroll-view>		
 			</swiper-item>
 		</swiper>
 	</div>
@@ -47,6 +49,7 @@
 <script>
 	import recNearby from '@/components/recNearby'
 	import Api from '@/api/kind'
+	import store from '@/store/store'
 	export default {
 		data() {
 			return {
@@ -60,6 +63,7 @@
 				popularityBanner: [],
 				ExplosivesSale: [],
 				showGoodDTOS: [],
+				hasMore:true
 			}
 		},
 
@@ -69,13 +73,16 @@
 		methods: {
 			jumpgoodslist(index) {
 				let that = this;
-				let cateName = that.cate[index].cateName
-				let titbg = that.cate[index].titbg
-				let listbg = that.cate[index].listbg
-				let detailImg = that.cate[index].detailImg
+				let ExplosivesSaleObj=that.ExplosivesSale[index]
+				store.commit("storeExplosivesSaleObj",ExplosivesSaleObj)
 				wx.navigateTo({
-					url: "../index-hot-more/main?cateName=" + cateName + '&titbg=' + titbg + '&detailImg=' + detailImg + '&listbg=' + listbg
+					url: '../index-hot-more/main'
 				})
+			},
+			lowerMore(){
+				let that = this;
+				that.popuPages+=1
+				that.getExplosivesPopularity()
 			},
 			getExplosivesSale(){
 				let params={}
@@ -90,13 +97,26 @@
 			getExplosivesPopularity(){
 				let params={}
 				let that=this
-				params.page=that.popuPages
-				params.limit=that.popuLimit
-				Api.getExplosivesPopularity(params).then(function(res){
-					that.popularityBanner=res.popularityBanner
-					that.showGoodDTOS=res.showGoodDTOS
-					// that.ExplosivesPopularity=res.ExplosivesSale
-				})
+				if(that.hasMore){
+					params.page=that.popuPages
+					params.limit=that.popuLimit
+					Api.getExplosivesPopularity(params).then(function(res){
+						console.log(res)
+						if(res.showGoodDTOS.length<that.popuLimit){
+							that.hasMore=false
+						}
+						that.popularityBanner=res.popularityBanner
+						that.showGoodDTOS=that.showGoodDTOS.concat(res.showGoodDTOS)
+					})
+				}
+				else{
+					wx.showToast({
+						title:'没有更多数据了',
+						icon:"none",
+						duration:1500
+					})
+				}
+				
 			},
 			//禁止滑动
 			stopTouchMove: function() {
@@ -131,7 +151,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		height: 36px;
+		height: 6vh;
 		position: fixed;
 		top: 0;
 		z-index: 99;
@@ -224,7 +244,4 @@
 		}
 	}
 	
-	.popularity-li {
-		padding-bottom: 50px;
-	}
 </style>
