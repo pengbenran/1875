@@ -12,6 +12,7 @@
 				<span>搜索</span>
 			</div>
 		</div>
+
 		<!--类目-->
 		<scroll-view :class="scrollTop>0?'posi':''" @scroll='catescroll' id="toplist" scroll-x style="width: 100%" class="recommend-list" :scroll-left="scrollLeft">
 			<div class="recommend-list-li" v-for="(item,index) in recommendList" @click="listTab(index,item.catId)" :class="listcurr==index?'list-on':''">
@@ -22,7 +23,6 @@
 		</scroll-view>
 
 		<swiper style="height:100vh" duration='350' :current="listcurr" @change="changeTab">
-			<!--1-->
 			<blockquote v-for="(item,index) in recommendList" :index='index' :key="item.catId">
 				<swiper-item style="overflow: scroll;">
 					<recTwo :recTwo='item.options'></recTwo>

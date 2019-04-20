@@ -2,14 +2,18 @@
 	<div class="container">
        <div class="top_Tap">
 		   <ul>
-			   <li><span>可使用</span></li>
-			   <li><span>已下架</span></li>
+			   <li v-for="(item,index) in TopList" :key="item"><span :class="listcurr == index ? 'List_on':''" @click="onClick(index)">{{item}}</span></li>
 		   </ul>
 	   </div>
 
-	   <div>
-           <recNearby :recNearby="GoodList"/>
-	   </div>
+	   	<swiper style="height:100vh" duration='350' :current="listcurr" @change="changeTab">
+				<swiper-item style="overflow: scroll;">
+					<recNearby :recNearby="GoodList"/>
+				</swiper-item>
+				<swiper-item style="overflow: scroll;">
+					<recNearby :recNearby="GoodList"/>
+				</swiper-item>
+		</swiper>
 	</div>
 </template>
 <script>
@@ -19,11 +23,13 @@
 	export default {
 		data() {
 			return {
+				TopList:['可使用','已下架'],
                	listQuery:{
 					page: 1,
 					limit: 10,
 				},
-				GoodList:[]
+				GoodList:[],
+				listcurr:0
 			}
 		},
 		components: {
@@ -49,6 +55,21 @@
 				   wx.showToast({title:'网络错误',icon:"none",duration:1500})
 			   })
 		   },
+
+
+		   //swiper选择事件
+           changeTab(e){
+			   let that = this;
+			   console.log("触发的时间",e)
+			   that.listcurr = e.mp.detail.current;
+		   },
+
+		   //top触发事件
+		   onClick(e){
+			   let that = this;
+			   that.listcurr = e;
+			   console.log("top触发事件",e)
+		   }
 		},
 
 		//小程序触底加载
@@ -63,10 +84,22 @@
 
 <style scoped lang="less">
 .container{background: #f8f8f8;min-height: 100vh;}
-.top_Tap{
-   background: #fff;
-   ul{display: flex;align-items: center;padding: 8px 0;}
-   li{text-align: center;width: 50%;}
+.top_Tap{background: #fff;margin-bottom: 8px;
+   ul{display: flex;align-items: center;}
+   li{text-align: center;width: 50%;line-height: 47px;}
 //    li span{}
+}
+
+.List_on{
+	transition:all 0.5s;
+	font-size:34rpx;
+	border-bottom:12rpx solid #ff6e6e;
+	font-weight:bold;
+	color:#333333;
+	display:inline-block;
+	height:60rpx;
+	border-radius:6rpx;
+	padding:0 4rpx;
+
 }
 </style>
