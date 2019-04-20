@@ -1,5 +1,6 @@
 {
 	"pages": [ 
+		"pages/myself/main",
 		"pages/index/main",
 		"pages/index-hot/main",
 		"pages/index-hot-more/main",
@@ -8,8 +9,10 @@
 		"pages/index-redpacket/main", 
 		"pages/classify/main",
 		"pages/equities/main",
-		"pages/myself/main",
+		
+	    "pages/myself-income/main",
 		"pages/myself-order/main",
+		"pages/myself-order-detail/main",
 		"pages/myself-team/main",
 		"pages/myself-like/main",
 		"pages/myself-red/main" ,
