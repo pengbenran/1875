@@ -206,7 +206,7 @@
 						params.paymentType=2
 					}
 					params.consumepoint=that.jf==''?0:that.jf
-					params.shopsId=that.goodDetail.shopId
+					params.shopId=that.goodDetail.shopId
 					params.goodsAmount=that.goodDetail.price
 					params.orderAmount=that.totalPrice
 					params.gainedpoint=that.goodDetail.buyIntegral
