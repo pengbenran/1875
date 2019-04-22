@@ -43,7 +43,7 @@
 		methods: {
 			jumpdetail(){
 			  wx.navigateTo({
-                 url:'../product-detail/main'			  	
+                 url:`../product-detail/main?goodsId=${goodsId}&codeUnionid=`			  	
 			  })
 			}
 		},

@@ -1,6 +1,9 @@
 <template>
 	<div class="container">
-		<div class="condition">待付款 00:29:59 后取消订单</div>
+		<div class="condition"  v-if="orderDetail.status==0">待付款</div>
+		<div class="condition" v-if="orderDetail.status==1">待核销</div>
+		<div class="condition"  v-if="orderDetail.status==2">已核销</div>
+		<div class="condition"  v-if="orderDetail.status==3">已取消</div>
 		<div class="total">
 						<!--订单详情-->
 			<div class="orderinfo">
@@ -8,7 +11,7 @@
                    <div class="ma">
                    	 <div class="ma-left">
                    	 	<span>订单编码 : </span>
-                   	 	<span>1234567891234</span>
+                   	 	<span>{{orderDetail.sn}}</span>
                    	 </div>
                    	 <div class="ma-right">复制</div>
                    </div>
@@ -17,37 +20,39 @@
                     <!--下单人-->
                     <div class="prnston">
                     	<div class="prnston-li">
-                    	    <span class="title">下单人 :</span>
-                    	    <span class="tex">熊世豪</span>
+                    	    <span class="title">下单人:{{orderDetail.buyName}}</span>
+                    	    <span class="tex">{{}}</span>
                     	</div>
                     	<div class="prnston-li">
                     	    <span class="title">获得积分 :</span>
-                    	    <span class="tex">20</span>
+                    	    <span class="tex">{{orderDetail.gainedpoint}}</span>
+                    	</div>
+                    	<div class="prnston-li">
+                    	    <span class="title">消费积分 :</span>
+                    	    <span class="tex">{{orderDetail.consumepoint}}</span>
                     	</div>
                     	<div class="prnston-li">
                     	    <span class="title">获得佣金 :</span>
-                    	    <span class="tex">12.59元</span>
+                    	    <span class="tex">{{orderDetail.recommend}}元</span>
                     	</div>
                     	<div class="prnston-li">
-                    		 <span class="title">创建时间 :</span>
-                    	     <span class="tex"> 2019-04-02  11:34:38</span>
+                    		 <span class="title">下单时间 :</span>
+                    	     <span class="tex"> {{orderDetail.createTime}}</span>
+                    	</div>
+                    	<div class="prnston-li">
+                    		 <span class="title">过期时间 :</span>
+                    	     <span class="tex"> {{orderDetail.orderInvalidTime}} </span>
                     	</div>
                     </div>
 			</div>
 			<!--商品信息-->
 			<div class="shopinfo">
 				<div class="top">
-					<div class="img"><img :src="option.img" /></div>
+					<div class="img"><img :src="orderDetail.goodThumbnail" /></div>
 					<div class="cant">
-						<div class="des">{{option.des}}</div>
-						<div class="add">
-							<span>{{option.adds}}</span>
-							<span>丨</span>
-							<span>{{option.add}}</span>
-						</div>
+						<div class="des">{{orderDetail.goodName}}</div>
 						<div class="pic">
-							<span>¥{{option.pic}}</span>
-							<span>¥{{option.oldpic}}</span>
+							<span>¥{{orderDetail.goodsAmount}}</span>
 						</div>
 					</div>
 				</div>
@@ -55,67 +60,60 @@
 					<!--商品数量-->
 					<div class="name0">
 						<span>商品数量</span>
-						<span>¥ 29.99</span>
+						<span>X {{orderDetail.goodsNum}}</span>
 					</div>
 					<!--商品总价：-->
 					<div class="name1">
 						<span>商品总价</span>
-						<span>¥ 29.99</span>
-					</div>
-					<!--签到红包：-->
-					<div class="name2">
-						<span>签到红包</span>
-						<span>¥ 29.99</span>
+						<span>¥ {{orderDetail.goodsAmount}}</span>
 					</div>
 					<!--会员折扣：-->
 					<div class="name3">
 						<span>会员折扣</span>
-						<span>¥ 29.99</span>
+						<span>{{orderDetail.discount*10}}折</span>
 					</div>
 					<!--积分抵扣：-->
 					<div class="name4">
                         <span>积分抵扣</span>
-						<span>¥ 29.99</span> 	
+						<span>¥ {{}}</span> 	
 					</div>
 					<!--佣金抵扣：-->
 					<div class="name5">
 						<span>佣金抵扣</span>
-						<span>¥ 29.99</span>
+						<span>¥ {{orderDetail.balance}}</span>
 					</div>
 					<!--订单总价：-->
 					<div class="name6">
 						<span>订单总价</span>
-						<span>¥ 29.99</span>
+						<span>¥ {{orderDetail.orderAmount}}</span>
 					</div>
 					<!--应付金额：-->
 					<div class="name7">
 						<span>应付金额</span>
-						<span>¥ 29.99</span>
+						<span>¥ {{orderDetail.paymoney}}</span>
 					</div>
 
 				</div>
 			</div>
 		</div>
 		<!--按钮-->
-		<div class="btns">
+		<div class="btns" v-if="orderDetail.status==0">
 			<div class="btn1">
-				{{txt.btn1}}
+				取消订单
 			</div>
 			<div class="btn2">
-				{{txt.btn2}}
+				立即付款
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+	import Api from "@/api/order"
 	export default {
 		data() {
 			return {
-				txt: {
-					btn1: "取消订单",
-					btn2: "立即付款",
-				},
+				orderDetail:{},
 				option: {
 					img: "/static/images/ku5p0efhhxr5.jpg",
 					des: "这是28px大小平方字体并且做了加粗处理行间距是42px哦了加粗处理行间距是42px哦",
@@ -126,9 +124,20 @@
 				}
 			}
 		},
-
+		mounted(){
+			let that=this
+			that.getOrderDetail()
+		},
 		methods: {
-
+			// 获取订单详情
+			getOrderDetail(){
+				let that=this
+				let params={}
+				params.orderId=39
+				Api.getOrderDetail(params).then(function(res){
+					that.orderDetail=res.orderEntity
+				})		
+			}
 		}
 	}
 </script>
