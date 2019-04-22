@@ -7,5 +7,10 @@ export default {
 	 // 微信支付
     prepay:params=>{
        return API.GET('/api/order/getPrepayId',params) 
-    }
+	 },
+	 
+	 //获取订单列表
+	 GetOrderList:params => {
+		 return API.GET('/api/order/selectOrderList',params)
+	 }
 }

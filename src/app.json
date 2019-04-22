@@ -1,8 +1,8 @@
 {
 	"pages":[ 
+		"pages/index/main",	
 		"pages/myself/main",
 		"pages/product-detail/main",
-		"pages/index/main",	
 		"pages/index-hot/main",
 		"pages/index-hot-more/main",
 		"pages/index-news/main",

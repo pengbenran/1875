@@ -139,24 +139,56 @@
 	</div>
 </template>
 <script>
+import API from '@/api/order'
+import store from '@/store/store'
 	export default {
 		data() {
 			return {
 				listcurr: 0,
+				UserInfo:{},
+				ListOrderData:[],
 				recommendList: [{
-						name: "全部"
+						name: "全部",
+						options:[],
+						page: 1,
+						limit: 10,
+						flag:true,
 					},
 					{
-						name: "待付款"
+						name: "待付款",
+						options:[],
+						page: 1,
+						limit: 10,
+						flag:true,
+						status:0,
+						expiredStatus:2
 					},
 					{
-						name: "待使用"
+						name: "待使用",
+						options:[],
+						page: 1,
+						limit: 10,
+						flag:true,
+						status:1,
+						expiredStatus:2
 					},
 					{
-						name: "已使用"
+						name: "已使用",
+						options:[],
+						page: 1,
+						limit: 10,
+						flag:true,
+						status:2,
+						expiredStatus:2
 					},
 					{
-						name: "已过期"
+						name: "已过期",
+						options:[],
+						page: 1,
+						limit: 10,
+						flag:true,
+						status:3,
+						expiredStatus:1
 					},
 				],
 				//待付款
@@ -216,11 +248,25 @@
 		onLoad() {
 			let that = this
 			//重置
-			that.listcurr = 0
+			that.listcurr = 0;
+			that.UserInfo = store.state.userInfo;
+			console.log("查看一下用户新潮",store.state.userInfo)
+			that.GetOrderListData(Object.assign({},{unionId:that.UserInfo.unionid},{page: 1,limit: 10}),0)
 		},
 		methods: {
 			listTab(e) {
+				let that= this;
 				this.listcurr = e
+				let data = {
+					unionId:that.UserInfo.unionId,
+					page:that.recommendList[e].page,
+					limit:that.recommendList[e].limit,
+					status:that.recommendList[e].status,
+					expiredStatus:that.recommendList[e].expiredStatus
+				}
+				if(that.recommendList[e].options.length < 1){
+				    that.GetOrderListData(data,e)
+				}
 			},
 			changeTab(e) {
 				let that = this
@@ -230,6 +276,20 @@
 				wx.navigateTo({
 					url: "../myself-order-detail/main"
 				})
+			},
+
+			//请求数据
+			GetOrderListData(data,index){
+				let that = this;
+					API.GetOrderList(data).then(res => {
+						if(res.code == 0){
+						   that.recommendList[index].options =that.recommendList[index].options.concat(res.orderList);
+						}else{
+						wx.showToast({title: '网络错误',icon: 'none',duration: 2000})							
+						}
+					}).catch(err => {
+						wx.showToast({title: '网络错误',icon: 'none',duration: 2000})
+					})
 			},
 		},
 	}
