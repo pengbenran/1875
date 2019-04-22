@@ -10,9 +10,51 @@
 		</div>
 		<swiper style="height:100vh" duration='350' :current="listcurr" @change="changeTab">
 			<!--全部-->
-			<swiper-item style="overflow: scroll;">
+			<blockquote v-for="(item,index) in recommendList" :key="item" :index='index'>
+				<swiper-item style="overflow: scroll;">
+					<div class="cates0" @click="jumpdetail">
+						<div class="cate-list" v-for="(child,cindex) in item.options">
+							<div class="top">
+								<div class="img"><img :src="child.goodThumbnail" /></div>
+								<div class="cant">
+									<div class="name">{{child.goodName}}</div>
+									<div class="add">
+										<span>{{child.balance}}</span>
+										<span>丨</span>
+										<span>{{child.paymentName}}</span>
+									</div>
+									<div class="pic">应付 : ¥{{child.goodsAmount}}</div>
+									<div class="xdday">下单时间 : {{child.createTime}}</div>
+								</div>
+							</div>
+							<div class="Warp">
+								<div class="condition" v-if="child.status == 0"><div class="condition-left"><span>{{child.condition}}</span><span>{{child.conditionday}}</span></div>
+									<div class="condition-right">
+										<span>取消</span>
+										<span>立即付款</span>
+									</div>
+								</div>
 
-			</swiper-item>
+								<div class="condition" v-if="child.status == 1">
+									<div class="condition-left"><span>{{child.condition}}</span><span>{{child.conditionday}}</span></div>
+									<div class="condition-right"><!--<span>取消</span>--><span>订单详情</span></div>
+								</div>
+
+								<div class="condition" v-if="child.status == 2">
+									<div class="condition-left"><span>{{child.condition}}</span><span>{{child.conditionday}}</span></div>
+									<div class="condition-right"><span>删除</span><span>订单详情</span></div>
+								</div>
+
+								<div class="condition"  v-if="child.status == 3">
+									<div class="condition-left"><span>{{child.condition}}</span><span>{{child.conditionday}}</span></div>
+									<div class="condition-right"><span>删除</span><span>订单详情</span></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</swiper-item>
+			</blockquote>
+
 			<!--待付款-->
 			<swiper-item style="overflow: scroll;">
 				<div class="cates0" @click="jumpdetail">
@@ -284,6 +326,7 @@ import store from '@/store/store'
 					API.GetOrderList(data).then(res => {
 						if(res.code == 0){
 						   that.recommendList[index].options =that.recommendList[index].options.concat(res.orderList);
+						   console.log("查看一下数据：",that.recommendList)
 						}else{
 						wx.showToast({title: '网络错误',icon: 'none',duration: 2000})							
 						}
