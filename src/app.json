@@ -1,12 +1,9 @@
 {
-<<<<<<< HEAD
-	"pages":[ 
-		"pages/index/main",	
-=======
+
 	"pages":[
 		"pages/index/main",
 	    "pages/myself-order-detail/main", 
->>>>>>> b65a9f8ec6eb4f46009bdc6797b0cb43c5600724
+
 		"pages/myself/main",
 		"pages/product-detail/main",
 		"pages/index-hot/main",
