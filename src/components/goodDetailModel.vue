@@ -206,7 +206,8 @@
 						params.paymentType=2
 					}
 					params.consumepoint=that.jf==''?0:that.jf
-					params.shopsId=that.goodDetail.shopId
+					params.pointDiscount=that.config.pointDeduction*that.jf
+					params.shopId=that.goodDetail.shopId
 					params.goodsAmount=that.goodDetail.price
 					params.orderAmount=that.totalPrice
 					params.gainedpoint=that.goodDetail.buyIntegral
@@ -216,7 +217,6 @@
                     // 如果是推荐师返佣金额为商品设定价格否则为0
 					params.recommend=that.userInfo.distributorStatus==1?that.goodDetail.commission:0
 					params.goodsId=that.goodDetail.goodId
-					params.thumbnail=that.goodDetail.thumbnail
 					params.buyName=that.userInfo.name
 					params.price=that.goodDetail.price
 					params.lineCommission=that.goodDetail.lineCommission

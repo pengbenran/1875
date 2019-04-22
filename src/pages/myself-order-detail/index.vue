@@ -15,17 +15,28 @@
                    	 </div>
                    	 <div class="ma-right">复制</div>
                    </div>
+                   <div class="ma">
+                   	 <div class="ma-left">
+                   	 	<span>店铺地址 : </span>
+                   	 	<span>{{orderDetail.address}}</span>
+                   	 </div>
+                   	 <div class="ma-right">导航</div>
+                   </div>
                     <div class="img"><img src="/static/images/ku5p0efhhxr5.jpg"/></div>
                     
                     <!--下单人-->
                     <div class="prnston">
                     	<div class="prnston-li">
-                    	    <span class="title">下单人:{{orderDetail.buyName}}</span>
-                    	    <span class="tex">{{}}</span>
+                    	    <span class="title">下单人:</span>
+                    	    <span class="tex">{{orderDetail.buyName}}</span>
                     	</div>
                     	<div class="prnston-li">
                     	    <span class="title">获得积分 :</span>
                     	    <span class="tex">{{orderDetail.gainedpoint}}</span>
+                    	</div>
+                    	<div class="prnston-li" v-if="">
+                    	    <span class="title">推荐师优惠 :</span>
+                    	    <span class="tex">{{orderDetail.recommend}}</span>
                     	</div>
                     	<div class="prnston-li">
                     	    <span class="title">消费积分 :</span>
@@ -51,8 +62,12 @@
 					<div class="img"><img :src="orderDetail.goodThumbnail" /></div>
 					<div class="cant">
 						<div class="des">{{orderDetail.goodName}}</div>
+						<div class="add">
+							<span>{{orderDetail.address}}</span>
+						</div>
 						<div class="pic">
 							<span>¥{{orderDetail.goodsAmount}}</span>
+							<span>¥{{orderDetail.showPrice}}</span>
 						</div>
 					</div>
 				</div>
@@ -90,7 +105,7 @@
 					<!--应付金额：-->
 					<div class="name7">
 						<span>应付金额</span>
-						<span>¥ {{orderDetail.paymoney}}</span>
+						<span>¥ {{orderDetail.orderAmount}}</span>
 					</div>
 
 				</div>
@@ -133,7 +148,7 @@
 			getOrderDetail(){
 				let that=this
 				let params={}
-				params.orderId=39
+				params.orderId=50
 				Api.getOrderDetail(params).then(function(res){
 					that.orderDetail=res.orderEntity
 				})		
@@ -180,8 +195,9 @@
 						border-radius: 4px;
 						margin-right: 8px;
 					}
-					.cant {
+				   .cant{
 						width: 217px;
+						height: 101px;
 						.des {
 							color: #1c1c1c;
 							font-size: 14px;
@@ -190,6 +206,7 @@
 							-webkit-line-clamp: 2;
 							overflow: hidden;
 							line-height: 21px;
+							height: 42px;
 						}
 						.add {
 							font-size: 12px;
@@ -262,6 +279,11 @@
 								color: #333333;
 								font-size: 22px;
 								margin-left: 15px;
+								display: -webkit-box;
+								-webkit-box-orient: vertical;
+								-webkit-line-clamp: 1;
+								overflow: hidden;
+								width: 200px;
 							}
 						}
 					}
