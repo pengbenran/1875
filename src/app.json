@@ -1,8 +1,9 @@
 {
-	"pages":[ 
+	"pages":[
+		"pages/index/main",
+	    "pages/myself-order-detail/main", 
 		"pages/myself/main",
 		"pages/product-detail/main",
-		"pages/index/main",	
 		"pages/index-hot/main",
 		"pages/index-hot-more/main",
 		"pages/index-news/main",
@@ -12,7 +13,6 @@
 		"pages/equities/main",	
 	    "pages/myself-income/main",
 		"pages/myself-order/main",
-		"pages/myself-order-detail/main",
 		"pages/myself-team/main",
 		"pages/myself-like/main",
 		"pages/myself-red/main" ,
