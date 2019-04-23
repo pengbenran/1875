@@ -245,6 +245,7 @@
 				}
 				API.CollectionShop(data).then(res =>{
 					if(res.code == 0) {
+						that.good.favorites += 1
 						that.good.isFavorite = 1
 						wx.showToast({title:'成功',icon:"success",duration:1500})
 					}else{
@@ -264,7 +265,10 @@
 				}
 				API.DeleteCollectionShop(data).then(res =>{
 					if(res.code == 0) {
+						console.log("获取商品的信息：",that.good)
+						that.good.favorites -= 1
 						that.good.isFavorite = 2
+						// that.good
 						wx.showToast({title:'成功',icon:"success",duration:1500})
 					}else{
 						wx.showToast({title:'网络错误',icon:"none",duration:1500})
