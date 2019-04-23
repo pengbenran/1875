@@ -15,6 +15,11 @@ export default {
 		 return API.GET('/api/order/selectOrderList',params)
 	 },
 
+	 //订单删除
+	 DeleteOrder:params => {
+       return API.PUT('/api/order/orderDele',params)
+	 },
+
 
      // 修改订单状态
     payOrder:params=>{
