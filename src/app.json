@@ -14,6 +14,7 @@
 		"pages/classify/main",
 		"pages/equities/main",	
 	    "pages/myself-income/main",
+	    "pages/myself-kt/main",
 		"pages/myself-order/main",
 		"pages/myself-team/main",
 		"pages/myself-like/main",
