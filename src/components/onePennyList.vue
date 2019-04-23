@@ -1,16 +1,14 @@
 <template>
 	<div class="rec-product">
-		<div class="rec-product-li" v-for="(item,index) in recNearby" @click="jumpdetail">
+		<div class="rec-product-li" v-for="(item,index) in onePennyData" @click="jumpdetail">
 			<div class="left">
 				<img :src="item.thumbnail" />
 			</div>
 			<div class="right">
 				<div class="tit">{{item.goodName}}</div>
-
-				<div class="address">
-					<span>{{item.address}}</span>
-					<span>丨</span>
-					<span>{{item.subway}}</span>
+				<div class="joinCount">
+					<span>222人正在参与</span>
+					<span>20m</span>
 				</div>
 				<div class="pic">
 					<div class="pic-left">
@@ -20,7 +18,7 @@
 						</p>
 						<p>¥{{item.showPrice}}</p>
 					</div>
-					<div class="pic-right">200m</div>
+					<div class="pic-right">去抢</div>
 				</div>
 
 			</div>
@@ -30,7 +28,7 @@
 
 <script>
 	export default {
-		props: ['recNearby'],
+		props: ['onePennyData'],
 		watch: {
            recNearby(val){
              
@@ -82,13 +80,21 @@
 					display: -webkit-box;
 					-webkit-line-clamp: 2;
 					-webkit-box-orient: vertical;
+					height: 42px;
 				}
-				.address {
-					color: #999999;
-					font-size: 12px;
-					padding: 17px 0;
+				.joinCount {
+					display: flex;
+					justify-content: space-between;
+					font-size: 14px;
+					height: 50px;
+					line-height:50px;
+					span{
+						color:#999999;
+						&:nth-child(1) {
+							color: #ff4b27;	
+						}
+					}
 				}
-			
 				.pic {
 					display: flex;
 					align-items: flex-end;
@@ -112,8 +118,14 @@
 						}
 					}
 					.pic-right{
-						color: #999999;
-					    font-size: 12px;
+						font-size: 14px;
+						color: #fff;
+						width: 70px;
+						height: 33px;
+						line-height:33px;
+						border-radius: 16.5px;
+						text-align: center;
+						background: #ff6666;
 					}
 				}
 			}

@@ -11,12 +11,12 @@
 					<span>丨</span>
 					<span>{{item.subway}}</span>
 				</div>
-				<div class="piced">¥{{item.price}}</div>
+				<div class="piced">¥{{item.showPrice}}</div>
 				<div class="pic">
 					<div class="pic-left">
 						<p>
 							<span class="rmb">¥</span>
-							<span>{{item.showPrice}}</span>
+							<span>{{item.price}}</span>
 						</p>
 					</div>
 					<div class="pic-right">{{item.showSales}}人购买</div>

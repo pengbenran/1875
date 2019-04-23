@@ -1,7 +1,8 @@
 {
-
 	"pages":[
 		"pages/index/main",
+		"pages/distribeApply/main",
+		"pages/onePennyGrab/main",
 	    "pages/myself-order-detail/main", 
 		"pages/myself/main",
 		"pages/product-detail/main",
