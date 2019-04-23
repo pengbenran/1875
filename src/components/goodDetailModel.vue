@@ -160,7 +160,24 @@
 			},
 			submit(){
 				let that=this
-				that.orderSave()
+				if(that.bonus>that.distribInfo.balance){
+					wx.showToast({
+						title: '余额不足',
+						icon: 'none',
+						duration: 2000
+					})
+				}
+				else if(that.jf>that.userInfo.point){
+					wx.showToast({
+						title: '积分不足',
+						icon: 'none',
+						duration: 2000
+					})
+				}
+				else{
+					that.orderSave()	
+				}
+				
 			},
 			orderSave(){
 				let that=this
@@ -170,7 +187,7 @@
 				let params={}
 				if(!that.isSubmit){
 					that.isSubmit=true
-					if(store.state.codeUnionid!=''&&store.state.goodsId==that.goodDetail.id){
+					if(store.state.codeUnionid!=''&&store.state.goodsId==that.goodDetail.goodId){
 						params.orderType=2
 						params.shareIntegration=that.goodDetail.shareIntegral
 						params.codeUnionid=''
@@ -189,18 +206,18 @@
 						params.paymentType=2
 					}
 					params.consumepoint=that.jf==''?0:that.jf
-					params.shopsId=that.goodDetail.shopId
+					params.pointDiscount=that.config.pointDeduction*that.jf
+					params.shopId=that.goodDetail.shopId
 					params.goodsAmount=that.goodDetail.price
 					params.orderAmount=that.totalPrice
 					params.gainedpoint=that.goodDetail.buyIntegral
 					params.discount=that.userInfo.discount
 					params.needPayMoney=that.totalPrice
 					params.balance=that.bonus==''?0:that.bonus
-                    
-					params.recommend=0
+                    // 如果是推荐师返佣金额为商品设定价格否则为0
+					params.recommend=that.userInfo.distributorStatus==1?that.goodDetail.commission:0
 					params.goodsId=that.goodDetail.goodId
-					params.thumbnail=that.goodDetail.thumbnail
-					params.goodName=that.goodDetail.goodName
+					params.buyName=that.userInfo.name
 					params.price=that.goodDetail.price
 					params.lineCommission=that.goodDetail.lineCommission
 					Api.orderSave(params).then(function(saveRes){
@@ -223,11 +240,11 @@
 	            params.payAmount=1
 	            Api.prepay(params).then(function(parRes){
 	            	wx.requestPayment({
-	            		timeStamp: parRes.timeStamp,
-	            		nonceStr: parRes.nonceStr,
-	            		package: parRes.package,
-	            		signType: parRes.signType, 
-	            		paySign: parRes.paySign,
+	            		timeStamp: parRes.Map.timeStamp,
+	            		nonceStr: parRes.Map.nonceStr,
+	            		package: parRes.Map.package,
+	            		signType: parRes.Map.signType, 
+	            		paySign: parRes.Map.paySign,
 	            		success: function (res) {
 	            			wx.showToast({
 	            				title: '支付成功',
@@ -238,6 +255,7 @@
 	            		},
 	            		fail: function (res) {
 		                        // fail
+		                        console.log('res',res);
 		                        wx.showToast({
 		                        	title: '支付失败',
 		                        	icon: 'success',
@@ -258,9 +276,9 @@
 	        	statuParam.orderId=that.order.orderId
 	        	let payOrder=await Api.payOrder(statuParam)
 	        	if(payOrder.code==0){
-	        		util.updateUserInfo()
+	        		utils.updateUserInfo()
 	        		wx.redirectTo({
-	        			url: '../order-detail/main?orderId='+that.order.orderId
+	        			url: '../myself-order-detail/main?orderId='+that.order.orderId
 	        		})
 	        	}
 	        }

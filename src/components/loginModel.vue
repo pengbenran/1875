@@ -31,7 +31,7 @@ export default {
        that.isSubmit=true
        wx.login({
         success: res => {
-
+        console.log("你好世界阿三大三大",12312)
            let code=res.code   
             // 发送 res.code 到后台换取 openId, sessionKey, unionId
             if (code) { 

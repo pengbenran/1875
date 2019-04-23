@@ -12,7 +12,9 @@ export default new Vuex.Store({
     ExplosivesSaleObj:{},
     goodDetail:{},
     distribInfo:{},
-    config:{}
+    config:{},
+    goodsId:'',
+    codeUnionid:'',
   },
   mutations:{
    storeUserInfo(state,userInfo){
@@ -29,6 +31,12 @@ export default new Vuex.Store({
    },
    storeConfig(state,config){
     state.config=config
-   }
+   },
+    storecodeUnionid(state,codeUnionid){
+    state.codeUnionid=codeUnionid
+   },
+    storegoodsid(state,goodsId){
+    state.goodsId=goodsId
+   },
 }
 })

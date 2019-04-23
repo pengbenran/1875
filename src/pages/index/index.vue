@@ -203,6 +203,7 @@
 			// 获取用户信息
 			async getUserInfo() {
 				let that = this
+				console.log("你好世界阿萨德啊")
 				await that.$refs.loginModel.userLogin()
  				wx.stopPullDownRefresh()
 			},

@@ -18,9 +18,5 @@ export default {
     // 获取喜欢商品的数据
     GetCollectionShop:params => {
         return API.GET('/api/good_favorite/favorite',params)
-    },
-    // 微信支付
-    prepay:params=>{
-       return API.GET('/api/order/getPrepayId',params) 
     }
 }

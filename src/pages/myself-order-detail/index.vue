@@ -1,6 +1,9 @@
 <template>
 	<div class="container">
-		<div class="condition">待付款 00:29:59 后取消订单</div>
+		<div class="condition"  v-if="orderDetail.status==0">待付款</div>
+		<div class="condition" v-if="orderDetail.status==1">待核销</div>
+		<div class="condition"  v-if="orderDetail.status==2">已核销</div>
+		<div class="condition"  v-if="orderDetail.status==3">已取消</div>
 		<div class="total">
 						<!--订单详情-->
 			<div class="orderinfo">
@@ -8,46 +11,63 @@
                    <div class="ma">
                    	 <div class="ma-left">
                    	 	<span>订单编码 : </span>
-                   	 	<span>1234567891234</span>
+                   	 	<span>{{orderDetail.sn}}</span>
                    	 </div>
-                   	 <div class="ma-right">复制</div>
+                   	 <div class="ma-right" @click='copy'>复制</div>
+                   </div>
+                   <div class="ma">
+                   	 <div class="ma-left">
+                   	 	<span>店铺地址 : </span>
+                   	 	<span>{{orderDetail.address}}</span>
+                   	 </div>
+                   	 <div class="ma-right" @click="openMap">导航</div>
                    </div>
                     <div class="img"><img src="/static/images/ku5p0efhhxr5.jpg"/></div>
                     
                     <!--下单人-->
                     <div class="prnston">
                     	<div class="prnston-li">
-                    	    <span class="title">下单人 :</span>
-                    	    <span class="tex">熊世豪</span>
+                    	    <span class="title">下单人:</span>
+                    	    <span class="tex">{{orderDetail.buyName}}</span>
                     	</div>
                     	<div class="prnston-li">
                     	    <span class="title">获得积分 :</span>
-                    	    <span class="tex">20</span>
+                    	    <span class="tex">{{orderDetail.gainedpoint}}</span>
+                    	</div>
+                    	<div class="prnston-li" v-if="">
+                    	    <span class="title">推荐师优惠 :</span>
+                    	    <span class="tex">{{orderDetail.recommend}}</span>
+                    	</div>
+                    	<div class="prnston-li">
+                    	    <span class="title">消费积分 :</span>
+                    	    <span class="tex">{{orderDetail.consumepoint}}</span>
                     	</div>
                     	<div class="prnston-li">
                     	    <span class="title">获得佣金 :</span>
-                    	    <span class="tex">12.59元</span>
+                    	    <span class="tex">{{orderDetail.recommend}}元</span>
                     	</div>
                     	<div class="prnston-li">
-                    		 <span class="title">创建时间 :</span>
-                    	     <span class="tex"> 2019-04-02  11:34:38</span>
+                    		 <span class="title">下单时间 :</span>
+                    	     <span class="tex"> {{orderDetail.createTime}}</span>
+                    	</div>
+                    	<div class="prnston-li">
+                    		 <span class="title">过期时间 :</span>
+                    	     <span class="tex"> {{orderDetail.orderInvalidTime}} </span>
                     	</div>
                     </div>
 			</div>
 			<!--商品信息-->
 			<div class="shopinfo">
 				<div class="top">
-					<div class="img"><img :src="option.img" /></div>
+					<div class="img"><img :src="orderDetail.goodThumbnail" /></div>
 					<div class="cant">
-						<div class="des">{{option.des}}</div>
+						<div class="des">{{orderDetail.goodName}}</div>
 						<div class="add">
-							<span>{{option.adds}}</span>
-							<span>丨</span>
-							<span>{{option.add}}</span>
+							<span>{{orderDetail.address}}</span>
 						</div>
 						<div class="pic">
-							<span>¥{{option.pic}}</span>
-							<span>¥{{option.oldpic}}</span>
+							<span>¥{{orderDetail.goodsAmount}}</span>
+							<span>¥{{orderDetail.showPrice}}</span>
 						</div>
 					</div>
 				</div>
@@ -55,80 +75,96 @@
 					<!--商品数量-->
 					<div class="name0">
 						<span>商品数量</span>
-						<span>¥ 29.99</span>
+						<span>X {{orderDetail.goodsNum}}</span>
 					</div>
 					<!--商品总价：-->
 					<div class="name1">
 						<span>商品总价</span>
-						<span>¥ 29.99</span>
-					</div>
-					<!--签到红包：-->
-					<div class="name2">
-						<span>签到红包</span>
-						<span>¥ 29.99</span>
+						<span>¥ {{orderDetail.goodsAmount}}</span>
 					</div>
 					<!--会员折扣：-->
 					<div class="name3">
 						<span>会员折扣</span>
-						<span>¥ 29.99</span>
+						<span>{{orderDetail.discount*10}}折</span>
 					</div>
 					<!--积分抵扣：-->
 					<div class="name4">
                         <span>积分抵扣</span>
-						<span>¥ 29.99</span> 	
+						<span>¥ {{}}</span> 	
 					</div>
 					<!--佣金抵扣：-->
 					<div class="name5">
 						<span>佣金抵扣</span>
-						<span>¥ 29.99</span>
+						<span>¥ {{orderDetail.balance}}</span>
 					</div>
 					<!--订单总价：-->
 					<div class="name6">
 						<span>订单总价</span>
-						<span>¥ 29.99</span>
+						<span>¥ {{orderDetail.orderAmount}}</span>
 					</div>
 					<!--应付金额：-->
 					<div class="name7">
 						<span>应付金额</span>
-						<span>¥ 29.99</span>
+						<span>¥ {{orderDetail.orderAmount}}</span>
 					</div>
 
 				</div>
 			</div>
 		</div>
 		<!--按钮-->
-		<div class="btns">
+		<div class="btns" v-if="orderDetail.status==0">
 			<div class="btn1">
-				{{txt.btn1}}
+				取消订单
 			</div>
 			<div class="btn2">
-				{{txt.btn2}}
+				立即付款
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+	import Api from "@/api/order"
 	export default {
 		data() {
 			return {
-				txt: {
-					btn1: "取消订单",
-					btn2: "立即付款",
-				},
-				option: {
-					img: "/static/images/ku5p0efhhxr5.jpg",
-					des: "这是28px大小平方字体并且做了加粗处理行间距是42px哦了加粗处理行间距是42px哦",
-					adds: "青山湖区 ",
-					add: "一二三四五六七八九十",
-					pic: "39.9",
-					oldpic: "89.9",
-				}
+				orderDetail:{},
 			}
 		},
-
+		mounted(){
+			let that=this
+			let orderId = that.$root.$mp.query.orderId;
+			that.getOrderDetail(orderId)
+		},
 		methods: {
+			// 获取订单详情
+			getOrderDetail(orderId){
+				let that=this
+				let params={}
+				params.orderId=orderId
+				Api.getOrderDetail(params).then(function(res){
+					that.orderDetail=res.orderEntity
+				})		
+			},
+			copy(){
+				let that=this
+				wx.setClipboardData({
+					data:that.orderDetail.sn,
+					success: function(res) {
 
+					}
+				})
+			},
+			openMap(){
+				let that=this
+				let latitude=that.orderDetail.latitude*1
+				let longitude=that.orderDetail.longitude*1
+				wx.openLocation({
+					latitude,
+					longitude,
+					scale: 18
+				})
+			}
 		}
 	}
 </script>
@@ -171,8 +207,9 @@
 						border-radius: 4px;
 						margin-right: 8px;
 					}
-					.cant {
+				   .cant{
 						width: 217px;
+						height: 101px;
 						.des {
 							color: #1c1c1c;
 							font-size: 14px;
@@ -181,6 +218,7 @@
 							-webkit-line-clamp: 2;
 							overflow: hidden;
 							line-height: 21px;
+							height: 42px;
 						}
 						.add {
 							font-size: 12px;
@@ -253,6 +291,11 @@
 								color: #333333;
 								font-size: 22px;
 								margin-left: 15px;
+								display: -webkit-box;
+								-webkit-box-orient: vertical;
+								-webkit-line-clamp: 1;
+								overflow: hidden;
+								width: 200px;
 							}
 						}
 					}

@@ -80,6 +80,7 @@
 
 		<!--购买弹窗-->
 		<goodDetailModel ref="goodModel"></goodDetailModel>
+		<loginModel ref="loginModel"></loginModel>
 	</div>
 </template>
 
@@ -89,6 +90,7 @@
     import goodDetailModel from '@/components/goodDetailModel'
     import wxParse from 'mpvue-wxparse'
     import goodPoster from '@/components/goodPoster'
+    import loginModel from "@/components/loginModel";
 	export default {
 		data() {
 			return {
@@ -105,20 +107,30 @@
 		mounted(){
 			let that=this
 			that.goodId = that.$root.$mp.query.goodsId;
-			that.userInfo=store.state.userInfo
-			let data = {
-					goodId:that.goodId,
-					memberId:that.userInfo.memberId,
-				}; 
 			that.$refs.goodPoster.closeClick()
-			this.GetGoodsInfo(data)
+			if(that.$root.$mp.query.codeUnionid!=''){
+				that.getUserInfo()
+			}
+			else{
+				that.userInfo = store.state.userInfo
+				that.GetGoodsInfo()
+			}
+
 		},
 		components: {
 			goodDetailModel,
 			wxParse,
-			goodPoster
+			goodPoster,
+			loginModel
 		},
 		methods: {
+			// 获取会员信息
+			async getUserInfo(){
+				let that=this
+				store.commit("storecodeUnionid",that.$root.$mp.query.codeUnionid)
+				store.commit("storegoodsid",that.$root.$mp.query.goodsId)
+				await that.$refs.loginModel.userLogin()
+			},
 			drawPoster(){
 				let that=this
 				that.$refs.goodPoster.getErCode(38)
@@ -196,8 +208,12 @@
 				})
 			},
 			//获取商品详情
-			GetGoodsInfo(data){
+			GetGoodsInfo(){
 				let that = this;
+				let data = {
+					goodId:that.goodId,
+					memberId:that.userInfo.memberId,
+				}; 
 				API.GetGoodDetail(data).then(res => {
 					if(res.code==0){
 						res.good.banner=res.good.images.split(',')
@@ -229,6 +245,7 @@
 				}
 				API.CollectionShop(data).then(res =>{
 					if(res.code == 0) {
+						that.good.favorites += 1
 						that.good.isFavorite = 1
 						wx.showToast({title:'成功',icon:"success",duration:1500})
 					}else{
@@ -248,7 +265,10 @@
 				}
 				API.DeleteCollectionShop(data).then(res =>{
 					if(res.code == 0) {
+						console.log("获取商品的信息：",that.good)
+						that.good.favorites -= 1
 						that.good.isFavorite = 2
+						// that.good
 						wx.showToast({title:'成功',icon:"success",duration:1500})
 					}else{
 						wx.showToast({title:'网络错误',icon:"none",duration:1500})
