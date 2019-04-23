@@ -3,7 +3,6 @@
 	"pages":[
 		"pages/index/main",
 	    "pages/myself-order-detail/main", 
-
 		"pages/myself/main",
 		"pages/product-detail/main",
 		"pages/index-hot/main",
@@ -48,10 +47,10 @@
 				"selectedIconPath": "/static/images/classifyselect.png",
 				"text": "分类"
 			}, {
-				"pagePath": "pages/equities/main",
-				"iconPath": "/static/images/equities.png",
-				"selectedIconPath": "/static/images/equitiesselect.png",
-				"text": "权益"
+				"pagePath": "pages/myself-order/main",
+				"iconPath": "/static/images/order.png",
+				"selectedIconPath": "/static/images/orderselect.png",
+				"text": "订单"
 			}, {
 				"pagePath": "pages/myself/main",
 				"iconPath": "/static/images/myself.png",

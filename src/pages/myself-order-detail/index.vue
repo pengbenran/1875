@@ -13,14 +13,14 @@
                    	 	<span>订单编码 : </span>
                    	 	<span>{{orderDetail.sn}}</span>
                    	 </div>
-                   	 <div class="ma-right">复制</div>
+                   	 <div class="ma-right" @click='copy'>复制</div>
                    </div>
                    <div class="ma">
                    	 <div class="ma-left">
                    	 	<span>店铺地址 : </span>
                    	 	<span>{{orderDetail.address}}</span>
                    	 </div>
-                   	 <div class="ma-right">导航</div>
+                   	 <div class="ma-right" @click="openMap">导航</div>
                    </div>
                     <div class="img"><img src="/static/images/ku5p0efhhxr5.jpg"/></div>
                     
@@ -129,29 +129,41 @@
 		data() {
 			return {
 				orderDetail:{},
-				option: {
-					img: "/static/images/ku5p0efhhxr5.jpg",
-					des: "这是28px大小平方字体并且做了加粗处理行间距是42px哦了加粗处理行间距是42px哦",
-					adds: "青山湖区 ",
-					add: "一二三四五六七八九十",
-					pic: "39.9",
-					oldpic: "89.9",
-				}
 			}
 		},
 		mounted(){
 			let that=this
-			that.getOrderDetail()
+			let orderId = that.$root.$mp.query.orderId;
+			that.getOrderDetail(orderId)
 		},
 		methods: {
 			// 获取订单详情
-			getOrderDetail(){
+			getOrderDetail(orderId){
 				let that=this
 				let params={}
-				params.orderId=50
+				params.orderId=orderId
 				Api.getOrderDetail(params).then(function(res){
 					that.orderDetail=res.orderEntity
 				})		
+			},
+			copy(){
+				let that=this
+				wx.setClipboardData({
+					data:that.orderDetail.sn,
+					success: function(res) {
+
+					}
+				})
+			},
+			openMap(){
+				let that=this
+				let latitude=that.orderDetail.latitude*1
+				let longitude=that.orderDetail.longitude*1
+				wx.openLocation({
+					latitude,
+					longitude,
+					scale: 18
+				})
 			}
 		}
 	}

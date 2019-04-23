@@ -2,9 +2,9 @@
 	<div class="container">
 		<!--用户信息-->
 		<div class="userinfo">
-			<div class="img"><img :src="userinfo.img" /></div>
-			<div class="name">{{userinfo.name}}</div>
-			<div class="id">圈号: {{userinfo.id}}</div>
+			<div class="img"><img :src="userInfo.face" /></div>
+			<div class="name">{{userInfo.name}}</div>
+			<div class="id">圈号: {{userInfo.memberId}}</div>
 			<div class="vip">
 				<div class="vip-img" v-if="vip==1"><img src="/static/images/VIP1.gif"/></div>
 				<div class="vip-img" v-if="vip==2"><img src="/static/images/VIP2.gif"/></div>
@@ -22,10 +22,6 @@
 				<div class="list-li2" @click="listLi2">
 					<div class="iconfont icon">&#xe629;</div>
 					<div class="name">红包 ({{num}})</div>
-				</div>
-				<div class="list-li3" @click="listLi3">
-					<div class="iconfont icon">&#xe627;</div>
-					<div class="name">订单 ({{num}})</div>
 				</div>
 				<div class="list-li4" @click="listLi4">
 					<div class="iconfont icon">&#xe626;</div> 
@@ -55,7 +51,7 @@
 							<span>累计积分</span>
 						</div>
 						<div class="num">
-							<span>100</span>
+							<span>{{userInfo.point}}</span>
 							<span>可用积分</span>
 						</div>
 					</div>
@@ -63,12 +59,14 @@
 					<div class="xian"></div>
 					<div class="integral-right">
 						<div class="num">
-							<span>300</span>
+							<span v-if='userInfo.distributorStatus==1'>{{distribInfo.balance}}</span>
+							<span v-else>{{distribInfo.balance}}</span>
 							<span>累计奖金</span>
 						</div>
 						<div class="num">
-							<span>100</span>
-							<span>可提积分</span>
+							<span v-if='userInfo.distributorStatus==1'>{{distribInfo.balance}}</span>
+							<span v-else>{{distribInfo.balance}}</span>
+							<span>可提现奖金</span>
 						</div>
 					</div>
 				</div>
@@ -83,16 +81,21 @@
 </template>
 
 <script>
+	import store from '@/store/store'
 	export default {
 		data() {
 			return {
 				vip:1,
 				num: 99,
-				userinfo: {
-					img: '/static/images/list.jpg',
-					name: '小可爱',
-					id: 1234,
-				},
+				userInfo:{},
+				distribInfo:{}
+			}
+		},
+		mounted(){
+			let that=this
+			that.userInfo=store.state.userInfo
+			if(that.userInfo.distributorStatus==1){
+				that.distribInfo=store.state.distribInfo
 			}
 		},
 		methods: {
