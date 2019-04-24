@@ -27,10 +27,9 @@
 			<div class="right">
 				<span>可提奖金（元）</span>
 				<span>{{distribInfo.balance}}</span>
-				<span>去提现</span>
+				<span @click="jumptx">去提现</span>
 			</div>
 		</div>
-		
 		<!--收支-->
 		<div class="expenditure">
 			<div class="expenditure-tit">
@@ -326,6 +325,11 @@
 						hasMore:true
 					}
 				]
+			},
+			jumptx(){
+				wx.navigateTo({
+				   url:"../myself-tx/main"
+				})			
 			}
 
 		},

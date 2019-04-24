@@ -2,6 +2,7 @@
 	<div class="container">
 		<swiper vertical style='height: 100vh;'>
 			<swiper-item style='height: 100vh; background: #262d7b;'>
+				<!--vip-->
 				<div class="equities">
 					<div class="tit">VIP等级及权益</div>
 					<div class="text">通过购买商品、邀请好友、分享商品可以获取更多积分进行等级升级。</div>
@@ -10,16 +11,31 @@
 						<div class="progress">
 							<progress :percent="vip1Length"  color="#b275e8" backgroundColor="#634ba5"/>
 						</div>
-						<div class="vip2"><img :src="vip.vip2"/></div>
+						<div class="vip2"><img :src="vipon.vip2"/></div>
 						<div class="progress">
 							<progress :percent="vip2Length" color="#b275e8" backgroundColor="#634ba5"/>
 						</div>
-						<div class="vip1"><img :src="vip.vip3"/></div>
+						<div class="vip3"><img :src="vipon.vip3"/></div>
 					</div>
-				</div>				
+				</div>			
+				<!--分享师-->
 				<div class="equities1">
-					
+					<div class="tit">分享师等级及权益</div>
+					<div class="text">开通分享师身份后，购买商品可以优惠，邀请好友、分享商品可获得奖金并升级。</div>
+					<div class="tatil">
+						<div class="vip1"><img :src="shareon.vip1"/></div>
+						<div class="progress">
+							<progress :percent="vip1Length"  color="#ced1e5" backgroundColor="#71749b"/>
+						</div>
+						<div class="vip2"><img :src="shareon.vip2"/></div>
+						<div class="progress">
+							<progress :percent="vip2Length" color="#ced1e5" backgroundColor="#71749b"/>
+						</div>
+						<div class="vip3"><img :src="shareon.vip3"/></div>
+					</div>
 				</div>
+				
+				<div class="btn">{{kttit}}</div>
 			</swiper-item>
 		</swiper>
 	</div>
@@ -29,19 +45,38 @@
 	export default {
 		data() {
 			return {
-				vip1Length:20,
-				vip2Length:20,
+				kttit:"开通分享师",
+//				vip
+				vip1Length:20,  //进度条长度
+				vip2Length:20,  //进度条长度
+				//点亮前
 				vipon:{
 					vip1:"/static/images/VIP1-on.png",
 					vip2:"/static/images/VIP2-on.png",
 					vip3:"/static/images/VIP3-on.png"
 				},
+				//点亮后
 				vip:{
 					vip1:"/static/images/VIP1.gif",
 					vip2:"/static/images/VIP2.gif",
 					vip3:"/static/images/VIP3.gif"
 				},
+				vip1Length:20,  //进度条长度
+				vip2Length:20,  //进度条长度
 				
+				//分享师
+				//点亮前
+				shareon:{
+					vip1:"/static/images/share1-on.png",
+					vip2:"/static/images/share2-on.png",
+					vip3:"/static/images/share3-on.png"
+				},
+				//点亮后
+				share:{
+					vip1:"/static/images/share1.gif",
+					vip2:"/static/images/share2.gif",
+					vip3:"/static/images/share3.gif"
+				},
 			}
 		}, 
 
@@ -53,13 +88,46 @@
 <style scoped lang="less">
 .container{
 	background: #262d7b;	
-	.equities{
-		
+	.equities,.equities1{
+	 padding: 0 20px;
 		.tit{
-		padding: 0 20px;	          
+  		      font-size: 25px;
+  		      color: #e5e8ff; 
+  		      margin-top: 30px;
 		}
-		.text{}
-		.tatil{}
+		.text{
+			font-size: 14px;
+			color: #ccd0ff;
+			width: 252px;
+			line-height: 24px;
+			margin-top: 20px;
+		}
+		.tatil{
+			display: flex;
+			align-items: center;
+			margin-top: 40px;
+			.vip1,.vip2,.vip3{
+				width: 74px;
+				height: 27px;
+			}
+			.progress{
+				flex-grow: 1;
+			}
+		}
+	}
+	.equities1{
+		 margin-top: 76px;
+	}
+	.btn{
+		width: 160px;
+		height: 33px;
+		line-height: 33px;
+		border-radius: 16.5px;
+		background: #26acff;
+		text-align: center;
+		color: #f9f9f9;
+		font-size: 14px;
+		margin: 52px auto;
 	}
 }
 </style>
