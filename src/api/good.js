@@ -18,5 +18,10 @@ export default {
     // 获取喜欢商品的数据
     GetCollectionShop:params => {
         return API.GET('/api/good_favorite/favorite',params)
-    }
+    },
+
+    //获取热门搜索
+	getHotSearTag(params){
+		return API.GET('/api/good/hot_search',params)
+	}
 }

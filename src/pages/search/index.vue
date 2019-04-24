@@ -10,17 +10,18 @@
 					<div class="submit" @click="SearchClick()">搜索</div>
 				</div>
 			</div>
-            <div class="More" v-if="!NoMores">我也是有极限的~~~~~</div>
+           
 		</form>
 			<blockquote v-if="GoodsList.length > 0">
 				<recTwo :recTwo='GoodsList'/>
+				 <div class="More" v-if="!NoMores">我也是有极限的~~~~~</div>
 			</blockquote>
             <blockquote v-else>
 				<div class="lists">
 					<div class="list">
 						<div class="tit">热门搜索</div>
 						<div class="list-wp">
-							<div class="list-li" v-for="(item,index) in list">
+							<div class="list-li" v-for="(item,index) in tagLits" @click="GetSearckClick(item.name)">
 								<span hover="true" hover-class="detail-hover">{{item.name}}</span>
 							</div>
 						</div>
@@ -30,7 +31,7 @@
 					<div class="list">
 						<div class="tit">最近搜索</div>
 						<div class="list-wp">
-							<div class="list-li" v-for="(item,index) in Searchinput">
+							<div class="list-li" v-for="(item,index) in Searchinput"  @click="GetSearckClick(item.name)">
 								<span hover="true" hover-class="detail-hover">{{item}}</span>
 							</div>
 						</div>
@@ -45,14 +46,15 @@
 </template>
 <script>   
 	import API from '@/api/kind'
+	import API_g from '@/api/good'
     import Lib from '@/utils/Lib'
-    
 	import recTwo from '@/components/recTwo'
 	export default {
 		props: ['istoggle','hide'],
 		components:{recTwo},
 		data() {
 			return {
+				tagLits:[],
 				list: [{
 						name: "火锅火锅"
 					},
@@ -78,12 +80,12 @@
 			}
 		},
 		mounted(){
-			console.log("打印一下数据的长度",this.GoodsList.length)
 			if(wx.getStorageSync("SearchData")){
                 this.Searchinput = wx.getStorageSync("SearchData")
 			}else{
 				wx.setStorageSync('SearchData',[])
 			}
+			this.GetHotSearchData();
 		},
 		methods: {
 			SearchClick(){
@@ -100,9 +102,8 @@
 				let that = this;
 				if(that.NoMores){
 					API.getGoodsList(that.listQuery).then(res =>{
-						console.log("你好世界",res)
 						if(res.code == 0){
-							that.GoodsList = that.GoodsList.concat(res.page.rows);
+							res.page.rows.length > 0 ? that.GoodsList = that.GoodsList.concat(res.page.rows):Lib.ShowToast('没有更多数据','none')	
 							if(res.page.rows.length < that.listQuery.limit){
 								that.NoMores = false
 							}
@@ -113,6 +114,27 @@
 				}else{
                     Lib.ShowToast('没有更多数据！','none')
 				}
+			},
+
+			//点击搜索
+			GetSearckClick(val){
+				let that = this;
+				that.listQuery.searchParam = val;
+				that.GetSearchData()
+			},
+
+			//获取热门搜索
+			GetHotSearchData(){
+				let that = this;
+				API_g.getHotSearTag().then(res => {
+					if(res.code == 0){
+						that.tagLits = res.searchs
+					}else{
+						Lib.ShowToast('失败','none')						
+					}
+				}).catch(err => {
+						Lib.ShowToast('失败','none')	
+				})
 			},
 		}
 	}
