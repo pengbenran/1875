@@ -8,9 +8,9 @@
 				<div class="tit">{{item.goodName}}</div>
 
 				<div class="address">
-					<span>{{item.address}}</span>
+					<span>{{item.shopName}}</span>
 					<span>丨</span>
-					<span>{{item.subway}}</span>
+					<span>{{item.region}}</span>
 				</div>
 				<div class="pic">
 					<div class="pic-left">
@@ -84,7 +84,8 @@
 					-webkit-box-orient: vertical;
 				}
 				.address {
-					color: #999999;
+					padding: 0 4px;
+					color: #ff4b27;
 					font-size: 12px;
 					padding: 17px 0;
 				}

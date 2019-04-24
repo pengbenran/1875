@@ -7,9 +7,9 @@
 			<div class="bottom">
 				<div class="tit fontHidden">{{item.goodName}}</div>
 				<div class="address">
-					<span>{{item.address}}</span>
+					<span>{{item.shopName}}</span>
 					<span>丨</span>
-					<span>{{item.subway}}</span>
+					<span>{{item.region}}</span>
 				</div>
 				<div class="piced">¥{{item.price}}</div>
 				<div class="pic">
@@ -80,7 +80,8 @@
 				.address {
 					border:1px solid #ff4b27;
 					border-radius: 4px;
-					color: #999999;
+					padding: 0 4px;
+					color: #ff4b27;
 					font-size: 11px;
 					overflow: hidden;
 					text-overflow: ellipsis;
