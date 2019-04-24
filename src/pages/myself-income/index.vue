@@ -14,19 +14,19 @@
 		</div>
 		<!--奖金-->
 		<!--未开通-->
-		<div class="ojjin">
+		<div class="ojjin" v-if="userInfo.distributorStatus==2">
 			<div class="tit">开通分享师身份可赚取奖金噢~</div>
 			<div class="kt" @click="jumpkt">去开通</div>
 		</div>
 		<!--已开通-->
-		<div class="jjin" v-if='false'>
+		<div class="jjin" v-else>
 			<div class="left">
 				<span>累计奖金（元）</span>
 				<span>300</span>
 			</div>
 			<div class="right">
 				<span>可提奖金（元）</span>
-				<span>100</span>
+				<span>{{distribInfo.balance}}</span>
 				<span>去提现</span>
 			</div>
 		</div>
@@ -49,96 +49,155 @@
 				<div class="btn" @click="btnfalse">取消</div>
 			</div>
 			
-			<div class="list-lis">
+			<div class="list-lis"> 
 				<!--奖金收入-->
-				<div  class="list-li1">
+				<blockquote v-for="(item,index) in distributorLogData" :key="item.distributorLogId" :index="index" v-if="!isPoint">
+				<!-- 分享师佣金 -->
+				<div  class="list-li1" v-if="item.type==1">
 					<div class="left">
-						<div class="img"><img src="/static/images/list.jpg" /></div>
+						<div class="img"><img :src="item.face" /></div>
 					</div>
 					<div class="right">
 						<div class="cant"> 
-							<span>小明同学- 被成功邀请</span>
-							<span>12月29日12:30</span>
+							<span>购买商品-分享师佣金</span>
+							<span>{{item.addTime}}</span>
 						</div>
-						<div class="pic">+20.00元</div>
+						<div class="pic">+{{item.amount}}元</div>
 					</div>
 				</div>
-
-				<!--奖金支出-->
-				<div   class="list-li2">
+				<!-- 上下线佣金 -->
+				<div  class="list-li1" v-if="item.type==2">
 					<div class="left">
-						<div class="img iconfont">&#xe630;</div>
+						<div class="img"><img :src="item.face" /></div>
 					</div>
 					<div class="right">
-						<div class="cant">
-							<span>提现到微信钱包</span>
-							<span>12月29日12:30</span>
+						<div class="cant"> 
+							<span>购买商品-上下线佣金</span>
+							<span>{{item.addTime}}</span>
 						</div>
-						<div class="pic">-20.00元</div>
+						<div class="pic">+{{item.amount}}元</div>
 					</div>
 				</div>
-
-				<!--积分收入-->
-				<div  class="list-li3"> 
-					<div class="left">
-						<div class="img"><img src="/static/images/list.jpg" /></div>
-					</div>
-					<div class="right">
-						<div class="cant">
-							<span>小明同学- 被成功邀请</span>
-							<span>12月29日12:30</span>
-						</div>
-						<div class="pic">+20.00</div>
-					</div>
-				</div>
-
-				<!--积分支出-->
-				<div  class="list-li4">
+				<!-- 购买商品抵扣 -->
+				<div  class="list-li2" v-if="item.type==3">
 					<div class="left">
 						<div class="img iconfont">&#xe62f;</div>
 					</div>
 					<div class="right">
 						<div class="cant">
-							<span>提现到微信钱包</span>
-							<span>12月29日12:30</span>
+							<span>购买商品抵扣</span>
+							<span>{{item.addTime}}</span>
 						</div>
-						<div class="pic">-20.00</div>
+						<div class="pic">-{{item.amount}}元</div>
 					</div>
 				</div>
+				<!--奖金提现支出-->
+				<div class="list-li2" v-if="item.type==4">
+					<div class="left">
+						<div class="img iconfont">&#xe630;</div>
+					</div>
+					<div class="right">
+						<div class="cant">
+							<span>提现到银行卡</span>
+							<span>{{item.addTime}}</span>
+						</div>
+						<div class="pic">-{{item.amount}}元</div>
+					</div>
+				</div>
+				</blockquote>
+				<!--积分收入-->
+				<blockquote v-for="(item,index) in pointLogEntities" :key="item.pointLogId" :index="index" v-if="isPoint">	
+					<div  class="list-li4" v-if="item.type==3">
+						<div class="left">
+							<div class="img iconfont">&#xe62f;</div>
+						</div>
+						<div class="right">
+							<div class="cant">
+								<span>购买商品抵扣积分</span>
+								<span>{{item.addTime}}</span>
+							</div>
+							<div class="pic">-{{item.point}}</div>
+						</div>
+					</div>
+					<div  class="list-li3" v-else> 
+						<div class="left">
+							<div class="img"><img :src="item.face" /></div>
+						</div>
+						<div class="right">
+							<div class="cant">
+								<span>{{item.name}}-购买商品获得积分</span>
+								<span>{{item.addTime}}</span>
+							</div>
+							<div class="pic">+{{item.point}}</div>
+						</div>
+					</div>
+					<!--积分支出-->
+				</blockquote>
+				
+				
 			</div>
 
 		</div>
 	</div>
 </template>
 <script>
+	import store from '@/store/store'
+	import Api from '@/api/distribe'
 	export default {
 		data() {
 			return {
 				isPop: false,
 				curr: 3,
+				userInfo:{},
+				distribInfo:{},
 				expenditure: [{
-						name: "全部奖金"
+						name: "全部奖金",
+						page:1,
+						limit:10,
+						hasMore:true
 					},
 					{
-						name: "奖金收入"
+						name: "奖金收入",
+						page:1,
+						limit:10,
+						hasMore:true
 					},
 					{
-						name: "奖金支出"
+						name: "奖金支出",
+						page:1,
+						limit:10,
+						hasMore:true
 					},
 					{
-						name: "全部积分"
+						name: "全部积分",
+						page:1,
+						limit:10,
+						hasMore:true
 					},
 					{
-						name: "积分收入"
+						name: "积分收入",
+						page:1,
+						limit:10,
+						hasMore:true
 					},
 					{
-						name: "积分支出"
+						name: "积分支出",
+						page:1,
+						limit:10,
+						hasMore:true
 					}
 				],
 				tit: "全部积分",
+				distributorLogData:[],
+				pointLogEntities:[]
 			}
 		},
-
+        computed:{
+        	isPoint(){
+        		let that=this
+        		return that.tit.indexOf('积分')!=-1
+        	}
+        },
 		methods: {
 			btntrue() {
 				this.isPop = true
@@ -151,20 +210,149 @@
 				that.curr = index
 				that.isPop = false
 				that.tit = that.expenditure[index].name
-				console.log(that.tit)
+				that.distributorLogData=[]
+				that.pointLogEntities=[]
+				if(that.tit.indexOf("奖金")!=-1){
+					that.distributorLog()
+				}
+				else if(that.tit.indexOf("积分")!=-1){
+					that.poinLog()
+				}
 			},
 			jumpkt(){
 				wx.navigateTo({
 				   url:"../myself-kt/main"
 				})			
+			},
+			// 获取所有奖金明细
+			distributorLog(){
+				let that=this
+				let params={}
+				let expenditureItem=that.expenditure[that.curr]
+				if(that.tit=="全部奖金"){
+					params.page=expenditureItem.page
+					params.limit=expenditureItem.limit
+				}
+				else if(that.tit=='奖金支出'){
+					params.page=expenditureItem.page
+					params.limit=expenditureItem.limit
+					params.consumeBalance=1
+				}
+				else if(that.tit=="奖金收入"){
+					params.page=expenditureItem.page
+					params.limit=expenditureItem.limit
+					params.gainBalance=1
+				}
+				params.distributorId=that.distribInfo.distributorId
+				Api.distributorLog(params).then(function(res){
+					if(res.code==0){
+						if(res.distributorLogEntities.length < expenditureItem.limit){
+							that.expenditure[that.curr].hasMore = false
+						}
+						that.distributorLogData = that.distributorLogData.concat(res.distributorLogEntities)
+					}
+				})
+			},
+			// 获取积分明细
+			poinLog(){
+				let that=this
+				let params={}
+				let expenditureItem=that.expenditure[that.curr]
+				if(that.tit=='全部积分'){
+					params.page=expenditureItem.page
+					params.limit=expenditureItem.limit	
+				}
+				else if(that.tit=='积分收入'){
+					params.page=expenditureItem.page
+					params.limit=expenditureItem.limit
+					params.gainPoint=1
+				}
+				else if(that.tit=='积分支出'){
+					params.page=expenditureItem.page
+					params.limit=expenditureItem.limit
+					params.type=3
+				}
+				params.memberId=that.userInfo.memberId
+				Api.poinLog(params).then(function(res){
+					if(res.code==0){
+						if(res.pointLogEntities.length < expenditureItem.limit){
+							that.expenditure[that.curr].hasMore = false
+						}
+						that.pointLogEntities = that.pointLogEntities.concat(res.pointLogEntities)
+					}
+				})
+			},
+			dataUpdate(){
+				let that=this
+				that.distributorLogData=[]
+				that.pointLogEntities=[]
+				that.curr=3
+				that.tit="全部积分"
+				that.isPop=false
+				that.expenditure=[{
+						name: "全部奖金",
+						page:1,
+						limit:10,
+						hasMore:true
+					},
+					{
+						name: "奖金收入",
+						page:1,
+						limit:10,
+						hasMore:true
+					},
+					{
+						name: "奖金支出",
+						page:1,
+						limit:10,
+						hasMore:true
+					},
+					{
+						name: "全部积分",
+						page:1,
+						limit:10,
+						hasMore:true
+					},
+					{
+						name: "积分收入",
+						page:1,
+						limit:10,
+						hasMore:true
+					},
+					{
+						name: "积分支出",
+						page:1,
+						limit:10,
+						hasMore:true
+					}
+				]
 			}
+
 		},
-		onLoad() {
+		onReachBottom:function(){
+			let that = this;
+			if(that.expenditure[that.curr].hasMore){
+				that.expenditure[that.curr].page += 1; 
+				if(that.tit.indexOf("奖金")!=-1){
+					that.distributorLog()
+				}
+				else if(that.tit.indexOf("积分")!=-1){
+					that.poinLog()
+				}
+			}
+			// that.GetGoodsList(Item.catId);
+		},
+		mounted() {
 			//重置
 			let that = this
-			that.isPop = false
+			that.dataUpdate()
+			that.userInfo=store.state.userInfo
+			if(that.userInfo.distributorStatus==1){
+				that.distribInfo=store.state.distribInfo
+			}
+			that.poinLog()
+		},
 
-		}
 	}
 </script>
 

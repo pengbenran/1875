@@ -1,6 +1,6 @@
 <template>
 	<div class="rec-product">
-		<div class="rec-product-li" v-for="(item,index) in recNearby" @click="jumpdetail">
+		<div class="rec-product-li" v-for="(item,index) in recNearby" @click="jumpdetail(item.goodId)">
 			<div class="left">
 				<img :src="item.thumbnail" />
 			</div>
@@ -8,9 +8,9 @@
 				<div class="tit">{{item.goodName}}</div>
 
 				<div class="address">
-					<span>{{item.address}}</span>
+					<span>{{item.shopName}}</span>
 					<span>丨</span>
-					<span>{{item.subway}}</span>
+					<span>{{item.region}}</span>
 				</div>
 				<div class="pic">
 					<div class="pic-left">
@@ -20,7 +20,7 @@
 						</p>
 						<p>¥{{item.showPrice}}</p>
 					</div>
-					<div class="pic-right">200m</div>
+					<div class="pic-right">{{item.distance}}m</div>
 				</div>
 
 			</div>
@@ -41,7 +41,7 @@
 		},
 
 		methods: {
-			jumpdetail(){
+			jumpdetail(goodsId){
 			  wx.navigateTo({
                  url:`../product-detail/main?goodsId=${goodsId}&codeUnionid=`			  	
 			  })
@@ -82,6 +82,7 @@
 					display: -webkit-box;
 					-webkit-line-clamp: 2;
 					-webkit-box-orient: vertical;
+					height: 42px;
 				}
 				.address {
 					color: #999999;

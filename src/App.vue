@@ -6,7 +6,14 @@ export default {
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
 
-    console.log('app created and cache logs by setStorageSync')
+    wx.getLocation({
+      type: 'wgs84',
+      success(res) {
+        const latitude = res.latitude
+        const longitude = res.longitude
+        console.log(latitude,longitude)
+      }
+    })
   }
 }
 </script>

@@ -130,7 +130,13 @@
 				wx.showLoading({title: '加载中'})
 				let ItmeOptions = that.recommendList.find(Fres => Fres.catId == catId);
 				if(ItmeOptions.filg){
-					API.getGoodsList(Object.assign({},{page:ItmeOptions.page,limit:ItmeOptions.limit},{catId:catId})).then(res => {
+					let params={}
+					params.page=ItmeOptions.page
+					params.limit=ItmeOptions.limit
+					params.catId=catId
+					params.longitude='115.940576'
+					params.latitude='28.636406'
+					API.getGoodsList(params).then(res => {
 						if(res.code == 0){
 							if(res.page.rows.length < ItmeOptions.limit){
 								ItmeOptions.filg = false

@@ -5,6 +5,12 @@ export default {
     distribeApply:params => {
         return API.POST('/api/distributor/apply',params)
     },
-
+    // 获取推荐师奖金列表
+    distributorLog:params=>{
+    	return API.GET('/api/distributor/distributorLog',params)
+    },
+    poinLog:params=>{
+    	return API.GET('/api/point/pointLog',params)
+    }
   
 }

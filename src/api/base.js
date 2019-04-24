@@ -41,16 +41,8 @@ fly.interceptors.response.use(
     }
 )
 // let base='https://zhifenxiang.guqinet.com'
-let base='http://192.168.0.114/1875'
-
-   // let base='http://192.168.0.108/1875'
-
-export const GetCode=(url, params)=>{
-   return fly.get(`${url}`,params).then(res => res.data)  
-}
-export const getLogin=(url,params)=>{
-  return fly.get(`${url}`,params).then(res => res.data)
-}
+// let base='https://shop.etuetf.com'
+let base='http://192.168.0.114:8090'
 export const POST = (url, params) => {
   return fly.post(`${base}${url}`, params,{headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
