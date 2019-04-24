@@ -14,12 +14,12 @@
 		</div>
 		<!--奖金-->
 		<!--未开通-->
-		<div class="ojjin">
+		<div class="ojjin" >
 			<div class="tit">开通分享师身份可赚取奖金噢~</div>
 			<div class="kt" @click="jumpkt">去开通</div>
 		</div>
 		<!--已开通-->
-		<div class="jjin" v-if='false'>
+		<!--<div class="jjin" >
 			<div class="left">
 				<span>累计奖金（元）</span>
 				<span>300</span>
@@ -27,9 +27,9 @@
 			<div class="right">
 				<span>可提奖金（元）</span>
 				<span>100</span>
-				<span>去提现</span>
+				<span @click="jumptx">去提现</span>
 			</div>
-		</div>
+		</div>-->
 		
 		<!--收支-->
 		<div class="expenditure">
@@ -156,6 +156,11 @@
 			jumpkt(){
 				wx.navigateTo({
 				   url:"../myself-kt/main"
+				})			
+			},
+			jumptx(){
+				wx.navigateTo({
+				   url:"../myself-tx/main"
 				})			
 			}
 		},
