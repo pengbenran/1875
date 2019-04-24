@@ -85,7 +85,8 @@
 					height: 42px;
 				}
 				.address {
-					color: #999999;
+					padding: 0 4px;
+					color: #ff4b27;
 					font-size: 12px;
 					padding: 17px 0;
 				}

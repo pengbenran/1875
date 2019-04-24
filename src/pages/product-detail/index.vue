@@ -194,6 +194,7 @@
 				let that=this
 				let latitude=that.good.latitude*1
 				let longitude=that.good.longitude*1
+				console.log("查看一下坐标",latitude,longitude)
 				wx.openLocation({
 					latitude,
 					longitude,

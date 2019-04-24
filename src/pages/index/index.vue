@@ -203,7 +203,6 @@
 			// 获取用户信息
 			async getUserInfo() {
 				let that = this
-				console.log("你好世界阿萨德啊")
 				await that.$refs.loginModel.userLogin()
  				wx.stopPullDownRefresh()
 			},
@@ -281,8 +280,8 @@
 						url: urls
 					})
 				}
-
 			},
+
 			////////////////////////////////////////////////////////////////////
 			//获取商品的分类信息
 			 GetGoodsCat(){
@@ -304,12 +303,6 @@
 				});
 			},
 
-			// ItemGoodsList(){
-			// 	let that = this;
-			// 	that.recommendList.filter(Fres => Fres.catId != that.recommendList[0].catId).map((Mres,index) => {
-			// 		that.GetGoodsList(Mres.catId)
-			// 	})
-			// },
 
 			//获取指定分类下的商品
 			 GetGoodsList(catId){
@@ -340,6 +333,7 @@
 				}
 			},
 		},
+
 		//小程序触底加载
 		onReachBottom:function(){
 			let that = this;

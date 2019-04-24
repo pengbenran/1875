@@ -84,7 +84,8 @@
 				.address {
 					border:1px solid #ff4b27;
 					border-radius: 4px;
-					color: #999999;
+					padding: 0 4px;
+					color: #ff4b27;
 					font-size: 11px;
 					overflow: hidden;
 					text-overflow: ellipsis;

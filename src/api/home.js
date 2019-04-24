@@ -16,4 +16,6 @@ export default {
 	getConfig(){
 		return API.GET('/api/member/getGlobalConfig')
 	}
+
+
 }
