@@ -4,4 +4,5 @@ export default {
 	publicQRCode(params){
 		return API.GET('/api/member/publicQRCode',params)
 	},
+	
 }

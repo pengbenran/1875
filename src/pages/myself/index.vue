@@ -47,7 +47,7 @@
 				<div class="integral">
 					<div class="integral-left">
 						<div class="num">
-							<span>300</span>
+							<span>{{totalPoint}}</span>
 							<span>累计积分</span>
 						</div>
 						<div class="num">
@@ -82,6 +82,7 @@
 
 <script>
 	import store from '@/store/store'
+	import utils from '@/utils/index'
 	export default {
 		data() {
 			return {
@@ -89,6 +90,12 @@
 				num: 99,
 				userInfo:{},
 				distribInfo:{}
+			}
+		},
+		computed:{
+			totalPoint(){
+				let that=this
+				return utils.accAdd(that.userInfo.point,that.userInfo.consumePoint)
 			}
 		},
 		mounted(){
