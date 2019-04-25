@@ -1,31 +1,113 @@
 <template>
 	<div class="container">
-		<div class="team">
 		<!--类目-->
-		<scroll-view class="recommend-list" scroll-y>
+		<div class="recommend-list">
 			<div class="recommend-list-li" v-for="(item,index) in recommendList" @click="listTab(index)" :class="listcurr==index?'list-on':''">
 				<div class="name">
 					{{item.name}}
-				</div> 
+				</div>
 			</div>
-		</scroll-view>
-		
-		<swiper class="swiper" vertical style="width: ;" duration='350' :current="listcurr" @change="changeTab">
-			<!--vip1-->
-			<swiper-item style="overflow: scroll;"> 废物·埃文斯破伤风感觉完全过去为国内为国内为国内为国内嗡嗡日哦归纳为偶给你围殴归纳为偶给你问</swiper-item>
-			<!--vip2-->
-			<swiper-item style="overflow: scroll;"></swiper-item>
-			<!--vip3-->
-			<swiper-item style="overflow: scroll;"></swiper-item>
-            <!--银牌分享师-->
-			<swiper-item style="overflow: scroll;"></swiper-item>
-			<!--金牌分享师-->
-			<swiper-item style="overflow: scroll;"></swiper-item>
-			<!--砖石牌分享师-->
-			<swiper-item style="overflow: scroll;"></swiper-item>
-		</swiper>
 		</div>
-		
+		<swiper style="height:100vh" duration='350' :current="listcurr" @change="changeTab">
+			<!--vip1-->
+			<swiper-item style="overflow: scroll;">
+				<div class="list">
+					<div class="tatil">123人</div>
+					<div class="list-li" v-for="(item,index) in list1">
+						<div class="left">
+							<div class="img"><img :src="item.img" /></div>
+							<div class="name">
+								<p>{{item.name}}</p>
+								<p>累计积分 : {{item.jf}}</p>
+							</div>
+						</div>
+						<div class="right">{{item.time}}</div>
+					</div>
+				</div>
+			</swiper-item>
+			<!--vip2-->
+			<swiper-item style="overflow: scroll;">
+				<div class="list">
+					<div class="tatil">123人</div>
+					<div class="list-li" v-for="(item,index) in list2">
+						<div class="left">
+							<div class="img"><img :src="item.img" /></div>
+							<div class="name">
+								<p>{{item.name}}</p>
+								<p>累计积分 : {{item.jf}}</p>
+							</div>
+						</div>
+						<div class="right">{{item.time}}</div>
+					</div>
+				</div>
+			</swiper-item>
+			<!--vip3-->
+			<swiper-item style="overflow: scroll;">
+				<div class="list">
+					<div class="tatil">123人</div>
+					<div class="list-li" v-for="(item,index) in list3">
+						<div class="left">
+							<div class="img"><img :src="item.img" /></div>
+							<div class="name">
+								<p>{{item.name}}</p>
+								<p>累计积分 : {{item.jf}}</p>
+							</div>
+						</div>
+						<div class="right">{{item.time}}</div>
+					</div>
+				</div>
+			</swiper-item>
+			<!--银牌师-->
+			<swiper-item style="overflow: scroll;">
+				<div class="list">
+					<div class="tatil">123人</div>
+					<div class="list-li" v-for="(item,index) in list4">
+						<div class="left">
+							<div class="img"><img :src="item.img" /></div>
+							<div class="name">
+								<p>{{item.name}}</p>
+								<p>累计积分 : {{item.jf}}</p>
+							</div>
+						</div>
+						<div class="right">{{item.time}}</div>
+					</div>
+				</div>
+			</swiper-item>
+			<!--金牌师-->
+			<swiper-item style="overflow: scroll;">
+				<div class="list">
+					<div class="tatil">123人</div>
+					<div class="list-li" v-for="(item,index) in list5">
+						<div class="left">
+							<div class="img"><img :src="item.img" /></div>
+							<div class="name">
+								<p>{{item.name}}</p>
+								<p>累计积分 : {{item.jf}}</p>
+							</div>
+						</div>
+						<div class="right">{{item.time}}</div>
+					</div>
+				</div>
+			</swiper-item>
+			<!--钻石师-->
+			<swiper-item style="overflow: scroll;">
+				<div class="list">
+					<div class="tatil">123人</div>
+					<div class="list-li" v-for="(item,index) in list6">
+						<div class="left">
+							<div class="img"><img :src="item.img" /></div>
+							<div class="name">
+								<p>{{item.name}}</p>
+								<p>累计积分 : {{item.jf}}</p>
+							</div>
+						</div>
+						<div class="right">{{item.time}}</div>
+					</div>
+				</div>
+			</swiper-item>
+
+		</swiper>
+
 	</div>
 </template>
 <script>
@@ -33,8 +115,46 @@
 		data() {
 			return {
 				listcurr: 0,
-				recommendList: [
-				    {
+				list1: [{
+						name: "AAAAAA",
+						time: "12月15-2018",
+						jf: 3000,
+						img: '/static/images/ku5p0efhhxr5.jpg'
+					},
+					{
+						name: "AAAAAA",
+						time: "12月15-2018",
+						jf: 3000,
+						img: '/static/images/ku5p0efhhxr5.jpg'
+					},
+				],
+				list2: [{
+						name: "AAAAAA",
+						time: "12月15-2018",
+						jf: 3000,
+						img: '/static/images/ku5p0efhhxr5.jpg'
+					},
+					{
+						name: "AAAAAA",
+						time: "12月15-2018",
+						jf: 3000,
+						img: '/static/images/ku5p0efhhxr5.jpg'
+					},
+				],
+				list3: [{
+						name: "AAAAAA",
+						time: "12月15-2018",
+						jf: 3000,
+						img: '/static/images/ku5p0efhhxr5.jpg'
+					},
+					{
+						name: "AAAAAA",
+						time: "12月15-2018",
+						jf: 3000,
+						img: '/static/images/ku5p0efhhxr5.jpg'
+					},
+				],
+				recommendList: [{
 						name: "vip1"
 					},
 					{
@@ -44,21 +164,21 @@
 						name: "vip3"
 					},
 					{
-						name: "银牌分享师"
+						name: "银牌师"
 					},
 					{
-						name: "金牌分享师"
+						name: "金牌师"
 					},
 					{
-						name: "砖石分享师"
+						name: "钻石师"
 					},
 				],
 			}
 		},
-       	onLoad(){
+		onLoad() {
 			let that = this
 			//重置
-			that.listcurr=0
+			that.listcurr = 0
 		},
 		methods: {
 			listTab(e) {
@@ -73,25 +193,28 @@
 </script>
 
 <style scoped lang="less">
-.container{
-		background: #F4F4F4;
-}
-swiper-item{
-	width: 100%;
-	padding-bottom: 40px;
-}
-.team{display: flex;}
-	.recommend-list{
-		width: 100px;
-		background: orange;
-		height: 100vh;
-		.recommend-list-li{			
+	swiper-item {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 70px 12px 40px 12px;
+	}
+	
+	.recommend-list {
+		background: #FFFFFF;
+		height: 49px;
+		width: 100%;
+		display: flex;
+		justify-content: space-around;
+		position: absolute;
+		top: 0;
+		z-index: 99;
+		.recommend-list-li {
 			height: 49px;
 			line-height: 49px;
 			position: relative;
-			width: 100%;
+			display: block;
 			text-align: center;
-			span { 				 
+			span {
 				display: inline-block;
 			}
 			.name {
@@ -105,7 +228,7 @@ swiper-item{
 				border-bottom: 6px solid transparent;
 			}
 		}
-		.list-on { 
+		.list-on {
 			.name {
 				transition: all 0.5s;
 				border-bottom: 6px solid #ff6e6e;
@@ -113,9 +236,47 @@ swiper-item{
 			}
 		}
 	}
-	.swiper{
-		flex-grow: 1;
-		background: #26ACFF;
-		height: 100vh;
+	
+	.list {
+		.tatil {
+			font-size: 33px;
+			color: #999999;
+			font-weight: bold;
+		}
+		.list-li {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			border-bottom: 1px solid #DEDEDE;
+			padding: 12px 0;
+			&:nth-child(2) {
+				padding: 30px 0 12px 0;
+			}
+			.left {
+				display: flex;
+				align-items: center;
+				.img {
+					width: 53px;
+					height: 53px;
+					border-radius: 50%;
+					overflow: hidden;
+				}
+				.name {
+					margin-left: 11px;
+					font-size: 17px;
+					color: #333333;
+					p {
+						&:nth-child(2) {
+							font-size: 14px;
+							color: #999999;
+						}
+					}
+				}
+			}
+			.right {
+				font-size: 11px;
+				color: 666666;
+			}
+		}
 	}
 </style>
