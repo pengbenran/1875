@@ -1,20 +1,27 @@
 <template>
 	<div class="container">
-		<div class="tit">提现到微信零钱</div>
+		<div class="tit">
+			<p>提现到银行卡</p>
+			<p style="height: 30px;line-height:30px;">{{cardInfo.cardno}}({{cardInfo.depositBank}})</p>
+		</div>
 		<div class="txt">提现金额</div>
 		<div class="inp">
 			<span>¥</span>
 			<span><input type="number" v-model="txet" @input="bindReplaceInput"/></span>
 		</div>
-		<div class="name">当前可提奖金100元</div>
+		<div class="name">当前可提奖金{{distribInfo.balance}}元</div>
 		<div :class="txet==''?'btn-on':''" class="btn">提现</div>
 	</div>
 </template>
 <script>
+	import store from '@/store/store'
 	export default {
 		data() {
 			return {
 				txet: '',
+				cardInfo:{},
+				userInfo:{},
+				distribInfo:{}
 			}
 		},
 
@@ -23,8 +30,13 @@
 //         	console.log(e)
            }
 		},
-		onLoad() {
+		onLoad(options) {
 			let that = this
+			that.userInfo=store.state.userInfo
+			if(that.userInfo.distributorStatus==1){
+				that.distribInfo=store.state.distribInfo
+			}
+			that.cardInfo=options
 			that.txet = ''
 		}
 	}
@@ -39,7 +51,7 @@
 		.tit {
 			font-size: 15px;
 			color: #333333;
-			padding: 40px 0 60px 0;
+			padding: 40px 0 50px 0;
 		}
 		.txt {
 			font-size: 15px;

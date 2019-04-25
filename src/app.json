@@ -1,6 +1,7 @@
 {
 	"pages":[
 		"pages/index/main",
+		"pages/bindCard/main",
 		"pages/distribeApply/main",
 		"pages/onePennyGrab/main",
 		"pages/myself-tx/main",
