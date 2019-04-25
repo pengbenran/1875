@@ -11,6 +11,11 @@ export default {
     },
     poinLog:params=>{
     	return API.GET('/api/point/pointLog',params)
+    },
+
+    //判断当前用户是否提交申请
+    boolDis:params => {
+        return API.GET('/api/distributor/apply',params)
     }
   
 }

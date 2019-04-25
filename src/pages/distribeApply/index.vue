@@ -59,6 +59,9 @@
 						console.log(res)
 						if(res.code==0){
 						wx.showToast({title: '提交申请成功',icon: 'success',duration: 2000})
+						wx.switchTab({
+					      	url:`../myself/main`			  	
+						})
 						}
 						else{
 							wx.showToast({title: '提交申请失败,请重新提交',icon: 'none',duration: 2000})

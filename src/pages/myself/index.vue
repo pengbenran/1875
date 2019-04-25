@@ -5,7 +5,7 @@
 			<div class="img"><img :src="userInfo.face" /></div>
 			<div class="name">{{userInfo.name}}</div>
 			<div class="id">圈号: {{userInfo.memberId}}</div>
-			<div class="vip">
+			<div class="vip" @click="toVip">
 				<div class="vip-img" v-if="vip==1"><img src="/static/images/VIP1.gif"/></div>
 				<div class="vip-img" v-if="vip==2"><img src="/static/images/VIP2.gif"/></div>
 				<div class="vip-img" v-if="vip==3"><img src="/static/images/VIP3.gif"/></div>	 			
@@ -60,12 +60,12 @@
 					<div class="integral-right">
 						<div class="num">
 							<span v-if='userInfo.distributorStatus==1'>{{distribInfo.balance}}</span>
-							<span v-else>{{distribInfo.balance}}</span>
+							<span v-else>0</span>
 							<span>累计奖金</span>
 						</div>
 						<div class="num">
 							<span v-if='userInfo.distributorStatus==1'>{{distribInfo.balance}}</span>
-							<span v-else>{{distribInfo.balance}}</span>
+							<span v-else>0</span>
 							<span>可提现奖金</span>
 						</div>
 					</div>
@@ -133,6 +133,12 @@
 				wx.navigateTo({
 				   url:"../collection/main"
 				})			
+			},
+
+			toVip(){
+				wx.navigateTo({
+				   url:"../myself-kt/main"
+				})				
 			}
 		}
 	}

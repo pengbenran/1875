@@ -35,17 +35,21 @@
 					</div>
 				</div>
 				
-				<div class="btn">{{kttit}}</div>
+				<div class="btn" v-if="bool">你已提交申请</div><div class="btn" v-else @click="to">{{kttit}}</div>
 			</swiper-item>
 		</swiper>
 	</div>
 </template>
 
 <script>
+import API from '@/api/distribe'
+import store from '@/store/store'
 	export default {
 		data() {
 			return {
 				kttit:"开通分享师",
+				userInfo:{},
+				bool:false,
 //				vip
 				vip1Length:20,  //进度条长度
 				vip2Length:20,  //进度条长度
@@ -81,6 +85,31 @@
 		}, 
 
 		methods: {
+			GetDisBool(){
+			   let that = this;
+			   let data = {
+				   memberId:that.userInfo.memberId
+			   }
+               API.boolDis(data).then(res =>{
+				   if(res.code == 0){
+					   that.bool = true;
+				   }else{
+					   that.bool = false;
+				   }
+			   }).catch(err => {
+				   console.log("数据报错",err)
+			   })
+			},
+			to(){
+				let that = this;
+					wx.navigateTo({
+					   url:`../distribeApply/main`			  	
+					})
+			}
+		},
+		mounted(){
+			this.userInfo=store.state.userInfo
+			this.GetDisBool();
 		}
 	}
 </script>
