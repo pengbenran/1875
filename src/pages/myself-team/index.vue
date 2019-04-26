@@ -111,6 +111,8 @@
 	</div>
 </template>
 <script>
+import API_D from '@/api/distribe'
+import API_M from '@/api/member'
 	export default {
 		data() {
 			return {
@@ -154,31 +156,15 @@
 						img: '/static/images/ku5p0efhhxr5.jpg'
 					},
 				],
-				recommendList: [{
-						name: "vip1"
-					},
-					{
-						name: "vip2"
-					},
-					{
-						name: "vip3"
-					},
-					{
-						name: "银牌师"
-					},
-					{
-						name: "金牌师"
-					},
-					{
-						name: "钻石师"
-					},
-				],
+				recommendList: [],
 			}
 		},
 		onLoad() {
 			let that = this
 			//重置
 			that.listcurr = 0
+			that.GetMenberLv();
+			that.GetDistributor();
 		},
 		methods: {
 			listTab(e) {
@@ -187,6 +173,49 @@
 			changeTab(e) {
 				let that = this
 				that.listcurr = e.mp.detail.current
+			},
+
+			//拿到所有会员等级
+			GetMenberLv(){
+				let that = this;
+				let arr = []
+				API_M.GetMenberLvData().then(res =>{
+					console.log("会员数据",res)
+					if(res.code == 0){
+						// that.recommendList = res.lvs
+						res.lvs.map(Mres => {
+						   let _Data = {}
+						   _Data.name = Mres.name;
+						   _Data.id = Mres.lvId;
+						   _Data.type = 1;
+						   arr.push(_Data)
+						})
+						that.recommendList = that.recommendList.concat(arr)
+					}
+				}).catch(err => {
+					console.log("报错的数据",err)
+				})
+			},
+
+			//获取分享师的等级
+			GetDistributor(){
+				let that = this;
+				let arr = []
+				API_D.GetDistributorData().then(res => {
+					console.log("分享师的等级",res)
+					if(res.code == 0){
+						res.distributorLvs.map(Mres => {
+							let _Data = {}
+						   _Data.name = Mres.name;
+						   _Data.id = Mres.distributorLvId;
+						   _Data.type = 2;
+						   arr.push(_Data)
+						})
+						that.recommendList = that.recommendList.concat(arr)
+					}
+				}).catch(err => {
+					console.log("报错的数据",err)
+				})
 			},
 		},
 	}

@@ -25,6 +25,11 @@ export default {
     // 判断是否绑定了银行卡
     isBindCard(params){
         return API.GET('/api/distributor/isWithdrawInfo',params)
+    },
+
+    //获取所有分享师的等级
+    GetDistributorData:params => {
+        return API.GET('/api/distributor/lvs',params)
     }
   
 }

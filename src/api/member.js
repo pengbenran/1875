@@ -4,5 +4,10 @@ export default {
 	publicQRCode(params){
 		return API.GET('/api/member/publicQRCode',params)
 	},
+
+	//获取所有的会员等级
+	GetMenberLvData:params => {
+		return API.GET('/api/member/lvs',params)
+	}
 	
 }
