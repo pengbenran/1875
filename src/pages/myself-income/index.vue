@@ -337,9 +337,9 @@
 				params.memberId=that.userInfo.memberId
 				Api.isBindCard(params).then(function(res){
 					if(res.code==0){
-						let url=`../myself-tx/main?cardno=${res.WithdrawInfoEntity.cardno}&depositBank=${res.WithdrawInfoEntity.depositBank}&name=${res.WithdrawInfoEntity.name}`
+						store.commit("storeCardInfo",res.WithdrawInfoEntity)
 						wx.navigateTo({
-							url:url
+							url:'../myself-tx/main'
 						})		
 					}
 					else{
@@ -350,7 +350,9 @@
 							cancelText:'不了',
 							success(res) {
 								if (res.confirm) {
-									
+									wx.navigateTo({
+										url:'../bindCard/main?type=2'
+									})
 								} else if (res.cancel) {
 									
 								}
@@ -376,14 +378,17 @@
 			}
 			// that.GetGoodsList(Item.catId);
 		},
-		mounted() {
-			//重置
+		onShow(){
 			let that = this
-			that.dataUpdate()
 			that.userInfo=store.state.userInfo
 			if(that.userInfo.distributorStatus==1){
 				that.distribInfo=store.state.distribInfo
 			}
+		},
+		mounted() {
+			//重置
+			let that = this
+			that.dataUpdate()
 			that.poinLog()
 		},
 

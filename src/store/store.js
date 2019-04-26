@@ -15,6 +15,7 @@ export default new Vuex.Store({
     config:{},
     goodsId:'',
     codeUnionid:'',
+    cardInfo:{}
   },
   mutations:{
    storeUserInfo(state,userInfo){
@@ -38,5 +39,8 @@ export default new Vuex.Store({
     storegoodsid(state,goodsId){
     state.goodsId=goodsId
    },
+   storeCardInfo(state,cardInfo){
+    state.cardInfo=cardInfo
+   }
 }
 })

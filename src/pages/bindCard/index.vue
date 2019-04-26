@@ -19,7 +19,7 @@
 		</div>
 		<div class="tip">{{tip}}</div>
 		<div class="btn" :style="{background:bcg}" @click="submitBankCard">
-			添加
+			{{btntxt}}
 		</div>
 	</div>
 </template>
@@ -35,10 +35,12 @@
 				memberId:'',
 				name:'',
 				cardno:'',
-				depositBank:''
+				depositBank:'',
+				distributorInfoId:''
 			},
 			canSubmit:true,
-			cardnoTwo:''
+			cardnoTwo:'',
+			btntxt:'添加'
 			}
 		},
 		components: {
@@ -81,22 +83,66 @@
 				that.tip=that.applyFrom.name==''?'持卡人姓名不能为空':that.applyFrom.depositBank==''?'开户银行不能为空':that.applyFrom.cardno==''?'银行卡卡号不能为空':that.applyFrom.cardno!=that.cardnoTwo?'两次卡号不一致':''	
 				if(that.tip==''&&that.canSubmit){
 					that.canSubmit=false
-					Api.bindCard(that.applyFrom).then(function(res){
-						console.log(res)
-						if(res.code==0){
-						wx.showToast({title: '提交申请成功',icon: 'success',duration: 2000})
-						}
-						else{
-							wx.showToast({title: '提交申请失败,请重新提交',icon: 'none',duration: 2000})
-							that.canSubmit=true
-						}
-					})
+					if(that.btntxt=='添加'){
+						that.addBankCard()
+					}
+					else{
+						that.editBankCard()
+					}
+					
 				}
+			},
+			addBankCard(){
+				let that=this
+				Api.bindCard(that.applyFrom).then(function(res){
+					if(res.code==0){
+						wx.showToast({title: '提交成功',icon: 'success',duration: 2000})
+						wx.navigateTo({
+							url:'../myself-income/main'
+						})		
+					}
+					else{
+						wx.showToast({title: '提交失败,请重新提交',icon: 'none',duration: 2000})
+						that.canSubmit=true
+					}
+				})
+			},
+			editBankCard(){
+				let that=this
+
+				Api.editBankCard(that.applyFrom).then(function(res){
+					if(res.code==0){
+						wx.showToast({title: '修改成功',icon: 'success',duration: 2000})
+						wx.navigateTo({
+							url:'../myself-income/main'
+						})	
+					}
+					else{
+						wx.showToast({title: '修改失败,请重新提交',icon: 'none',duration: 2000})
+						that.canSubmit=true
+					}
+				})
 			}
 		},
 		mounted() {
 			let that=this
 			that.applyFrom.memberId=store.state.userInfo.memberId
+			if(that.$root.$mp.query.type==1){
+				that.btntxt='编辑'
+				that.applyFrom.name=store.state.cardInfo.name
+				that.applyFrom.cardno=store.state.cardInfo.cardno
+				that.applyFrom.depositBank=store.state.cardInfo.depositBank
+				that.cardnoTwo=store.state.cardInfo.cardno
+				that.applyFrom.distributorInfoId=store.state.cardInfo.distributorInfoId
+				wx.setNavigationBarTitle({
+					title: "编辑银行卡" //页面标题为路由参数
+				})
+			}else{
+				that.btntxt='添加'
+				wx.setNavigationBarTitle({
+					title: "添加银行卡" //页面标题为路由参数
+				})
+			}
 		},
 	}
 </script>

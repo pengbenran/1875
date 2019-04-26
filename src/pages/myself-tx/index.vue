@@ -1,42 +1,100 @@
 <template>
 	<div class="container">
-		<div class="tit">
-			<span>到账银行卡</span>
-			<span> 添加银行卡</span>
-			<span class="iconfont">&#xe625;</span>
-		</div>
-		<div class="txt">提现金额</div>
-		<div class="inp">
-			<span>¥</span>
-			<span><input type="number" v-model="txet" @input="bindReplaceInput"/></span>
-		</div>
-		<div class="name">当前可提奖金{{distribInfo.balance}}元</div>
-		<div :class="txet==''?'btn-on':''" class="btn">提现</div>
-		
+		<blockquote v-if="!applySuccess">
+			<div class="tit">
+				<span>到账银行卡</span>
+				<span>{{cardInfo.depositBank}}({{caudadNumber}})</span>
+				<span class="iconfont">&#xe625;</span>
+			</div>
+			<div class="txt">提现金额</div>
+			<div class="inp">
+				<span>¥</span>
+				<span><input type="number" v-model="withdrawal" placeholder="请输入提现金额" /></span>
+			</div>
+			<div class="name">当前可提奖金{{distribInfo.balance}}元</div>
+			<div class="tip">{{tip}}</div>
+			<div :class="withdrawal==''?'btn-on':''" class="btn" @click="withdrawalSubmit">提现</div>
+		</blockquote>
 		<!--提现成功弹窗-->		
-		<div class="pop" v-if="false">
+		<div class="pop" v-else>
 			<div class="iconfont img">&#xe630;</div>
-			<div class="cg">已成功提现到银行卡</div>
-			<div class="wc">完成</div>
+			<div class="cg">提现申请成功</div>
+			<div class="wc" @click='closeModel'>完成</div>
 		</div>	
 	</div>
 </template>
 <script>
 	import store from '@/store/store'
+	import Api from '@/api/distribe'
+	import utils from '@/utils/index'
 	export default {
 		data() {
 			return {
-				txet: '',
+				withdrawal:'',
 				cardInfo:{},
 				userInfo:{},
-				distribInfo:{}
+				distribInfo:{},
+				tip:'',
+				canSubmit:true,
+				applySuccess:false
 			}
 		},
-
+ 		computed:{
+ 			caudadNumber(){
+ 				let that=this
+ 				let str=that.cardInfo.cardno.replace(/\s*/g,"")
+ 				return str.substring(str.length-4)
+ 			}
+ 		},
+ 		watch:{
+ 			withdrawal(val){
+ 				let that=this
+ 				that.tip=val>that.distribInfo.balance?'奖金不足':''
+ 			}
+ 		},
 		methods: {
-           bindReplaceInput(e){
-//         	console.log(e)
-           }
+			withdrawalSubmit(){
+				let that=this
+				that.tip=that.withdrawal==''?'提现金额不能为空':that.withdrawal<1?'提现金额不能低于1元':that.withdrawal>that.distribInfo.balance?'奖金不足':''
+				if(that.canSubmit&&that.tip==''){
+					wx.showModal({
+						title: '到账银行卡号',
+						content: that.cardInfo.cardno,
+						confirmText:'无误',
+						cancelText:'有误',
+						success(res) {
+							if (res.confirm) {				
+								that.canSubmit=false
+								let params={}
+								params.distributorId=that.distribInfo.distributorId
+								params.money=that.withdrawal
+								Api.withdrawApply(params).then(function(res){
+									that.canSubmit=true
+									if(res.code==0){
+										utils.updateUserInfo()
+										that.applySuccess=true
+									}
+
+								})
+							} else if (res.cancel) {
+								let url=`../bindCard/main?type=1`
+								wx.navigateTo({
+									url:url
+								})
+							}
+						}
+					})
+				}
+			},
+			closeModel(){
+				let that=this
+				that.userInfo=store.state.userInfo
+				if(that.userInfo.distributorStatus==1){
+					that.distribInfo=store.state.distribInfo
+				}
+				that.withdrawal=''
+				that.applySuccess=false
+			}
 		},
 		onLoad(options) {
 			let that = this
@@ -44,8 +102,7 @@
 			if(that.userInfo.distributorStatus==1){
 				that.distribInfo=store.state.distribInfo
 			}
-			that.cardInfo=options
-			that.txet = ''
+			that.cardInfo=store.state.cardInfo
 		}
 	}
 </script>
@@ -79,27 +136,26 @@
 		}
 		.inp {
 			width: 100%;
-			position: relative;
+			border-bottom: 1px solid #999999;
+			display: flex;
+			padding-bottom: 10px;
+			box-sizing: border-box;
 			span {
-				display: block;
 				&:nth-child(1) {
 					font-size: 33px;
 					color: #333333;
 					font-weight: bold;
-					position: absolute;
-					bottom: 15px;
 				}
 				&:nth-child(2) {
-					width: 100%;
-					border-bottom: 1px solid #999999;
-					padding-left: 28px;
-					padding-bottom: 15px;
+					flex-grow: 1;
 					box-sizing: border-box;
 					input {
-						font-size: 33px;
+						height: 100%;
+						width: 100%;
+						font-size: 25px;
 						color: #333333;
 						font-weight: bold;
-						
+						padding-left:5px; 
 					}
 				}
 			}
@@ -108,6 +164,13 @@
 			font-size: 13px;
 			color: #999999;
 			margin-top: 12px;
+		}
+		.tip{
+			text-align: center;
+			height: 40px;
+			line-height:40px;
+			color: #ff0000;
+			font-size: 13px;
 		}
 		.btn{
 			width: 160px;

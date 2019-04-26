@@ -1,12 +1,11 @@
 {
 	"pages":[
-	    	"pages/myself-tx/main", 
-		"pages/myself-team/main",
 		"pages/index/main",
+	    "pages/myself-tx/main", 
+		"pages/myself-team/main",
 		"pages/bindCard/main",
 		"pages/distribeApply/main",
 		"pages/onePennyGrab/main",
- 
 	    "pages/myself-order-detail/main", 
 		"pages/myself/main",
 		"pages/product-detail/main",
