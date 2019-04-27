@@ -19,7 +19,7 @@
 		<!--推荐搜索-->
 		<div class="searches">
 			<p>推荐搜索:</p>
-			<div class="searches-li" v-for="(item,index) in searches">
+			<div class="searches-li" v-for="(item,index) in tagLits" :key="item" :index='index' @click="toSearch(item.name)">
 				{{item.name}}
 			</div>
 		</div>
@@ -108,6 +108,7 @@
 	import Api from "@/api/home"
 	import Business from '@/components/Business'
 	import API_k from '@/api/kind'
+	import API_g from '@/api/good'
 	import store from '@/store/store'
 	export default {
 		components: {
@@ -126,20 +127,9 @@
 				listcurr: 0,
 				listcurrs: 0,
 				activeIndex: 0,
+				tagLits:[],
 				recommendIcon: "/static/images/recommendIcon.gif",
-				searches: [{
-						name: "一二三四五"
-					},
-					{
-						name: "一二三四五"
-					},
-					{
-						name: "一二三四五"
-					},
-					{
-						name: "一二三四五"
-					},
-				],
+
 				recommendWp: [{
 						name: "精品推荐"
 					},
@@ -197,7 +187,8 @@
 			that.getUserInfo()
 			that.getIndexImage()
 			that.GetGoodsCat();
-			that.getConfig()
+			that.getConfig();
+			that.GetHotSearchData();
 		},
 		methods: {
 			// 获取用户信息
@@ -332,7 +323,34 @@
 					wx.showToast({title: '没有更多信息',icon: 'none',duration: 2000})
 				}
 			},
+
+
+			//获取热门搜索
+		GetHotSearchData(){
+				let that = this;
+				API_g.getHotSearTag().then(res => {
+					if(res.code == 0){
+						that.tagLits = res.searchs.filter(f => f.parentId != 0);
+					}else{
+						Lib.ShowToast('失败','none')						
+					}
+					console.log("热门搜索数据",that.tagLits)
+				}).catch(err => {
+						Lib.ShowToast('失败','none')	
+				})
+			},
+
+		//点击跳转搜索
+		toSearch(val){
+			let that = this;
+			wx.navigateTo({
+					url:'../search/main?SearchName=' + val, 
+			})
 		},
+
+		},
+
+		
 
 		//小程序触底加载
 		onReachBottom:function(){
@@ -452,7 +470,6 @@
 		.searches {
 			display: flex;
 			align-items: center;
-			justify-content: space-between;
 			color: #ff6e6e;
 			font-size: 10px;
 			padding: 9px 25px 0 20px;
