@@ -59,7 +59,7 @@
 					<div class="xian"></div>
 					<div class="integral-right">
 						<div class="num">
-							<span v-if='userInfo.distributorStatus==1'>{{distribInfo.balance}}</span>
+							<span v-if='userInfo.distributorStatus==1'>{{distribInfo.total}}</span>
 							<span v-else>0</span>
 							<span>累计奖金</span>
 						</div>

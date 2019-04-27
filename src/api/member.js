@@ -8,6 +8,12 @@ export default {
 	//获取所有的会员等级
 	GetMenberLvData:params => {
 		return API.GET('/api/member/lvs',params)
+	},
+
+	//获取不同等级的下线
+	GetLvDtaLits:params => {
+		return API.GET('/api/member/team',params)
 	}
-	
+
+
 }

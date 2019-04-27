@@ -22,6 +22,10 @@ export default {
     bindCard(params){
         return API.POST('/api/distributor/info',params)
     },
+    // 编辑银行卡
+    editBankCard(params){
+        return API.POST('/api/distributor/editInfo',params)
+    },
     // 判断是否绑定了银行卡
     isBindCard(params){
         return API.GET('/api/distributor/isWithdrawInfo',params)
@@ -30,6 +34,10 @@ export default {
     //获取所有分享师的等级
     GetDistributorData:params => {
         return API.GET('/api/distributor/lvs',params)
+    },
+    // 提现申请
+    withdrawApply(params){
+        return API.POST('/api/distributor/withdrawal/apply',params)
     }
   
 }
