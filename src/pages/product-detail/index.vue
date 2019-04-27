@@ -80,7 +80,7 @@
 
 		<!--购买弹窗-->
 		<goodDetailModel ref="goodModel"></goodDetailModel>
-		<loginModel ref="loginModel"></loginModel>
+		<loginModel ref="loginModel" @GetGoodsInfo='GetGoodsInfo'></loginModel>
 	</div>
 </template>
 
@@ -130,10 +130,11 @@
 				store.commit("storecodeUnionid",that.$root.$mp.query.codeUnionid)
 				store.commit("storegoodsid",that.$root.$mp.query.goodsId)
 				await that.$refs.loginModel.userLogin()
+
 			},
 			drawPoster(){
 				let that=this
-				that.$refs.goodPoster.getErCode(38)
+				that.$refs.goodPoster.getErCode(that.good.goodId)
 			},
 			// 保存图片
 			eventSave() {
@@ -194,7 +195,6 @@
 				let that=this
 				let latitude=that.good.latitude*1
 				let longitude=that.good.longitude*1
-				console.log("查看一下坐标",latitude,longitude)
 				wx.openLocation({
 					latitude,
 					longitude,
@@ -213,7 +213,7 @@
 				let that = this;
 				let data = {
 					goodId:that.goodId,
-					memberId:that.userInfo.memberId,
+					memberId:store.state.userInfo.memberId,
 				}; 
 				API.GetGoodDetail(data).then(res => {
 					if(res.code==0){

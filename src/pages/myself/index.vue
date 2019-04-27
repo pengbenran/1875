@@ -6,9 +6,12 @@
 			<div class="name">{{userInfo.name}}</div>
 			<div class="id">圈号: {{userInfo.memberId}}</div>
 			<div class="vip" @click="toVip">
-				<div class="vip-img" v-if="vip==1"><img src="/static/images/VIP1.gif"/></div>
-				<div class="vip-img" v-if="vip==2"><img src="/static/images/VIP2.gif"/></div>
-				<div class="vip-img" v-if="vip==3"><img src="/static/images/VIP3.gif"/></div>	 			
+				<div class="vip-img" v-if="userInfo.lvId==24&&userInfo.distributorStatus==2"><img src="/static/images/VIP1.gif"/></div>
+				<div class="vip-img" v-if="userInfo.lvId==25&&userInfo.distributorStatus==2"><img src="/static/images/VIP2.gif"/></div>
+				<div class="vip-img" v-if="userInfo.lvId==26&&userInfo.distributorStatus==2"><img src="/static/images/VIP3.gif"/></div>	 			
+				<div class="vip-img" v-if="distribInfo.lvId==14&&userInfo.distributorStatus==1"><img src="/static/images/share1.gif"/></div>
+				<div class="vip-img" v-if="distribInfo.lvId==15&&userInfo.distributorStatus==1"><img src="/static/images/share2.gif"/></div>
+				<div class="vip-img" v-if="distribInfo.lvId==16&&userInfo.distributorStatus==1"><img src="/static/images/share3.gif"/></div>	 			
 				<div class="iconfont icon">&#xe625;</div> 
 			</div> 
 		</div>
@@ -21,15 +24,15 @@
 				</div>
 				<div class="list-li2" @click="listLi2">
 					<div class="iconfont icon">&#xe629;</div>
-					<div class="name">红包 ({{num}})</div>
+					<div class="name">红包</div>
 				</div>
 				<div class="list-li4" @click="listLi4">
 					<div class="iconfont icon">&#xe626;</div> 
-					<div class="name">喜欢 ({{num}})</div>
+					<div class="name">喜欢</div>
 				</div>
 				<div class="list-li5" @click="listLi5">
 					<div class="iconfont icon">&#xe62b;</div>
-					<div class="name">团队({{num}})</div>
+					<div class="name">团队</div>
 				</div>
 			</div>
 			<!--收支总览-->
@@ -87,7 +90,6 @@
 		data() {
 			return {
 				vip:1,
-				num: 99,
 				userInfo:{},
 				distribInfo:{}
 			}
@@ -132,9 +134,32 @@
 				})
 			},
 			jump(url){
-				wx.navigateTo({
-					url:url
-				})
+				let that=this
+				if(url=='../poster/main'){
+					if(that.userInfo.distributorStatus==2){
+						wx.showModal({
+							title: '提示',
+							content: '您还不是分享师',
+							confirmText:'立即成为',
+							cancelText:'我再想想',
+							success(res) {
+								if (res.confirm) {
+									wx.navigateTo({
+										url:'../distribeApply/main'
+									})
+								} else if (res.cancel) {
+									
+								}
+							}
+						})
+					}
+					else{
+						wx.navigateTo({
+							url:url
+						})
+					}
+				}
+				
 			},
 			listLi4(){
 				wx.navigateTo({

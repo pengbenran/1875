@@ -312,8 +312,8 @@
 					params.page=ItmeOptions.page
 					params.limit=ItmeOptions.limit
 					params.catId=catId
-					params.longitude='115.940576'
-					params.latitude='28.636406'
+					params.longitude=wx.getStorageSync('longitude')
+					params.latitude=wx.getStorageSync('latitude')
 					API_k.getGoodsList(params).then(res => {
 						if(res.code == 0){
 							if(res.page.rows.length < ItmeOptions.limit){
