@@ -30,6 +30,11 @@ export default {
     isBindCard(params){
         return API.GET('/api/distributor/isWithdrawInfo',params)
     },
+
+    //获取所有分享师的等级
+    GetDistributorData:params => {
+        return API.GET('/api/distributor/lvs',params)
+    },
     // 提现申请
     withdrawApply(params){
         return API.POST('/api/distributor/withdrawal/apply',params)

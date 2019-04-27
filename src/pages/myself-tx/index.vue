@@ -27,6 +27,7 @@
 	import store from '@/store/store'
 	import Api from '@/api/distribe'
 	import utils from '@/utils/index'
+
 	export default {
 		data() {
 			return {

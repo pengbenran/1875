@@ -9,184 +9,122 @@
 			</div>
 		</div>
 		<swiper style="height:100vh" duration='350' :current="listcurr" @change="changeTab">
-			<!--vip1-->
+			<blockquote v-for="(item,index) in recommendList" :key="item" :index="index">
 			<swiper-item style="overflow: scroll;">
 				<div class="list">
-					<div class="tatil">123人</div>
-					<div class="list-li" v-for="(item,index) in list1">
+					<div class="tatil">{{item.total}}人</div>
+					<div class="list-li" v-for="(itemc,ind) in item.options" :key="itemc">
 						<div class="left">
-							<div class="img"><img :src="item.img" /></div>
+							<div class="img"><img :src="itemc.face" /></div>
 							<div class="name">
-								<p>{{item.name}}</p>
-								<p>累计积分 : {{item.jf}}</p>
+								<p>{{itemc.memberName}}</p>
+								<p>累计积分 : {{itemc.consumePoint}}</p>
 							</div>
 						</div>
-						<div class="right">{{item.time}}</div>
+						<div class="right">{{itemc.boundTime}}</div>
 					</div>
 				</div>
 			</swiper-item>
-			<!--vip2-->
-			<swiper-item style="overflow: scroll;">
-				<div class="list">
-					<div class="tatil">123人</div>
-					<div class="list-li" v-for="(item,index) in list2">
-						<div class="left">
-							<div class="img"><img :src="item.img" /></div>
-							<div class="name">
-								<p>{{item.name}}</p>
-								<p>累计积分 : {{item.jf}}</p>
-							</div>
-						</div>
-						<div class="right">{{item.time}}</div>
-					</div>
-				</div>
-			</swiper-item>
-			<!--vip3-->
-			<swiper-item style="overflow: scroll;">
-				<div class="list">
-					<div class="tatil">123人</div>
-					<div class="list-li" v-for="(item,index) in list3">
-						<div class="left">
-							<div class="img"><img :src="item.img" /></div>
-							<div class="name">
-								<p>{{item.name}}</p>
-								<p>累计积分 : {{item.jf}}</p>
-							</div>
-						</div>
-						<div class="right">{{item.time}}</div>
-					</div>
-				</div>
-			</swiper-item>
-			<!--银牌师-->
-			<swiper-item style="overflow: scroll;">
-				<div class="list">
-					<div class="tatil">123人</div>
-					<div class="list-li" v-for="(item,index) in list4">
-						<div class="left">
-							<div class="img"><img :src="item.img" /></div>
-							<div class="name">
-								<p>{{item.name}}</p>
-								<p>累计积分 : {{item.jf}}</p>
-							</div>
-						</div>
-						<div class="right">{{item.time}}</div>
-					</div>
-				</div>
-			</swiper-item>
-			<!--金牌师-->
-			<swiper-item style="overflow: scroll;">
-				<div class="list">
-					<div class="tatil">123人</div>
-					<div class="list-li" v-for="(item,index) in list5">
-						<div class="left">
-							<div class="img"><img :src="item.img" /></div>
-							<div class="name">
-								<p>{{item.name}}</p>
-								<p>累计积分 : {{item.jf}}</p>
-							</div>
-						</div>
-						<div class="right">{{item.time}}</div>
-					</div>
-				</div>
-			</swiper-item>
-			<!--钻石师-->
-			<swiper-item style="overflow: scroll;">
-				<div class="list">
-					<div class="tatil">123人</div>
-					<div class="list-li" v-for="(item,index) in list6">
-						<div class="left">
-							<div class="img"><img :src="item.img" /></div>
-							<div class="name">
-								<p>{{item.name}}</p>
-								<p>累计积分 : {{item.jf}}</p>
-							</div>
-						</div>
-						<div class="right">{{item.time}}</div>
-					</div>
-				</div>
-			</swiper-item>
-
+			</blockquote>
 		</swiper>
 
 	</div>
 </template>
 <script>
+import API_D from '@/api/distribe'
+import API_M from '@/api/member'
+import store from '@/store/store'
 	export default {
 		data() {
 			return {
 				listcurr: 0,
-				list1: [{
-						name: "AAAAAA",
-						time: "12月15-2018",
-						jf: 3000,
-						img: '/static/images/ku5p0efhhxr5.jpg'
-					},
-					{
-						name: "AAAAAA",
-						time: "12月15-2018",
-						jf: 3000,
-						img: '/static/images/ku5p0efhhxr5.jpg'
-					},
-				],
-				list2: [{
-						name: "AAAAAA",
-						time: "12月15-2018",
-						jf: 3000,
-						img: '/static/images/ku5p0efhhxr5.jpg'
-					},
-					{
-						name: "AAAAAA",
-						time: "12月15-2018",
-						jf: 3000,
-						img: '/static/images/ku5p0efhhxr5.jpg'
-					},
-				],
-				list3: [{
-						name: "AAAAAA",
-						time: "12月15-2018",
-						jf: 3000,
-						img: '/static/images/ku5p0efhhxr5.jpg'
-					},
-					{
-						name: "AAAAAA",
-						time: "12月15-2018",
-						jf: 3000,
-						img: '/static/images/ku5p0efhhxr5.jpg'
-					},
-				],
-				recommendList: [{
-						name: "vip1"
-					},
-					{
-						name: "vip2"
-					},
-					{
-						name: "vip3"
-					},
-					{
-						name: "银牌师"
-					},
-					{
-						name: "金牌师"
-					},
-					{
-						name: "钻石师"
-					},
-				],
+				recommendList: [],
+				userInfo:{}
 			}
 		},
-		onLoad() {
+		async onLoad() {
 			let that = this
+			that.recommendList = [];
+	        that.userInfo=store.state.userInfo
 			//重置
 			that.listcurr = 0
+			await that.GetMenberLv();
+			await that.GetDistributor();
+			console.log(this.recommendList[0].type,"拿到的类型数据")
+			this.recommendList[0].type == 1 ?
+						this.GetList(0,{tjUnionid:this.userInfo.unionid,lvId:this.recommendList[0].id}):
+						this.GetList(0,{tjUnionid:this.userInfo.unionid,distributorLvId:this.recommendList[0].id,distributorStatus:1})
 		},
 		methods: {
 			listTab(e) {
 				this.listcurr = e
+				console.log(this.recommendList[e],"点击",this.userInfo)
+				this.recommendList[e].type == 1 ?
+						this.GetList(e,{tjUnionid:this.userInfo.unionid,lvId:this.recommendList[e].id}):
+						this.GetList(e,{tjUnionid:this.userInfo.unionid,distributorLvId:this.recommendList[e].id,distributorStatus:1})
 			},
 			changeTab(e) {
 				let that = this
 				that.listcurr = e.mp.detail.current
+				this.recommendList[e].type == 1 ?
+						this.GetList(that.listcurr,{tjUnionid:this.userInfo.unionid,lvId:this.recommendList[that.listcurr].id}):
+						this.GetList(that.listcurr,{tjUnionid:this.userInfo.unionid,distributorLvId:this.recommendList[that.listcurr].id,distributorStatus:1})
+			},
+
+			//拿到所有会员等级
+			async GetMenberLv(){
+				let that = this;
+				let arr = []
+				let res = await API_M.GetMenberLvData().catch(err => {
+					console.log("报错的数据",err)
+				})
+				if(res.code == 0){
+						// that.recommendList = res.lvs
+						res.lvs.map(Mres => {
+						   let _Data = {}
+						   _Data.name = Mres.name;
+						   _Data.id = Mres.lvId;
+						   _Data.type = 1;
+						   _Data.options = [];
+						   _Data.total = 0;
+						   arr.push(_Data)
+						})
+						that.recommendList = that.recommendList.concat(arr)
+				}
+			},
+
+			//获取分享师的等级
+			async GetDistributor(){
+				let that = this;
+				let arr = []
+				let res = await API_D.GetDistributorData().catch(err => {
+					console.log("报错的数据",err)
+				})
+				if(res.code == 0){
+						res.distributorLvs.map(Mres => {
+							let _Data = {}
+						   _Data.name = Mres.name;
+						   _Data.id = Mres.distributorLvId;
+						   _Data.type = 2;
+						   _Data.options = [];
+						   _Data.total = 0;
+						   arr.push(_Data)
+						})
+						that.recommendList = that.recommendList.concat(arr)
+				}
+			},
+
+			GetList(index,data){
+				let that = this;
+				API_M.GetLvDtaLits(data).then(res => {
+					console.log(res,"拿到的数据")
+					if(res.code == 0){
+						that.recommendList[index].options = res.page.rows
+						that.recommendList[index].total =  res.page.total
+					}
+				}).catch(err => {
+				   console.log("报错的数据",err)
+				})
 			},
 		},
 	}
