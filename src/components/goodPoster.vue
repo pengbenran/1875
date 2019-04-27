@@ -15,7 +15,7 @@
 	import Api from '@/api/member'
 	import store from '@/store/store'
 	export default {
-		props: [''],
+		props: ['goodDetail'],
 		data() {
 			return {
 				userInfo:{},
@@ -60,7 +60,7 @@
 				params.params=`${that.userInfo.unionid},${goodsId},1`
 				Api.publicQRCode(params).then(function(QrcodeRes){
 					if(QrcodeRes.code==0){
-						that.eventDraw(QrcodeRes.quick,'/static/images/174a31e3460026b13ff87f87ede8db9.png')
+						that.eventDraw(QrcodeRes.quick,that.goodDetail.thumbnail)
 					}else{
 						ShowToast('失败','none')
 					}
@@ -76,9 +76,6 @@
 		   	wx.showLoading({
 		   		title:'推广码绘制中'
 		   	})	
-		   	let ImgArr = []
-		   	ImgArr[0]=bcgImg
-		   	ImgArr[1]=codeUrl
 		   	that.painting={
 		   		width: that.Width,
 		   		height: that.Height,
@@ -118,7 +115,7 @@
 		   		},
 		   		{
 		   			type: 'text',
-		   			content:'这是28px大小的平方字体并且做了加粗处理行间距是42px',
+		   			content:that.goodDetail.goodName,
 		   			fontSize: 16,
 		   			color: '#000',
 		   			textAlign: 'left',
@@ -131,7 +128,7 @@
 			   	},
 			   	{
 		   			type: 'text',
-		   			content:'青山湖区|八一广场店',
+		   			content:that.goodDetail.shopName+'|'+that.goodDetail.region,
 		   			fontSize: 14,
 		   			color: '#A0A0A0',
 		   			textAlign: 'left',
@@ -144,7 +141,7 @@
 			   	},
 			   	{
 			   		type: 'image',
-			   		url: 'https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKmCBv37GHG8z7ichticReYicHbxzNJqOhxrD50DHx1icmZ1icbmtPuAgqpakPxQ63hBFCHlUuzGSsCnjQ/132',
+			   		url:that.userInfo.face,
 			   		top: 390,
 			   		left: 10,
 			   		width:60,
@@ -153,7 +150,7 @@
 			   	},
 		   	    {
 		   			type: 'text',
-		   			content:'我的名字可以超级长的哦',
+		   			content:that.userInfo.name,
 		   			fontSize: 13,
 		   			color: '#000',
 		   			textAlign: 'left',
@@ -178,7 +175,7 @@
 			   	},
 			   	{
 		   			type: 'text',
-		   			content:'299.99',
+		   			content:that.goodDetail.price,
 		   			fontSize:22,
 		   			color: '#FD370E',
 		   			textAlign: 'left',

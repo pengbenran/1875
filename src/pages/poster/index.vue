@@ -20,7 +20,9 @@
 				userInfo:{},
 				Width:'',
 				Height:'',
-				bcgHeight:''
+				bcgHeight:'',
+				config:{},
+				distribInfo:{}
 			}
 		},
 		components:{
@@ -33,7 +35,7 @@
 				params.params=`${that.userInfo.unionid},0,2`
 				Api.publicQRCode(params).then(function(QrcodeRes){
 					if(QrcodeRes.code==0){
-						that.eventDraw(QrcodeRes.quick,'/static/images/174a31e3460026b13ff87f87ede8db9.png')
+						that.eventDraw(QrcodeRes.quick,that.config.distributorPoster)
 					}else{
 						ShowToast('失败','none')
 					}
@@ -53,7 +55,7 @@
 			   		views: [
 			   		{
 			   			type:'rect',
-			   			background:'#fd4032',
+			   			background:that.config.postBackgroud,
 			   			top:0,
 			   			left:0,
 			   			width:that.Width,
@@ -69,7 +71,7 @@
 			   		},
 			   		{
 			   			type: 'image',
-			   			url: 'https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKmCBv37GHG8z7ichticReYicHbxzNJqOhxrD50DHx1icmZ1icbmtPuAgqpakPxQ63hBFCHlUuzGSsCnjQ/132',
+			   			url: that.userInfo.face,
 			   			top: that.bcgHeight+20,
 			   			left: (that.Width-that.bcgHeight)/2,
 			   			width:60,
@@ -86,9 +88,9 @@
 			   		},
 			   		{
 			   			type: 'text',
-			   			content:'银牌推荐师银牌推荐师',
+			   			content:that.distribInfo.lvName,
 			   			fontSize: 18,
-			   			color: '#fff',
+			   			color: that.config.postFont,
 			   			textAlign: 'left',
 			   			breakWord: true,
 			   			top: that.bcgHeight+45,
@@ -99,9 +101,9 @@
 			   		},
 			   		{
 			   			type: 'text',
-			   			content:'我是一个超级无敌牛逼的银牌推荐师',
+			   			content:that.userInfo.name,
 			   			fontSize: 16,
-			   			color: '#fff',
+			   			color: that.config.postFont,
 			   			textAlign: 'left',
 			   			breakWord: true,
 			   			top: that.bcgHeight+90,
@@ -121,9 +123,9 @@
 			   		},
 			   		{
 			   			type: 'text',
-			   			content:'我正在玩  扫码一起',
+			   			content:that.config.postTage,
 			   			fontSize: 16,
-			   			color: '#fd4032',
+			   			color: that.config.tageFont,
 			   			textAlign: 'left',
 			   			breakWord: true,
 			   			top: that.bcgHeight+135,
@@ -136,7 +138,7 @@
 			   			type: 'text',
 			   			content:'微信扫一扫',
 			   			fontSize: 16,
-			   			color: '#fff',
+			   			color: that.config.postFont,
 			   			textAlign: 'left',
 			   			breakWord: true,
 			   			top:  that.bcgHeight+145,
@@ -182,6 +184,10 @@
 			that.Height=that.Width*1.45
 			that.bcgHeight=that.Width-20
 			that.userInfo = store.state.userInfo
+			if(that.userInfo.distributorStatus==1){
+				that.distribInfo=store.state.distribInfo
+			}
+			that.config=store.state.config
 			that.getErCode()
 			// if(wx.getStorageSync('shareImage')){
 			// 	that.shareImage=wx.getStorageSync('shareImage')

@@ -98,7 +98,7 @@
 				return utils.accAdd(that.userInfo.point,that.userInfo.consumePoint)
 			}
 		},
-		mounted(){
+		onShow(){
 			let that=this
 			that.userInfo=store.state.userInfo
 			if(that.userInfo.distributorStatus==1){

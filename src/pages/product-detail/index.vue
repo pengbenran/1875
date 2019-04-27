@@ -75,7 +75,7 @@
 		
 
 		<!-- 分享海报 -->
-		<goodPoster ref="goodPoster" @closePoster='closePoster' @paintOk='paintOk'></goodPoster>
+		<goodPoster ref="goodPoster" @closePoster='closePoster' @paintOk='paintOk' :goodDetail='good'></goodPoster>
 	
 
 		<!--购买弹窗-->

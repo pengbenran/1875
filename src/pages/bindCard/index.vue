@@ -109,7 +109,6 @@
 			},
 			editBankCard(){
 				let that=this
-
 				Api.editBankCard(that.applyFrom).then(function(res){
 					if(res.code==0){
 						wx.showToast({title: '修改成功',icon: 'success',duration: 2000})

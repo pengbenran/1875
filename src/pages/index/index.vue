@@ -209,11 +209,9 @@
 			// 获取全局配置
 			getConfig(){
 				Api.getConfig().then(function(res){
-					console.log(res);
-					store.commit("storeConfig",{pointDeduction:0.01})
-					// if(res.code==0){
-					// 	store.commit("storeConfig",res.globalConfigEntity)
-					// }
+					if(res.code==0){
+						store.commit("storeConfig",res.globalConfigEntity)
+					}
 				})
 			},
 			getIndexImage(){
