@@ -49,7 +49,8 @@
 
 								<div class="condition" v-if="child.status == 3">
 									<div class="condition-left"><span>{{child.condition}}</span></div>
-									<div class="condition-right"><span @click="CloseOrder(child.orderId,index,cindex)">取消</span><span @click="jumpdetail(child.orderId)">订单详情</span></div>
+									<div class="condition-right"><span  @click="CloseOrder(child.orderId,index,cindex)">取消</span></div>
+
 								</div>
 							</div>
 						</div>
