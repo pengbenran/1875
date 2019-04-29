@@ -11,7 +11,7 @@
 		<swiper style="height:100vh" duration='350' :current="listcurr" @change="changeTab">
 			<blockquote v-for="(item,index) in recommendList" :key="item" :index="index">
 			<swiper-item style="overflow: scroll;">
-				<div class="list">
+				<div v-if="item.total!==0" class="list">
 					<div class="tatil">{{item.total}}人</div>
 					<div class="list-li" v-for="(itemc,ind) in item.options" :key="itemc">
 						<div class="left">
@@ -24,10 +24,16 @@
 						<div class="right">{{itemc.boundTime}}</div>
 					</div>
 				</div>
+				       <!--空-->
+		       <div v-if="item.total==0" class="kong">
+		       	<div class="img"><img src="/static/images/kong.png"/></div>
+		       	<div class="text">暂无队友，快去邀请吧~</div>
+		       	<div class="btn">去邀请</div>
+		      </div>
+       
 			</swiper-item>
 			</blockquote>
 		</swiper>
-
 	</div>
 </template>
 <script>
@@ -58,12 +64,6 @@ import store from '@/store/store'
 		methods: {
 			listTab(e) {
 				this.listcurr = e
-				// console.log(this.recommendList[e],"点击",this.userInfo,)
-				// this.recommendList[e].type == 1
-				// this.recommendList[e].type == 1 ? console.log("111") : console.log()
-				// this.recommendList[e].type == 1 ?
-				// 		this.GetList(e,{tjUnionid:this.userInfo.unionid,lvId:this.recommendList[e].id}):
-				// 		this.GetList(e,{tjUnionid:this.userInfo.unionid,distributorLvId:this.recommendList[e].id,distributorStatus:1})
 			},
 			changeTab(e) {
 				let that = this
@@ -133,6 +133,34 @@ import store from '@/store/store'
 </script>
 
 <style scoped lang="less">
+/*空*/
+.kong{
+	margin-top: 50px;
+	line-height: 1;
+	.img{
+		width: 191px;
+		height: 78px;
+		margin: 0 auto;
+	}
+	.text{
+		font-size: 17px;
+		color: #333333;
+		text-align: center;
+		padding: 35px 0 30px;
+	}
+	.btn{
+		width: 80px;
+		height: 33px;
+		border: 1px solid;
+		border-radius: 17px;
+		text-align: center;
+		margin: 0 auto;
+		color: #ff6e6e;
+		font-size: 14px;
+		font-weight: bold;
+		line-height: 33px;
+	}
+}
 	swiper-item {
 		width: 100%;
 		box-sizing: border-box;

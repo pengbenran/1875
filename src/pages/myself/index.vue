@@ -261,7 +261,7 @@
 					font-size: 20px;
 				}
 				.name {
-					font-size: 12px;
+					font-size: 14px;
 					color: #333333;
 					margin-top: 12PX;
 				}

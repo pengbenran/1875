@@ -12,8 +12,8 @@
 			<!--全部-->
 			<blockquote v-for="(item,index) in recommendList" :key="item" :index='index'>
 				<swiper-item style="overflow: scroll;">
-					<div class="cates0">
-						<div class="cate-list" v-for="(child,cindex) in item.options" >
+					<div v-if="item.options.length!==0" class="cates0">
+						<div class="cate-list" v-for="(child,cindex) in item.options">
 							<div class="top">
 								<div class="img"><img :src="child.goodThumbnail" /></div>
 								<div class="cant">
@@ -28,7 +28,8 @@
 								</div>
 							</div>
 							<div class="Warp">
-								<div class="condition" v-if="child.status == 0"><div class="condition-left"><span>{{child.condition}}</span></div>
+								<div class="condition" v-if="child.status == 0">
+									<div class="condition-left"><span>{{child.condition}}</span></div>
 									<div class="condition-right">
 										<span @click="CloseOrder(child.orderId,index,cindex)">取消</span>
 										<span @click="Pay(child.orderId,child.needPayMoney)">立即付款</span>
@@ -37,77 +38,86 @@
 
 								<div class="condition" v-if="child.status == 1">
 									<div class="condition-left"><span>{{child.condition}}</span></div>
-									<div class="condition-right"><!--<span>取消</span>--><span  @click="jumpdetail(child.orderId)">订单详情</span></div>
+									<div class="condition-right">
+										<!--<span>取消</span>--><span @click="jumpdetail(child.orderId)">订单详情</span></div>
 								</div>
 
 								<div class="condition" v-if="child.status == 2">
 									<div class="condition-left"><span>{{child.condition}}</span></div>
-									<div class="condition-right"><span  @click="CloseOrder(child.orderId,index,cindex)">取消</span><span  @click="jumpdetail(child.orderId)">订单详情</span></div>
+									<div class="condition-right"><span @click="CloseOrder(child.orderId,index,cindex)">取消</span><span @click="jumpdetail(child.orderId)">订单详情</span></div>
 								</div>
 
-								<div class="condition"  v-if="child.status == 3">
+								<div class="condition" v-if="child.status == 3">
 									<div class="condition-left"><span>{{child.condition}}</span></div>
 									<div class="condition-right"><span  @click="CloseOrder(child.orderId,index,cindex)">取消</span></div>
+
 								</div>
 							</div>
 						</div>
 					</div>
+
+					<!--空-->
+					<div v-if="item.options.length==0" class="kong">
+						<div class="img"><img src="/static/images/kong.png" /></div>
+						<div class="text">暂无订单，快去逛逛吧~</div>
+					</div>
+
 				</swiper-item>
 			</blockquote>
 		</swiper>
 	</div>
 </template>
 <script>
-import API from '@/api/order'
-import store from '@/store/store'
+	import API from '@/api/order'
+	import store from '@/store/store'
 	export default {
 		data() {
 			return {
 				listcurr: 0,
-				UserInfo:{},
-				isSubmit:false,
+				UserInfo: {},
+				isSubmit: false,
 				recommendList: [{
 						name: "全部",
-						options:[],
+						options: [],
 						page: 1,
 						limit: 10,
-						flag:true,
+						flag: true,
 					},
 					{
 						name: "待付款",
-						options:[],
+						options: [],
 						page: 1,
 						limit: 10,
-						flag:true,
-						status:0,
-						expiredStatus:2
+						flag: true,
+						status: 0,
+						expiredStatus: 2
 					},
 					{
 						name: "待使用",
-						options:[],
+						options: [],
 						page: 1,
 						limit: 10,
-						flag:true,
-						status:1,
-						expiredStatus:2
+						flag: true,
+						status: 1,
+						expiredStatus: 2
 					},
 					{
 						name: "已使用",
-						options:[],
+						options: [],
 						page: 1,
 						limit: 10,
-						flag:true,
-						status:2,
-						expiredStatus:2
+						flag: true,
+						status: 2,
+						expiredStatus: 2
 					},
 					{
 						name: "已过期",
-						options:[],
+						options: [],
 						page: 1,
 						limit: 10,
-						flag:true,
-						status:3,
-						expiredStatus:1
+						flag: true,
+						status: 3,
+						expiredStatus: 1
 					},
 				],
 			}
@@ -121,21 +131,26 @@ import store from '@/store/store'
 			//重置
 			that.listcurr = 0;
 			that.UserInfo = store.state.userInfo;
-			that.GetOrderListData(Object.assign({},{unionId:that.UserInfo.unionid},{page: 1,limit: 10}),0)
+			that.GetOrderListData(Object.assign({}, {
+				unionId: that.UserInfo.unionid
+			}, {
+				page: 1,
+				limit: 10
+			}), 0)
 		},
 		methods: {
 			listTab(e) {
-				let that= this;
+				let that = this;
 				this.listcurr = e
 				let data = {
-					unionId:that.UserInfo.unionid,
-					page:that.recommendList[e].page,
-					limit:that.recommendList[e].limit,
-					status:that.recommendList[e].status,
-					expiredStatus:that.recommendList[e].expiredStatus
+					unionId: that.UserInfo.unionid,
+					page: that.recommendList[e].page,
+					limit: that.recommendList[e].limit,
+					status: that.recommendList[e].status,
+					expiredStatus: that.recommendList[e].expiredStatus
 				}
-				if(that.recommendList[e].options.length < 1){
-				    that.GetOrderListData(data,e)
+				if(that.recommendList[e].options.length < 1) {
+					that.GetOrderListData(data, e)
 				}
 			},
 			changeTab(e) {
@@ -149,100 +164,150 @@ import store from '@/store/store'
 			},
 
 			//取消订单
-			CloseOrder(orderId,Pindex,Cindex){
+			CloseOrder(orderId, Pindex, Cindex) {
 				let that = this;
-                API.DeleteOrder({orderId:orderId}).then(res =>{
-					if(res.code == 0){
-						that.recommendList[Pindex].options.splice(Cindex,1)
-                        wx.showToast({title: '取消成功',icon: 'none',duration: 2000})	
-					}else{
-				    	wx.showToast({title: '网络错误',icon: 'none',duration: 2000})							
+				API.DeleteOrder({
+					orderId: orderId
+				}).then(res => {
+					if(res.code == 0) {
+						that.recommendList[Pindex].options.splice(Cindex, 1)
+						wx.showToast({
+							title: '取消成功',
+							icon: 'none',
+							duration: 2000
+						})
+					} else {
+						wx.showToast({
+							title: '网络错误',
+							icon: 'none',
+							duration: 2000
+						})
 					}
-				}).catch(err =>{
-				    	wx.showToast({title: '网络错误',icon: 'none',duration: 2000})	
+				}).catch(err => {
+					wx.showToast({
+						title: '网络错误',
+						icon: 'none',
+						duration: 2000
+					})
 				})
 			},
-			
 
 			//请求数据
-			GetOrderListData(data,index){
+			GetOrderListData(data, index) {
 				let that = this;
-					API.GetOrderList(data).then(res => {
-						if(res.code == 0){
-						   that.recommendList[index].options =that.recommendList[index].options.concat(res.orderList);
-						}else{
-						wx.showToast({title: '网络错误',icon: 'none',duration: 2000})							
-						}
-					}).catch(err => {
-						wx.showToast({title: '网络错误',icon: 'none',duration: 2000})
+				API.GetOrderList(data).then(res => {
+					if(res.code == 0) {
+						that.recommendList[index].options = that.recommendList[index].options.concat(res.orderList);
+					} else {
+						wx.showToast({
+							title: '网络错误',
+							icon: 'none',
+							duration: 2000
+						})
+					}
+				}).catch(err => {
+					wx.showToast({
+						title: '网络错误',
+						icon: 'none',
+						duration: 2000
 					})
+				})
 			},
 
 			//支付事件
-			Pay(){
+			Pay() {
 				let that = this;
-				if(!that.isSubmit){
-					that.isSubmit=true
+				if(!that.isSubmit) {
+					that.isSubmit = true
 					that.weixinPay()
 				}
 			},
 
-			weixinPay(orderId,needPayMoney){
-				let params={}
-				let that=this
+			weixinPay(orderId, needPayMoney) {
+				let params = {}
+				let that = this
 				params.orderId = orderId
-				params.openId=that.UserInfo.xopenid
-	            // params.total_fee = needPayMoney*100
-	            params.payAmount=1
-	            API.prepay(params).then(function(parRes){
-	            	wx.requestPayment({
-	            		timeStamp: parRes.Map.timeStamp,
-	            		nonceStr: parRes.Map.nonceStr,
-	            		package: parRes.Map.package,
-	            		signType: parRes.Map.signType, 
-	            		paySign: parRes.Map.paySign,
-	            		success: function (res) {
-	            			wx.showToast({
-	            				title: '支付成功',
-	            				icon: 'success',
-	            				duration: 2000
-	            			})
-	            			that.payOrder(orderId)
-	            		},
-	            		fail: function (res) {
-		                        // fail
-		                        wx.showToast({
-		                        	title: '支付失败',
-		                        	icon: 'success',
-		                        	duration: 2000
-		                        })
-		                    },
-		                    complete: function (complete) {
-		                        // complete   
-		                        that.isSubmit=false
-		                    }
-		                })
-	            })
+				params.openId = that.UserInfo.xopenid
+				// params.total_fee = needPayMoney*100
+				params.payAmount = 1
+				API.prepay(params).then(function(parRes) {
+					wx.requestPayment({
+						timeStamp: parRes.Map.timeStamp,
+						nonceStr: parRes.Map.nonceStr,
+						package: parRes.Map.package,
+						signType: parRes.Map.signType,
+						paySign: parRes.Map.paySign,
+						success: function(res) {
+							wx.showToast({
+								title: '支付成功',
+								icon: 'success',
+								duration: 2000
+							})
+							that.payOrder(orderId)
+						},
+						fail: function(res) {
+							// fail
+							wx.showToast({
+								title: '支付失败',
+								icon: 'success',
+								duration: 2000
+							})
+						},
+						complete: function(complete) {
+							// complete   
+							that.isSubmit = false
+						}
+					})
+				})
 			},
 
-			async payOrder(orderId){
-	        	// 订单支付成功之后修改订单状态
-	        	let that=this
-	        	let statuParam={}
-	        	statuParam.orderId=orderId
-	        	let payOrder=await API.payOrder(statuParam)
-	        	if(payOrder.code==0){
-	        		utils.updateUserInfo()
-	        		wx.redirectTo({
-	        			url: '../myself-order-detail/main?orderId='+orderId
-	        		})
-	        	}
-	        }
+			async payOrder(orderId) {
+				// 订单支付成功之后修改订单状态
+				let that = this
+				let statuParam = {}
+				statuParam.orderId = orderId
+				let payOrder = await API.payOrder(statuParam)
+				if(payOrder.code == 0) {
+					utils.updateUserInfo()
+					wx.redirectTo({
+						url: '../myself-order-detail/main?orderId=' + orderId
+					})
+				}
+			}
 		},
 	}
 </script>
 
 <style scoped lang="less">
+	/*空*/	
+	.kong {
+		margin-top: 120px;
+		line-height: 1;
+		.img {
+			width: 191px;
+			height: 78px;
+			margin: 0 auto;
+		}
+		.text {
+			font-size: 17px;
+			color: #333333;
+			text-align: center;
+			padding: 35px 0 30px;
+		}
+		.btn {
+			width: 80px;
+			height: 33px;
+			border: 1px solid;
+			border-radius: 17px;
+			text-align: center;
+			margin: 0 auto;
+			color: #ff6e6e;
+			font-size: 14px;
+			font-weight: bold;
+			line-height: 33px;
+		}
+	}
+	
 	.container {
 		background: #F4F4F4;
 	}
@@ -285,7 +350,8 @@ import store from '@/store/store'
 			}
 		}
 	}
-	/**/	
+	/**/
+	
 	.cates0,
 	.cates1,
 	.cates2,
@@ -364,11 +430,9 @@ import store from '@/store/store'
 					display: flex;
 					span {
 						display: block;
-						border-radius: 16.5px;
+						border-radius: 20px;
 						text-align: center;
-						line-height: 33px;
-						width: 64px;
-						height: 32px;
+						padding: 8px 15px;
 						font-size: 14px;
 						&:nth-child(1) {
 							border: 1px solid #dedede;
@@ -390,17 +454,18 @@ import store from '@/store/store'
 	
 	.cates0 {
 		.cate-list {
-				.top{
-					.cant{
-						.pic{
-							color: #333333;
-							font-weight: bold;
-						}
+			.top {
+				.cant {
+					.pic {
+						color: #333333;
+						font-weight: bold;
 					}
 				}
 			}
 		}
- /*待付款*/	
+	}
+	/*待付款*/
+	
 	.cates1 {
 		.cate-list {
 			.condition {
@@ -416,7 +481,10 @@ import store from '@/store/store'
 		}
 	}
 	/*已使用  已完成*/
-	.cates2,.cates3, {
+	
+	.cates2,
+	.cates3,
+	{
 		.cate-list {
 			.condition {
 				.condition-right {

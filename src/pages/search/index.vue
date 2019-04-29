@@ -36,9 +36,6 @@
 							</div>
 						</div>
 					</div>
-				</div>      
-				<div class="hidd iconfont" @click="hide">
-				   &#xe809;
 				</div>       
 			</blockquote>
 

@@ -1,5 +1,6 @@
 {
 	"pages":[
+	    "pages/cancel/main",
 		"pages/index/main",
 	    "pages/myself-tx/main", 
 		"pages/myself-team/main",

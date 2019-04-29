@@ -11,11 +11,11 @@
 		</div>
 		<div class="inpList">
 			<label>卡号</label>
-			<input type="text" placeholder="请输入银行卡卡号" placeholder-style="color:#999" v-model='applyFrom.cardno'>	
+			<input type="number" placeholder="请输入银行卡卡号" placeholder-style="color:#999" v-model='applyFrom.cardno'>	
 		</div>
 		<div class="inpList">
 			<label>确认卡号</label>
-			<input type="text" placeholder="请再次输入银行卡卡号" placeholder-style="color:#999" v-model="cardnoTwo">	
+			<input type="number" placeholder="请再次输入银行卡卡号" placeholder-style="color:#999" v-model="cardnoTwo">	
 		</div>
 		<div class="tip">{{tip}}</div>
 		<div class="btn" :style="{background:bcg}" @click="submitBankCard">

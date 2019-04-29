@@ -17,7 +17,7 @@
             <blockquote v-else>
 				<div class="lists">
 					<div class="list">
-						<div class="tit">热门搜索</div>
+						<div class="tit">门搜索</div>
 						<div class="list-wp">
 							<div class="list-li" v-for="(item,index) in list">
 								<span hover="true" hover-class="detail-hover">{{item.name}}</span>
