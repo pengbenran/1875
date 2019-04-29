@@ -479,13 +479,13 @@
 					font-weight: bold;
 				}
 				.tit2 {
-					font-size: 18px;
+					font-size: 16px;
 					color: #333333;
 					margin-left: 53px;
 					font-weight: bold;
 					span {
 						&:nth-child(2) {
-							font-size: 14px;
+							font-size: 12px;
 							margin-left: 6px;
 						}
 					}

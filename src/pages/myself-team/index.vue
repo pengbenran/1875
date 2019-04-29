@@ -11,7 +11,7 @@
 		<swiper style="height:100vh" duration='350' :current="listcurr" @change="changeTab">
 			<!--vip1-->
 			<swiper-item style="overflow: scroll;">
-				<div class="list">
+				<div v-if="list1.length"  class="list">
 					<div class="tatil">123人</div>
 					<div class="list-li" v-for="(item,index) in list1">
 						<div class="left">
@@ -24,10 +24,18 @@
 						<div class="right">{{item.time}}</div>
 					</div>
 				</div>
+              								
+				<!--空-->
+				<div v-if="list1.length==0" class="kong">
+					<div class="img"><img src="/static/images/kong.png"/></div>
+					<div class="tit">暂无队友，快去邀请吧~</div>
+					<div class="btn">去邀请</div>
+				</div>
+				
 			</swiper-item>
 			<!--vip2-->
 			<swiper-item style="overflow: scroll;">
-				<div class="list">
+				<div  v-if="list2.length" class="list">
 					<div class="tatil">123人</div>
 					<div class="list-li" v-for="(item,index) in list2">
 						<div class="left">
@@ -40,10 +48,18 @@
 						<div class="right">{{item.time}}</div>
 					</div>
 				</div>
+												
+				<!--空-->
+				<div v-if="list2.length==0" class="kong">
+					<div class="img"><img src="/static/images/kong.png"/></div>
+					<div class="tit">暂无队友，快去邀请吧~</div>
+					<div class="btn">去邀请</div>
+				</div>
+				
 			</swiper-item>
 			<!--vip3-->
 			<swiper-item style="overflow: scroll;">
-				<div class="list">
+				<div v-if="list3.length" class="list">
 					<div class="tatil">123人</div>
 					<div class="list-li" v-for="(item,index) in list3">
 						<div class="left">
@@ -56,10 +72,17 @@
 						<div class="right">{{item.time}}</div>
 					</div>
 				</div>
+												
+				<!--空-->
+				<div v-if="list4.length==3" class="kong">
+					<div class="img"><img src="/static/images/kong.png"/></div>
+					<div class="tit">暂无队友，快去邀请吧~</div>
+					<div class="btn">去邀请</div>
+				</div>
 			</swiper-item>
 			<!--银牌师-->
 			<swiper-item style="overflow: scroll;">
-				<div class="list">
+				<div v-if="list4.length" class="list">
 					<div class="tatil">123人</div>
 					<div class="list-li" v-for="(item,index) in list4">
 						<div class="left">
@@ -72,10 +95,17 @@
 						<div class="right">{{item.time}}</div>
 					</div>
 				</div>
+								
+				<!--空-->
+				<div v-if="list4.length==0" class="kong">
+					<div class="img"><img src="/static/images/kong.png"/></div>
+					<div class="tit">暂无队友，快去邀请吧~</div>
+					<div class="btn">去邀请</div>
+				</div>
 			</swiper-item>
 			<!--金牌师-->
 			<swiper-item style="overflow: scroll;">
-				<div class="list">
+				<div v-if="list5.length" class="list">
 					<div class="tatil">123人</div>
 					<div class="list-li" v-for="(item,index) in list5">
 						<div class="left">
@@ -88,10 +118,18 @@
 						<div class="right">{{item.time}}</div>
 					</div>
 				</div>
+												
+				<!--空-->
+				<div v-if="list5.length==0" class="kong">
+					<div class="img"><img src="/static/images/kong.png"/></div>
+					<div class="tit">暂无队友，快去邀请吧~</div>
+					<div class="btn">去邀请</div>
+				</div>
+				
 			</swiper-item>
 			<!--钻石师-->
 			<swiper-item style="overflow: scroll;">
-				<div class="list">
+				<div v-if="list6.length" class="list">
 					<div class="tatil">123人</div>
 					<div class="list-li" v-for="(item,index) in list6">
 						<div class="left">
@@ -103,6 +141,13 @@
 						</div>
 						<div class="right">{{item.time}}</div>
 					</div>
+				</div>
+												
+				<!--空-->
+				<div v-if="list6.length==0" class="kong">
+					<div class="img"><img src="/static/images/kong.png"/></div>
+					<div class="tit">暂无队友，快去邀请吧~</div>
+					<div class="btn">去邀请</div>
 				</div>
 			</swiper-item>
 
@@ -154,6 +199,9 @@
 						img: '/static/images/ku5p0efhhxr5.jpg'
 					},
 				],
+				list4:[],
+				list5:[],
+				list6:[],
 				recommendList: [{
 						name: "vip1"
 					},
@@ -187,12 +235,40 @@
 			changeTab(e) {
 				let that = this
 				that.listcurr = e.mp.detail.current
+				
 			},
 		},
 	}
 </script>
 
 <style scoped lang="less">
+/*空*/
+    .kong{
+    	width: 100%;
+    	margin-top: 50px;
+    	.img{
+    		width: 191px;
+    		height: 78px;
+    		margin: 0 auto;
+    	}
+    	.tit{
+    		font-size: 17px;
+    		color: #333333;
+    		padding: 27px 0;
+    		text-align: center;
+    	}
+    	.btn{
+    		width: 80px;
+    		height: 33px;
+    		border-radius: 17px;
+    		border: 1px solid #FF6E6E;
+    		margin: 0 auto;
+    		text-align: center;
+    		line-height: 33px;
+    		font-size: 14px;
+    		color: #ff6e6e;
+    	}
+    }
 	swiper-item {
 		width: 100%;
 		box-sizing: border-box;
