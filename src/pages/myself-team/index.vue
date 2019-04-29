@@ -64,10 +64,6 @@ import store from '@/store/store'
 		methods: {
 			listTab(e) {
 				this.listcurr = e
-//				console.log(this.recommendList[e],"点击",this.userInfo)
-//				this.recommendList[e].type == 1 ?
-//						this.GetList(e,{tjUnionid:this.userInfo.unionid,lvId:this.recommendList[e].id}):
-//						this.GetList(e,{tjUnionid:this.userInfo.unionid,distributorLvId:this.recommendList[e].id,distributorStatus:1})
 			},
 			changeTab(e) {
 				let that = this
