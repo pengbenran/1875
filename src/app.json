@@ -1,7 +1,8 @@
 {
 	"pages":[
+	    "pages/cancel-no/main",
+		"pages/index/main", 
 	    "pages/cancel/main",
-		"pages/index/main",
 	    "pages/myself-tx/main", 
 		"pages/myself-team/main",
 		"pages/bindCard/main",
