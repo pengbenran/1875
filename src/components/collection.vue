@@ -1,34 +1,35 @@
 <template>
 	<div class="rec-product">
-		<div  class="rec-product-warp" v-for="(item,index) in recNearby">
-		<div class="rec-product-li" >
-			<div class="left">
-				<img :src="item.thumbnail" />
-			</div>
-			<div class="right">
-				<div class="tit">{{item.goodName}}</div>
+		<div class="rec-product-warp" v-for="(item,index) in recNearby">
+			<div class="rec-product-li">
+				<div class="left">
+					<img :src="item.thumbnail" />
+				</div>
+				<div class="right">
+					<div class="tit">{{item.goodName}}</div>
 
-				<div class="address">
-					<span>{{item.address}}</span>
-					<span>丨</span>
-					<span>{{item.subway}}</span>
-				</div>
-				<div class="pic">
-					<div class="pic-left">
-						<p>
-							<span class="rmb">¥</span>
-							<span>{{item.price}}</span>
-						</p>
-						<p>¥{{item.showPrice}}</p>
+					<div class="address">
+						<span>{{item.address}}</span>
+						<span>丨</span>
+						<span>{{item.subway}}</span>
 					</div>
-					<!-- <div class="pic-right">200m</div> -->
+					<div class="pic">
+						<div class="pic-left">
+							<p>
+								<span class="rmb">¥</span>
+								<span>{{item.price}}</span>
+							</p>
+							<p>¥{{item.showPrice}}</p>
+						</div>
+						<!-- <div class="pic-right">200m</div> -->
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="bar">
-               <div class="bar_left"><div class="bar_Img"><img src="/static/images/love1.png" /></div> <span>{{item.favorites}}人喜欢</span> </div>
-			   <div class="bar_right"><span @click="jumpdetail(item.goodId)">立即购买</span></div>
-		</div>
+			<div class="bar">
+				<div class="bar_left">
+					<div class="bar_Img"><img src="/static/images/love1.png" /></div> <span>{{item.favorites}}人喜欢</span> </div>
+				<div class="bar_right"><span @click="jumpdetail(item.goodId)">立即购买</span></div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -37,41 +38,41 @@
 	export default {
 		props: ['recNearby'],
 		watch: {
-           recNearby(val){
-              console.log("监听了一波数据",val)
-		   }
+			recNearby(val) {
+				console.log("监听了一波数据", val)
+			}
 		},
 		data() {
 			return {}
 		},
 
 		methods: {
-			jumpdetail(goodsId){
-			  wx.navigateTo({
-                url:'../product-detail/main?goodsId='+goodsId		  			  	
-			  })
+			jumpdetail(goodsId) {
+				wx.navigateTo({
+					url: '../product-detail/main?goodsId=' + goodsId
+				})
 			}
 		},
 	}
 </script>
 
 <style scoped lang="less">
-.rec-product-warp{
-	background: #FFFFFF;
-			box-sizing: border-box;
-			padding: 8px 0 8px 8px;
-			box-shadow: 0 2px 4px 2px #f4f4f4;
-			border-radius: 4px;
-			margin-top: 4px;
-}
+	.rec-product-warp {
+		background: #FFFFFF;
+		box-sizing: border-box;
+		padding: 8px 0 0px 8px;
+		box-shadow: 0 2px 4px 2px #f4f4f4;
+		border-radius: 4px;
+		margin-top: 4px;
+	}
+	
 	.rec-product {
-		padding: 0 12px 50px 12px;
+		padding: 0 12px 0px 12px;
+		margin-bottom: 12px;
 		box-sizing: border-box;
 		.rec-product-li {
-			
 			display: flex;
-            margin-bottom: 4px;
-			
+			margin-bottom: 4px;
 			.left {
 				width: 134px;
 				height: 134px;
@@ -98,7 +99,6 @@
 					font-size: 12px;
 					padding: 17px 0;
 				}
-			
 				.pic {
 					display: flex;
 					align-items: flex-end;
@@ -121,21 +121,50 @@
 							}
 						}
 					}
-					.pic-right{
+					.pic-right {
 						color: #999999;
-					    font-size: 12px;
+						font-size: 12px;
 					}
 				}
 			}
 		}
 	}
-	.bar{
-		
-		padding: 0 8px; display: flex;align-items: center;justify-content: space-between;
-		.bar_right span{display: inline-block;padding: 2px 15px;background: #ff4b27;color:#fff;border-radius: 15px;}
+	
+	.bar {
+		padding: 0 12px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		height: 49px;
+		box-sizing: border-box;
+		.bar_right span {
+			display: inline-block;
+            width: 95px;
+            height: 33px;
+            border-radius: 17px;
+            background: #ff6e6e;
+            text-align: center;
+            line-height: 33px;
+            font-size: 14px;
+            color: #FFFFFF;
+		}
 	}
-	.bar_left{display:flex;align-items: center;
-		.bar_Img{width: 25px;height: 25px;}
-		.bar_Img{vertical-align:middle;}
+	
+	.bar_left {
+		display: flex;
+		align-items: center;
+		.bar_Img {
+			width: 25px;
+			height: 25px;
+		}
+		.bar_Img {
+			vertical-align: middle;
+		}
+		span{
+			font-size: 15px;
+			color: #333333;
+			margin-left: 2px;
+		}
 	}
 </style>

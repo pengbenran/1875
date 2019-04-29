@@ -64,6 +64,8 @@
 				width: 100%;
 				height: 170px;
 				overflow: hidden;
+				border-top-left-radius: 4px;
+				border-top-right-radius: 4px;
 			} 
 			.bottom {
 				width: 100%;

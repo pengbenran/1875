@@ -36,9 +36,6 @@
 							</div>
 						</div>
 					</div>
-				</div>      
-				<div class="hidd iconfont" @click="hide">
-				   &#xe809;
 				</div>       
 			</blockquote>
 
@@ -86,6 +83,11 @@
 				wx.setStorageSync('SearchData',[])
 			}
 			this.GetHotSearchData();
+
+			if(this.$root.$mp.query.SearchName != undefined){
+				this.listQuery.searchParam = this.$root.$mp.query.SearchName
+				this.GetSearchData()
+			}
 		},
 		methods: {
 			SearchClick(){
@@ -128,7 +130,7 @@
 				let that = this;
 				API_g.getHotSearTag().then(res => {
 					if(res.code == 0){
-						that.tagLits = res.searchs
+						that.tagLits = res.searchs.filter(f => f.parentId != 0);
 					}else{
 						Lib.ShowToast('失败','none')						
 					}

@@ -153,7 +153,7 @@
 					input {
 						height: 100%;
 						width: 100%;
-						font-size: 25px;
+						font-size: 27px;
 						color: #333333;
 						font-weight: bold;
 						padding-left:5px; 
