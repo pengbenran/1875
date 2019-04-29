@@ -1,10 +1,12 @@
 {
 	"pages":[
-
+	    "pages/cancel/main",
 		"pages/index/main",
+	    "pages/myself-tx/main", 
+		"pages/myself-team/main",
+		"pages/bindCard/main",
 		"pages/distribeApply/main",
 		"pages/onePennyGrab/main",
-     	"pages/myself-tx/main", 
 	    "pages/myself-order-detail/main", 
 		"pages/myself/main",
 		"pages/product-detail/main",
@@ -18,7 +20,6 @@
 	    "pages/myself-income/main",
 	    "pages/myself-kt/main",
 		"pages/myself-order/main",
-		"pages/myself-team/main",
 		"pages/myself-like/main",
 		"pages/myself-red/main" ,
 		"pages/search/main",

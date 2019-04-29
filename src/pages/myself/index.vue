@@ -5,10 +5,13 @@
 			<div class="img"><img :src="userInfo.face" /></div>
 			<div class="name">{{userInfo.name}}</div>
 			<div class="id">圈号: {{userInfo.memberId}}</div>
-			<div class="vip">
-				<div class="vip-img" v-if="vip==1"><img src="/static/images/VIP1.gif"/></div>
-				<div class="vip-img" v-if="vip==2"><img src="/static/images/VIP2.gif"/></div>
-				<div class="vip-img" v-if="vip==3"><img src="/static/images/VIP3.gif"/></div>	 			
+			<div class="vip" @click="toVip">
+				<div class="vip-img" v-if="userInfo.lvId==24&&userInfo.distributorStatus==2"><img src="/static/images/VIP1.gif"/></div>
+				<div class="vip-img" v-if="userInfo.lvId==25&&userInfo.distributorStatus==2"><img src="/static/images/VIP2.gif"/></div>
+				<div class="vip-img" v-if="userInfo.lvId==26&&userInfo.distributorStatus==2"><img src="/static/images/VIP3.gif"/></div>	 			
+				<div class="vip-img" v-if="distribInfo.lvId==14&&userInfo.distributorStatus==1"><img src="/static/images/share1.gif"/></div>
+				<div class="vip-img" v-if="distribInfo.lvId==15&&userInfo.distributorStatus==1"><img src="/static/images/share2.gif"/></div>
+				<div class="vip-img" v-if="distribInfo.lvId==16&&userInfo.distributorStatus==1"><img src="/static/images/share3.gif"/></div>	 			
 				<div class="iconfont icon">&#xe625;</div> 
 			</div> 
 		</div>
@@ -21,15 +24,15 @@
 				</div>
 				<div class="list-li2" @click="listLi2">
 					<div class="iconfont icon">&#xe629;</div>
-					<div class="name">红包 ({{num}})</div>
+					<div class="name">红包</div>
 				</div>
 				<div class="list-li4" @click="listLi4">
 					<div class="iconfont icon">&#xe626;</div> 
-					<div class="name">喜欢 ({{num}})</div>
+					<div class="name">喜欢</div>
 				</div>
 				<div class="list-li5" @click="listLi5">
 					<div class="iconfont icon">&#xe62b;</div>
-					<div class="name">团队({{num}})</div>
+					<div class="name">团队</div>
 				</div>
 			</div>
 			<!--收支总览-->
@@ -47,7 +50,7 @@
 				<div class="integral">
 					<div class="integral-left">
 						<div class="num">
-							<span>300</span>
+							<span>{{totalPoint}}</span>
 							<span>累计积分</span>
 						</div>
 						<div class="num">
@@ -59,13 +62,13 @@
 					<div class="xian"></div>
 					<div class="integral-right">
 						<div class="num">
-							<span v-if='userInfo.distributorStatus==1'>{{distribInfo.balance}}</span>
-							<span v-else>{{distribInfo.balance}}</span>
+							<span v-if='userInfo.distributorStatus==1'>{{distribInfo.total}}</span>
+							<span v-else>0</span>
 							<span>累计奖金</span>
 						</div>
 						<div class="num">
 							<span v-if='userInfo.distributorStatus==1'>{{distribInfo.balance}}</span>
-							<span v-else>{{distribInfo.balance}}</span>
+							<span v-else>0</span>
 							<span>可提现奖金</span>
 						</div>
 					</div>
@@ -82,16 +85,22 @@
 
 <script>
 	import store from '@/store/store'
+	import utils from '@/utils/index'
 	export default {
 		data() {
 			return {
 				vip:1,
-				num: 99,
 				userInfo:{},
 				distribInfo:{}
 			}
 		},
-		mounted(){
+		computed:{
+			totalPoint(){
+				let that=this
+				return utils.accAdd(that.userInfo.point,that.userInfo.consumePoint)
+			}
+		},
+		onShow(){
 			let that=this
 			that.userInfo=store.state.userInfo
 			if(that.userInfo.distributorStatus==1){
@@ -125,14 +134,43 @@
 				})
 			},
 			jump(url){
-				wx.navigateTo({
-					url:url
-				})
+				let that=this
+				if(url=='../poster/main'){
+					if(that.userInfo.distributorStatus==2){
+						wx.showModal({
+							title: '提示',
+							content: '您还不是分享师',
+							confirmText:'立即成为',
+							cancelText:'我再想想',
+							success(res) {
+								if (res.confirm) {
+									wx.navigateTo({
+										url:'../distribeApply/main'
+									})
+								} else if (res.cancel) {
+									
+								}
+							}
+						})
+					}
+					else{
+						wx.navigateTo({
+							url:url
+						})
+					}
+				}
+				
 			},
 			listLi4(){
 				wx.navigateTo({
 				   url:"../collection/main"
 				})			
+			},
+
+			toVip(){
+				wx.navigateTo({
+				   url:"../myself-kt/main"
+				})				
 			}
 		}
 	}
@@ -223,7 +261,7 @@
 					font-size: 20px;
 				}
 				.name {
-					font-size: 12px;
+					font-size: 14px;
 					color: #333333;
 					margin-top: 12PX;
 				}

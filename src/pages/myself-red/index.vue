@@ -8,7 +8,7 @@
 				</div>
 			</div>
 		</div>
-		<swiper style="height:100vh" duration='350' :current="listcurr" @change="changeTab">
+		<swiper style="height:100vh;" duration='350' :current="listcurr" @change="changeTab">
 			<!--可使用-->
 			<swiper-item style="overflow: scroll;">  
 				<div class="list1">
@@ -72,6 +72,14 @@
 				listcurr: 0,
 				list1:[
 				   {pic:"2.22",time:"2019.03.29-2019.03.30",status:"去使用"},
+				   {pic:"2.22",time:"2019.03.29-2019.03.30",status:"去使用"},
+				   {pic:"2.22",time:"2019.03.29-2019.03.30",status:"去使用"},
+				   {pic:"2.22",time:"2019.03.29-2019.03.30",status:"去使用"},
+				   {pic:"2.22",time:"2019.03.29-2019.03.30",status:"去使用"},
+				   {pic:"2.22",time:"2019.03.29-2019.03.30",status:"去使用"},
+				   {pic:"2.22",time:"2019.03.29-2019.03.30",status:"去使用"},
+				   {pic:"2.22",time:"2019.03.29-2019.03.30",status:"去使用"},
+				   {pic:"2.22",time:"2019.03.29-2019.03.30",status:"去使用"},
 				   {pic:"2.22",time:"2019.03.29-2019.03.30",status:"去使用"}
 				],
 				list2:[
@@ -117,7 +125,7 @@
 }
 swiper-item{
 	width: 100%;
-	padding-bottom: 40px;
+	padding-top:49px;
 }
 	.recommend-list {
 		background: #FFFFFF;
@@ -125,8 +133,10 @@ swiper-item{
 		width: 100%;
 		display: flex;
 		justify-content:space-around;
-		.recommend-list-li{
-			
+		position: fixed;
+		top: 0;
+		z-index: 98;
+		.recommend-list-li{		
 			height: 49px;
 			line-height: 49px;
 			position: relative;
@@ -156,7 +166,7 @@ swiper-item{
 		}
 	}
 	.list1,.list2,.list3{
-		padding: 0 12px;
+		padding: 0 12px 60px 12px;
 		width: 100%;
 		box-sizing: border-box;
 		.list-li{

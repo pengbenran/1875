@@ -68,6 +68,7 @@ export default {
                   store.commit("storeDistribInfo",memberRes.distributorInfo)
                 }
                 store.commit("storeUserInfo",memberRes.memberEntity)
+                that.$emit('GetGoodsInfo')
               }
               else {
                 let memberId="00"

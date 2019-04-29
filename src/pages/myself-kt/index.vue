@@ -34,19 +34,32 @@
 						<div class="vip3"><img :src="shareon.vip3"/></div>
 					</div>
 				</div>
+				<div v-if="userInfo.distributorStatus == 2">
+                    <div class="btn" v-if="bool">你已提交申请</div><div class="btn" v-else @click="to">{{kttit}}</div>
+				</div>
+				<div v-else>
+                    <!-- <div class="btn" v-if="bool">提交申请成为推荐师</div> -->
+				</div>
 				
-				<div class="btn">{{kttit}}</div>
 			</swiper-item>
 		</swiper>
 	</div>
 </template>
 
 <script>
+import API from '@/api/distribe'
+import store from '@/store/store'
+import API_D from '@/api/distribe'
+import API_M from '@/api/member'
 	export default {
 		data() {
 			return {
 				kttit:"开通分享师",
-//				vip
+				VipData:[],
+				DisData:[],
+				userInfo:{},
+				bool:false,
+                //vip
 				vip1Length:20,  //进度条长度
 				vip2Length:20,  //进度条长度
 				//点亮前
@@ -81,6 +94,58 @@
 		}, 
 
 		methods: {
+			//拿到所有会员等级
+			async GetMenberLv(){
+				let that = this;
+				let arr = []
+				let res = await API_M.GetMenberLvData().catch(err => {
+					console.log("报错的数据",err)
+				})
+				if(res.code == 0){
+						that.VipData = res.lvs
+						console.log("VIP数据",that.VipData)
+				}
+			},
+
+			//获取分享师的等级
+			async GetDistributor(){
+				let that = this;
+				let arr = []
+				let res = await API_D.GetDistributorData().catch(err => {
+					console.log("报错的数据",err)
+				})
+				if(res.code == 0){
+						that.DisData = res.distributorLvs
+						console.log("请求的数据",that.DisData)
+				}
+			},
+			GetDisBool(){
+			   let that = this;
+			   let data = {
+				   memberId:that.userInfo.memberId
+			   }
+               API.boolDis(data).then(res =>{
+				   if(res.code == 0){
+					   that.bool = true;
+				   }else{
+					   that.bool = false;
+				   }
+			   }).catch(err => {
+				   console.log("数据报错",err)
+			   })
+			},
+			to(){
+				let that = this;
+					wx.navigateTo({
+					   url:`../distribeApply/main`			  	
+					})
+			}
+		},
+		mounted(){
+			this.userInfo=store.state.userInfo
+			this.GetDisBool();
+			this.GetMenberLv();
+			this.GetDistributor();
 		}
 	}
 </script>

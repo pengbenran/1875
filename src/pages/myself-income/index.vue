@@ -4,11 +4,11 @@
 		<div class="jf">
 			<div class="left">
 				<span>累计积分</span>
-				<span>300</span>
+				<span>{{totalPoint}}</span>
 			</div>
 			<div class="right">
 				<span>可用积分</span>
-				<span>100</span>
+				<span>{{userInfo.point}}</span>
 				<span>去使用</span>
 			</div>
 		</div>
@@ -22,7 +22,7 @@
 		<div class="jjin" v-else>
 			<div class="left">
 				<span>累计奖金（元）</span>
-				<span>300</span>
+				<span>{{distribInfo.total}}</span>
 			</div>
 			<div class="right">
 				<span>可提奖金（元）</span>
@@ -142,6 +142,7 @@
 <script>
 	import store from '@/store/store'
 	import Api from '@/api/distribe'
+	import utils from '@/utils/index'
 	export default {
 		data() {
 			return {
@@ -195,7 +196,11 @@
         	isPoint(){
         		let that=this
         		return that.tit.indexOf('积分')!=-1
-        	}
+        	},
+        	totalPoint(){
+				let that=this
+				return utils.accSub(that.userInfo.point,that.userInfo.consumePoint)
+			}
         },
 		methods: {
 			btntrue() {
@@ -327,9 +332,36 @@
 				]
 			},
 			jumptx(){
-				wx.navigateTo({
-				   url:"../myself-tx/main"
-				})			
+				let that=this
+				let params={}
+				params.memberId=that.userInfo.memberId
+				Api.isBindCard(params).then(function(res){
+					if(res.code==0){
+						store.commit("storeCardInfo",res.WithdrawInfoEntity)
+						wx.navigateTo({
+							url:'../myself-tx/main'
+						})		
+					}
+					else{
+						wx.showModal({
+							title: '提示',
+							content: '您还未绑定银行卡',
+							confirmText:'去绑定',
+							cancelText:'不了',
+							success(res) {
+								if (res.confirm) {
+									wx.navigateTo({
+										url:'../bindCard/main?type=2'
+									})
+								} else if (res.cancel) {
+									
+								}
+							}
+						})
+					}
+				})
+
+					
 			}
 
 		},
@@ -346,14 +378,17 @@
 			}
 			// that.GetGoodsList(Item.catId);
 		},
-		mounted() {
-			//重置
+		onShow(){
 			let that = this
-			that.dataUpdate()
 			that.userInfo=store.state.userInfo
 			if(that.userInfo.distributorStatus==1){
 				that.distribInfo=store.state.distribInfo
 			}
+		},
+		mounted() {
+			//重置
+			let that = this
+			that.dataUpdate()
 			that.poinLog()
 		},
 

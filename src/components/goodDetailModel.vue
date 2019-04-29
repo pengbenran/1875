@@ -215,7 +215,7 @@
 					params.needPayMoney=that.totalPrice
 					params.balance=that.bonus==''?0:that.bonus
                     // 如果是推荐师返佣金额为商品设定价格否则为0
-					params.recommend=that.userInfo.distributorStatus==1?that.goodDetail.commission:0
+					params.recommend=that.goodDetail.commission
 					params.goodsId=that.goodDetail.goodId
 					params.buyName=that.userInfo.name
 					params.price=that.goodDetail.price
