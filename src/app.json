@@ -1,6 +1,6 @@
 {
 	"pages":[
-	    "pages/cancel/main",
+		"pages/cancel/main",
 		"pages/index/main",
 		"pages/index-news-more/main",
 	    "pages/myself-tx/main", 

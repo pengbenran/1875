@@ -1,48 +1,17 @@
 <template>
 	<div class="container">
-		<div class="condition">待核销</div>
+		<div class="condition" v-if='orderDetail.status==1'>待核销</div>
+		<div class="condition" v-if='orderDetail.status==2'>已核销</div>
+		<div class="condition" v-if='orderDetail.status==3'>已过期</div>
 		<div class="total">
-						<!--订单详情-->
 			<div class="orderinfo">
                    <div class="tit">订单信息</div>
-                   <!--<div class="ma">
-                   	 <div class="ma-left">
-                   	 	<span>订单编码 : </span>
-                   	 	<span>{{orderDetail.sn}}</span>
-                   	 </div>
-                   	 <div class="ma-right" @click='copy'>复制</div>
-                   </div>
-                   <div class="ma">
-                   	 <div class="ma-left">
-                   	 	<span>店铺地址 : </span>
-                   	 	<span>{{orderDetail.address}}</span>
-                   	 </div>
-                   	 <div class="ma-right" @click="openMap">导航</div>
-                   </div>
-                    <div class="img"><img src="/static/images/ku5p0efhhxr5.jpg"/></div>-->
-                    
                     <!--下单人-->
                     <div class="prnston">
                     	<div class="prnston-li">
                     	    <span class="title">下单人:</span>
                     	    <span class="tex">{{orderDetail.buyName}}</span>
                     	</div>
-                    	<!--<div class="prnston-li">
-                    	    <span class="title">获得积分 :</span>
-                    	    <span class="tex">{{orderDetail.gainedpoint}}</span>
-                    	</div>-->
-                    	<!--<div class="prnston-li" v-if="">
-                    	    <span class="title">推荐师优惠 :</span>
-                    	    <span class="tex">{{orderDetail.recommend}}</span>
-                    	</div>-->
-                    	<!--<div class="prnston-li">
-                    	    <span class="title">消费积分 :</span>
-                    	    <span class="tex">{{orderDetail.consumepoint}}</span>
-                    	</div>-->
-                    	<!--<div class="prnston-li">
-                    	    <span class="title">获得佣金 :</span>
-                    	    <span class="tex">{{orderDetail.recommend}}元</span>
-                    	</div>-->
                     	<div class="prnston-li">
                     		 <span class="title">下单时间 :</span>
                     	     <span class="tex"> {{orderDetail.createTime}}</span>
@@ -88,50 +57,55 @@
 			</div>
 		</div>
 		<!--按钮-->
-		<div class="btn">完成</div>
+		<div class="btn" v-if='orderDetail.status==1' @click="orderCancel">立即核销</div>
 	</div>
 </template>
 
 <script>
 	import Api from "@/api/order"
+	import store from "@/store/store"
 	export default {
 		data() {
 			return {
 				orderDetail:{},
+				userInfo:{}
 			}
 		},
 		mounted(){
 			let that=this
-			let orderId = that.$root.$mp.query.orderId;
-			that.getOrderDetail(orderId)
+			let orderId = 110;
+			that.userInfo=store.state.userInfo
+			that.memberCancel()
 		},
 		methods: {
-			// 获取订单详情
-			getOrderDetail(orderId){
-				let that=this
+			// 判断能否核销订单
+			memberCancel(){
 				let params={}
-				params.orderId=orderId
-				Api.getOrderDetail(params).then(function(res){
-					that.orderDetail=res.orderEntity
-				})		
-			},
-			copy(){
 				let that=this
-				wx.setClipboardData({
-					data:that.orderDetail.sn,
-					success: function(res) {
+				params.unionId='othJJ6JTKrjFUiHGLKFTZk8OIIbc'
+				params.orderId=110
+				Api.memberCancel(params).then(function(res){
+					if(res.code==0){
+						that.orderDetail=res.orderEntity
+					}
+					else{
 
 					}
 				})
 			},
-			openMap(){
+			orderCancel(){
+				let params={}
 				let that=this
-				let latitude=that.orderDetail.latitude*1
-				let longitude=that.orderDetail.longitude*1
-				wx.openLocation({
-					latitude,
-					longitude,
-					scale: 18
+				params.unionId='othJJ6JTKrjFUiHGLKFTZk8OIIbc'
+				params.orderId=110
+				Api.orderCancel(params).then(function(res){
+					console.log(res)
+					if(res.code==0){
+						that.orderDetail=res.orderEntity
+					}
+					else{
+
+					}
 				})
 			}
 		}
