@@ -1,6 +1,7 @@
 <template>
 	<div class="container">
-		<div class="condition" v-if='orderDetail.status==1'>待核销</div>
+		<blockquote v-if='canCancel'>
+			<div class="condition" v-if='orderDetail.status==1'>待核销</div>
 		<div class="condition" v-if='orderDetail.status==2'>已核销</div>
 		<div class="condition" v-if='orderDetail.status==3'>已过期</div>
 		<div class="total">
@@ -58,50 +59,68 @@
 		</div>
 		<!--按钮-->
 		<div class="btn" v-if='orderDetail.status==1' @click="orderCancel">立即核销</div>
+		</blockquote>
+		<blockquote v-else>
+			<div class="kong">
+				<div class="img"><img src="/static/images/kong.png"></div>
+				<div class="text">您不是指定商户，无法核销噢~</div>
+				<div class="jumpbtn" @click="jumpHome">返回首页</div>
+			</div>
+		</blockquote>
+		<loginModel ref="loginModel" @memberCancel='memberCancel'></loginModel>
+
 	</div>
 </template>
 
 <script>
 	import Api from "@/api/order"
 	import store from "@/store/store"
+	import loginModel from "@/components/loginModel"
 	export default {
 		data() {
 			return {
 				orderDetail:{},
-				userInfo:{}
+				userInfo:{},
+				canCancel:true
 			}
 		},
 		mounted(){
 			let that=this
-			let orderId = 110;
-			that.userInfo=store.state.userInfo
-			that.memberCancel()
+			that.$refs.loginModel.userLogin()
+		},
+		components: {
+			loginModel
 		},
 		methods: {
 			// 判断能否核销订单
 			memberCancel(){
 				let params={}
 				let that=this
-				params.unionId='othJJ6JTKrjFUiHGLKFTZk8OIIbc'
-				params.orderId=110
+				params.unionId=store.state.userInfo.unionid
+				params.orderId=that.$root.$mp.query.orderId
 				Api.memberCancel(params).then(function(res){
 					if(res.code==0){
 						that.orderDetail=res.orderEntity
 					}
 					else{
-
+						that.canCancel=false
 					}
+				})
+			},
+			// 返回首页
+			jumpHome(){
+				wx.switchTab({
+					url:'../index/main'
 				})
 			},
 			orderCancel(){
 				let params={}
 				let that=this
-				params.unionId='othJJ6JTKrjFUiHGLKFTZk8OIIbc'
-				params.orderId=110
+				params.unionId=store.state.userInfo.unionid
+				params.orderId=that.$root.$mp.query.orderId
 				Api.orderCancel(params).then(function(res){
-					console.log(res)
 					if(res.code==0){
-						that.orderDetail=res.orderEntity
+					   that.orderDetail.status=2
 					}
 					else{
 
@@ -115,7 +134,35 @@
 <style scoped lang="less">
 	.container {
 		background: #f9f9f9;
-		padding-bottom: 80px;
+		/*空*/
+		.kong {
+			margin-top: 60px;
+			line-height: 1;
+			background: #fff;
+			.img {
+				width: 191px;
+				height: 78px;
+				margin: 0 auto;
+			}
+			.text {
+				font-size: 17px;
+				color: #333333;
+				text-align: center;
+				padding: 35px 0 30px;
+			}
+			.jumpbtn {
+				width: 80px;
+				height: 33px;
+				border: 1px solid;
+				border-radius: 17px;
+				text-align: center;
+				margin: 0 auto;
+				color: #ff6e6e;
+				font-size: 14px;
+				font-weight: bold;
+				line-height: 33px;
+			}
+		}
 		.condition {
 			width: 100%;
 			height: 49px;

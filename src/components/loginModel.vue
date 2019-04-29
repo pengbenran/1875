@@ -69,6 +69,7 @@ export default {
                 }
                 store.commit("storeUserInfo",memberRes.memberEntity)
                 that.$emit('GetGoodsInfo')
+                that.$emit('memberCancel')
               }
               else {
                 let memberId="00"
