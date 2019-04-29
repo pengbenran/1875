@@ -9,7 +9,7 @@
 						<img :src="list.thumbnail" />
 					</div>
 				</div>
-				<div class="more" v-if="item.showGoodDTO.length==6">
+				<div class="more" v-if="item.showGoodDTO.length==6" @click="loadMore(item.catName,item.id)">
 					<span>查看更多 > </span>
 				</div>
 
@@ -29,12 +29,19 @@
 		},
 		components: {},
 		methods: {
+			loadMore(kindName,id){
+				wx.navigateTo({
+					url: '../index-news-more/main?kindName='+kindName+'&kindId='+id
+				})
+			},
 			// 获取最新好物分类及商品列表
 			getFavorite(){
 				let params={}
 				let that=this
 				params.page=that.page
 				params.limit=that.limit
+				params.longitude=wx.getStorageSync('longitude')
+				params.latitude=wx.getStorageSync('latitude')
 				params.catBackgroundId=0
 				Api.getFavorite(params).then(function(res){
 					that.FavoriteGoods=res.FavoriteGoods

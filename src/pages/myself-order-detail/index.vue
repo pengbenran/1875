@@ -22,7 +22,7 @@
                    	 </div>
                    	 <div class="ma-right" @click="openMap">导航</div>
                    </div>
-                    <div class="img"><img src="/static/images/ku5p0efhhxr5.jpg"/></div>
+                    <div class="img"><img :src="orderDetail.orderCode"/></div>
                     
                     <!--下单人-->
                     <div class="prnston">

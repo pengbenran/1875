@@ -44,11 +44,14 @@
 			changeTab(e) {
 				this.listcurr = e.mp.detail.current;
 			},
+ 
 			getCost(){
 				let params={}
 				let that=this
 				params.page=that.page
 				params.limit=that.limit
+				params.longitude=wx.getStorageSync('longitude')
+				params.latitude=wx.getStorageSync('latitude')
 				Api.getCost(params).then(function(res){
 					that.costBanner=res.costBanner
 					that.showGoodDTOS=res.showGoodDTOS

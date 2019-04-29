@@ -199,7 +199,7 @@
         	},
         	totalPoint(){
 				let that=this
-				return utils.accSub(that.userInfo.point,that.userInfo.consumePoint)
+				return utils.accAdd(that.userInfo.point,that.userInfo.consumePoint)
 			}
         },
 		methods: {

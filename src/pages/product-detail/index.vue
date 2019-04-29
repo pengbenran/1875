@@ -90,7 +90,8 @@
     import goodDetailModel from '@/components/goodDetailModel'
     import wxParse from 'mpvue-wxparse'
     import goodPoster from '@/components/goodPoster'
-    import loginModel from "@/components/loginModel";
+    import loginModel from "@/components/loginModel"
+    import Api from "@/api/home"
 	export default {
 		data() {
 			return {
@@ -110,6 +111,7 @@
 			that.$refs.goodPoster.closeClick()
 			if(that.$root.$mp.query.codeUnionid!=''){
 				that.getUserInfo()
+				that.getConfig()
 			}
 			else{
 				that.userInfo = store.state.userInfo
@@ -206,6 +208,14 @@
 				let that=this
 				wx.makePhoneCall({
 					phoneNumber: that.good.phone,
+				})
+			},
+			// 获取全局配置
+			getConfig(){
+				Api.getConfig().then(function(res){
+					if(res.code==0){
+						store.commit("storeConfig",res.globalConfigEntity)
+					}
 				})
 			},
 			//获取商品详情

@@ -89,6 +89,8 @@
 				let that=this
 				params.page=that.pages
 				params.limit=that.limit
+				params.longitude=wx.getStorageSync('longitude')
+				params.latitude=wx.getStorageSync('latitude')
 				params.catBackgroundId=0
 				Api.getExplosivesSale(params).then(function(res){
 					that.ExplosivesSale=res.ExplosivesSale
@@ -100,8 +102,9 @@
 				if(that.hasMore){
 					params.page=that.popuPages
 					params.limit=that.popuLimit
+					params.longitude=wx.getStorageSync('longitude')
+					params.latitude=wx.getStorageSync('latitude')
 					Api.getExplosivesPopularity(params).then(function(res){
-						console.log(res)
 						if(res.showGoodDTOS.length<that.popuLimit){
 							that.hasMore=false
 						}

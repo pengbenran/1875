@@ -1,6 +1,5 @@
 <template>
-	<div class="container" :style="{background:bcgColor}">
-		<div class="headbg"><img :src="detailImg" /></div>
+	<div class="container">
 		<div class="bg" >
 			<recNearby :recNearby="showGoodDTOS"></recNearby>
 		</div>
@@ -9,40 +8,39 @@
 
 <script>
 	import recNearby from '@/components/recNearby'
-	import store from '@/store/store'
 	import Api from '@/api/kind'
 	export default {
 		data() {
 			return {
-				detailImg: '',
-				bcgColor:'',
 				showGoodDTOS:[],
 				pages:1,
 				limit:6,
 				hasMore:true,
-				ExplosivesSaleObj:{}
+				ExplosivesSaleObj:{},
+				kindId:''
 			}
 		},
 		components: {
 			recNearby,
 		},
 		methods:{
-			getExplosivesSale(){
+			getFavorite(){
 				let params={}
 				let that=this
 				if(that.hasMore){
 					params.page=that.pages
 					params.limit=that.limit
-					params.page=that.pages
-					params.limit=that.limit
-					params.catBackgroundId=that.ExplosivesSaleObj.id
-					Api.getExplosivesSale(params).then(function(res){
+					params.longitude=wx.getStorageSync('longitude')
+					params.latitude=wx.getStorageSync('latitude')
+					params.catBackgroundId=that.kindId
+					Api.getFavorite(params).then(function(res){
 						if(res.showGoodDTOS.length<that.limit){
 							that.hasMore=false
 						}
 						that.showGoodDTOS=that.showGoodDTOS.concat(res.showGoodDTOS)
 					})
-				}else{
+				}
+				else{
 					wx.showToast({
 						title:'没有更多数据了',
 						icon:"none",
@@ -54,22 +52,16 @@
 		},
 		mounted() {
 		    let that=this
-			that.ExplosivesSaleObj=store.state.ExplosivesSaleObj
-			that.detailImg = that.ExplosivesSaleObj.url;
-			that.bcgColor=that.ExplosivesSaleObj.fontColor
+		    that.kindId=that.$root.$mp.query.kindId
 			wx.setNavigationBarTitle({
-				title: that.ExplosivesSaleObj.catName
+				title: that.$root.$mp.query.kindName
 			})
-			that.showGoodDTOS=that.ExplosivesSaleObj.showGoodDTO
-			wx.setNavigationBarColor({
-				frontColor: '#ffffff', // 必写项
-				backgroundColor: that.ExplosivesSaleObj.fontColor, // 传递的颜色值
-			})
+			that.getFavorite()
 		},
 		onReachBottom:function(){
 			let that = this;
 			that.pages+=1
-			that.getExplosivesSale()
+			that.getFavorite()
 		},
 	}
 </script>

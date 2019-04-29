@@ -187,10 +187,11 @@
 				let params={}
 				if(!that.isSubmit){
 					that.isSubmit=true
+					console.log(store.state.goodsId,store.state.codeUnionid);
 					if(store.state.codeUnionid!=''&&store.state.goodsId==that.goodDetail.goodId){
 						params.orderType=2
 						params.shareIntegration=that.goodDetail.shareIntegral
-						params.codeUnionid=''
+						params.codeunionid=store.state.codeUnionid
 					}
 					else{
 						params.orderType=1
