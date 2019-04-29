@@ -58,15 +58,17 @@ import store from '@/store/store'
 		methods: {
 			listTab(e) {
 				this.listcurr = e
-				console.log(this.recommendList[e],"点击",this.userInfo)
-				this.recommendList[e].type == 1 ?
-						this.GetList(e,{tjUnionid:this.userInfo.unionid,lvId:this.recommendList[e].id}):
-						this.GetList(e,{tjUnionid:this.userInfo.unionid,distributorLvId:this.recommendList[e].id,distributorStatus:1})
+				// console.log(this.recommendList[e],"点击",this.userInfo,)
+				// this.recommendList[e].type == 1
+				// this.recommendList[e].type == 1 ? console.log("111") : console.log()
+				// this.recommendList[e].type == 1 ?
+				// 		this.GetList(e,{tjUnionid:this.userInfo.unionid,lvId:this.recommendList[e].id}):
+				// 		this.GetList(e,{tjUnionid:this.userInfo.unionid,distributorLvId:this.recommendList[e].id,distributorStatus:1})
 			},
 			changeTab(e) {
 				let that = this
 				that.listcurr = e.mp.detail.current
-				this.recommendList[e].type == 1 ?
+				this.recommendList[that.listcurr].type == 1 ?
 						this.GetList(that.listcurr,{tjUnionid:this.userInfo.unionid,lvId:this.recommendList[that.listcurr].id}):
 						this.GetList(that.listcurr,{tjUnionid:this.userInfo.unionid,distributorLvId:this.recommendList[that.listcurr].id,distributorStatus:1})
 			},
