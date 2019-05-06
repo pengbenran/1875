@@ -70,6 +70,7 @@
 <script>
 	import API from '@/api/order'
 	import store from '@/store/store'
+	import utils from '@/utils/index'
 	export default {
 		data() {
 			return {
@@ -122,7 +123,7 @@
 				],
 			}
 		},
-		onLoad() {
+		mounted() {
 			let that = this
 			that.recommendList.map(Mres => {
 				Mres.options = [];
@@ -139,27 +140,27 @@
 			}), 0)
 		},
 		methods: {
-			listTab(e) {
-				let that = this;
-				this.listcurr = e
-				let data = {
-					unionId: that.UserInfo.unionid,
-					page: that.recommendList[e].page,
-					limit: that.recommendList[e].limit,
-					status: that.recommendList[e].status,
-					expiredStatus: that.recommendList[e].expiredStatus
-				}
-				if(that.recommendList[e].options.length < 1) {
-					that.GetOrderListData(data, e)
-				}
+			listTab(index){
+				let that = this
+				that.listcurr = index
 			},
 			changeTab(e) {
 				let that = this
 				that.listcurr = e.mp.detail.current
+				let data = {
+					unionId: that.UserInfo.unionid,
+					page: that.recommendList[that.listcurr].page,
+					limit: that.recommendList[that.listcurr].limit,
+					status: that.recommendList[that.listcurr].status,
+					expiredStatus: that.recommendList[that.listcurr].expiredStatus
+				}
+				if(that.recommendList[that.listcurr].options.length < 1) {
+					that.GetOrderListData(data, that.listcurr)
+				}
 			},
 			jumpdetail(orderId) {
 				wx.navigateTo({
-					url: "../myself-order-detail/main?orderId = " + orderId
+					url: "../myself-order-detail/main?orderId=" + orderId
 				})
 			},
 
@@ -170,6 +171,7 @@
 					orderId: orderId
 				}).then(res => {
 					if(res.code == 0) {
+						console.log(orderId, Pindex, Cindex)
 						that.recommendList[Pindex].options.splice(Cindex, 1)
 						wx.showToast({
 							title: '取消成功',
@@ -215,11 +217,11 @@
 			},
 
 			//支付事件
-			Pay() {
+			Pay(orderId,needPayMoney) {
 				let that = this;
 				if(!that.isSubmit) {
 					that.isSubmit = true
-					that.weixinPay()
+					that.weixinPay(orderId,needPayMoney)
 				}
 			},
 

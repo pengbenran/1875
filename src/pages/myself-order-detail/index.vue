@@ -1,11 +1,15 @@
 <template>
 	<div class="container">
+		<blockquote v-if="!isLoading">
+			<loading></loading>
+		</blockquote>
+		<blockquote v-else>
 		<div class="condition"  v-if="orderDetail.status==0">待付款</div>
 		<div class="condition" v-if="orderDetail.status==1">待核销</div>
 		<div class="condition"  v-if="orderDetail.status==2">已核销</div>
 		<div class="condition"  v-if="orderDetail.status==3">已取消</div>
 		<div class="total">
-						<!--订单详情-->
+			<!--订单详情-->
 			<div class="orderinfo">
                    <div class="tit">订单信息</div>
                    <div class="ma">
@@ -112,27 +116,31 @@
 			</div>
 		</div>
 		<!--按钮-->
-		<div class="btns" v-if="orderDetail.status==0">
-			<div class="btn1">
-				取消订单
-			</div>
-			<div class="btn2">
-				立即付款
+		<div class="btns">
+			<div class="btn2" @click='jumpHome'>
+				返回首页
 			</div>
 		</div>
+	</blockquote>
 	</div>
 </template>
 
 <script>
 	import Api from "@/api/order"
+	import loading from '@/components/loading'
 	export default {
+		components: {
+		    loading
+		},
 		data() {
 			return {
 				orderDetail:{},
+				isLoading:false,
 			}
 		},
 		mounted(){
 			let that=this
+			that.isLoading=false
 			let orderId = that.$root.$mp.query.orderId;
 			that.getOrderDetail(orderId)
 		},
@@ -143,8 +151,17 @@
 				let params={}
 				params.orderId=orderId
 				Api.getOrderDetail(params).then(function(res){
-					that.orderDetail=res.orderEntity
+					if(res.code==0){
+						that.orderDetail=res.orderEntity
+						that.isLoading=true
+					}
+					
 				})		
+			},
+			jumpHome(){
+				mpvue.reLaunch({
+					url: '../index/main'
+				})
 			},
 			copy(){
 				let that=this

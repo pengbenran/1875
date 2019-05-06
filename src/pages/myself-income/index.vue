@@ -47,7 +47,6 @@
 				</div>
 				<div class="btn" @click="btnfalse">取消</div>
 			</div>
-			
 			<div class="list-lis"> 
 				<!--奖金收入-->
 				<blockquote v-for="(item,index) in distributorLogData" :key="item.distributorLogId" :index="index" v-if="!isPoint">
@@ -248,14 +247,30 @@
 					params.gainBalance=1
 				}
 				params.distributorId=that.distribInfo.distributorId
-				Api.distributorLog(params).then(function(res){
-					if(res.code==0){
-						if(res.distributorLogEntities.length < expenditureItem.limit){
-							that.expenditure[that.curr].hasMore = false
+				if(expenditureItem.hasMore){
+					Api.distributorLog(params).then(function(res){
+						if(res.code==0){
+							if(res.distributorLogEntities.length < expenditureItem.limit){
+								that.expenditure[that.curr].hasMore = false
+							}
+							that.distributorLogData = that.distributorLogData.concat(res.distributorLogEntities)
+							if(that.distributorLogData.length==0){
+								wx.showToast({
+									title:'暂无数据',
+									icon:"none",
+									duration:1500
+								})
+							}
 						}
-						that.distributorLogData = that.distributorLogData.concat(res.distributorLogEntities)
-					}
-				})
+					})
+				}
+				else{
+					wx.showToast({
+						title:'没有更多数据了',
+						icon:"none",
+						duration:1500
+					})
+				}	
 			},
 			// 获取积分明细
 			poinLog(){
@@ -277,14 +292,31 @@
 					params.type=3
 				}
 				params.memberId=that.userInfo.memberId
-				Api.poinLog(params).then(function(res){
-					if(res.code==0){
-						if(res.pointLogEntities.length < expenditureItem.limit){
-							that.expenditure[that.curr].hasMore = false
+				if(expenditureItem.hasMore){
+					Api.poinLog(params).then(function(res){
+						if(res.code==0){
+							if(res.pointLogEntities.length < expenditureItem.limit){
+								that.expenditure[that.curr].hasMore = false
+							}
+							that.pointLogEntities = that.pointLogEntities.concat(res.pointLogEntities)
+							if(that.pointLogEntities.length==0){
+								wx.showToast({
+									title:'暂无数据',
+									icon:"none",
+									duration:1500
+								})
+							}
 						}
-						that.pointLogEntities = that.pointLogEntities.concat(res.pointLogEntities)
-					}
-				})
+					})
+				}
+				else{
+					wx.showToast({
+						title:'没有更多数据了',
+						icon:"none",
+						duration:1500
+					})
+				}
+				
 			},
 			dataUpdate(){
 				let that=this

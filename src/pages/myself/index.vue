@@ -172,7 +172,12 @@
 				   url:"../myself-kt/main"
 				})				
 			}
-		}
+		},
+		onPullDownRefresh: function(){
+   			let that=this
+   			utils.updateUserInfo()
+   			wx.stopPullDownRefresh()
+   		},
 	}
 </script>
 
