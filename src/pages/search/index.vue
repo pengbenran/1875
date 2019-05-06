@@ -12,33 +12,29 @@
 			</div>
            
 		</form>
-			<blockquote v-if="GoodsList.length > 0">
-				<recTwo :recTwo='GoodsList'/>
-				 <div class="More" v-if="!NoMores">我也是有极限的~~~~~</div>
-			</blockquote>
-            <blockquote v-else>
-				<div class="lists">
-					<div class="list">
-						<div class="tit">热门搜索</div>
-						<div class="list-wp">
-							<div class="list-li" v-for="(item,index) in tagLits" @click="GetSearckClick(item.name)">
-								<span hover="true" hover-class="detail-hover">{{item.name}}</span>
-							</div>
-						</div>
+		<div class="lists">
+			<div class="list">
+				<div class="tit">热门搜索</div>
+				<div class="list-wp">
+					<div class="list-li" v-for="(item,index) in tagLits" @click="GetSearckClick(item.name)">
+						<span hover="true" hover-class="detail-hover">{{item.name}}</span>
 					</div>
 				</div>
-				<div class="lists">
-					<div class="list">
-						<div class="tit">最近搜索</div>
-						<div class="list-wp">
-							<div class="list-li" v-for="(item,index) in Searchinput"  @click="GetSearckClick(item.name)">
-								<span hover="true" hover-class="detail-hover">{{item}}</span>
-							</div>
-						</div>
+			</div>
+		</div>
+		<div class="lists">
+			<div class="list">
+				<div class="tit">最近搜索</div>
+				<div class="list-wp">
+					<div class="list-li" v-for="(item,index) in Searchinput"  @click="GetSearckClick(item)">
+						<span hover="true" hover-class="detail-hover">{{item}}</span>
 					</div>
-				</div>       
-			</blockquote>
-
+				</div>
+			</div>
+		</div>
+		<blockquote v-if="GoodsList.length > 0">
+			<recTwo :recTwo='GoodsList'/>
+		</blockquote>
 	</div>
 </template>
 <script>   
@@ -52,38 +48,25 @@
 		data() {
 			return {
 				tagLits:[],
-				list: [{
-						name: "火锅火锅"
-					},
-					{
-						name: "火锅火锅"
-					},
-					{
-						name: "火锅火锅"
-					},
-					{
-						name: "火锅火锅"
-					}
-				],
+				list: [],
 				GoodsList:[],
 				SearchText:'',
 				Searchinput:[],
-				NoMores:true,
 				listQuery:{
 					page: 1,
-					limit: 10,
+					limit: 100,
 					searchParam:''
 				},
 			}
 		},
 		mounted(){
+			this.GoodsList=[]
 			if(wx.getStorageSync("SearchData")){
                 this.Searchinput = wx.getStorageSync("SearchData")
 			}else{
 				wx.setStorageSync('SearchData',[])
 			}
 			this.GetHotSearchData();
-
 			if(this.$root.$mp.query.SearchName != undefined){
 				this.listQuery.searchParam = this.$root.$mp.query.SearchName
 				this.GetSearchData()
@@ -92,6 +75,7 @@
 		methods: {
 			SearchClick(){
 				let that = this;
+				this.GoodsList=[]
 				that.GetSearchData(); //获取关键字搜索数据
 				if(that.listQuery.searchParam != '' && this.Searchinput.indexOf(that.listQuery.searchParam) == -1){
 					that.Searchinput.push(that.listQuery.searchParam); //添加搜索数据
@@ -102,20 +86,17 @@
 			//点击获取搜索的数据
 			GetSearchData(){
 				let that = this;
-				if(that.NoMores){
-					API.getGoodsList(that.listQuery).then(res =>{
-						if(res.code == 0){
-							res.page.rows.length > 0 ? that.GoodsList = that.GoodsList.concat(res.page.rows):Lib.ShowToast('没有更多数据','none')	
-							if(res.page.rows.length < that.listQuery.limit){
-								that.NoMores = false
-							}
-						}
-					}).catch(err => {
-						Lib.ShowToast('失败','none')
-					})
-				}else{
-                    Lib.ShowToast('没有更多数据！','none')
-				}
+				API.getGoodsList(that.listQuery).then(res =>{
+					if(res.code == 0){
+					  if(res.page.rows.length==0){
+					  	Lib.ShowToast('什么都没搜到换个词试试','none')	
+					  }
+					  that.GoodsList = res.page.rows
+					}
+				}).catch(err => {
+					Lib.ShowToast('失败','none')
+				})
+				
 			},
 
 			//点击搜索

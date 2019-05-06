@@ -1,14 +1,21 @@
 <template>
 	<div class="container">
-		<div class="bg" >
-			<recNearby :recNearby="showGoodDTOS"></recNearby>
-		</div>
+		<blockquote v-if="!isLoading">
+			<loading></loading>
+		</blockquote>
+		<blockquote v-else>
+			<div class="bg" >
+				<recNearby :recNearby="showGoodDTOS"></recNearby>
+				<div class="noMoreTip">数据到底了</div>
+			</div>
+		</blockquote>
 	</div>
 </template>
 
 <script>
 	import recNearby from '@/components/recNearby'
 	import Api from '@/api/kind'
+	import loading from '@/components/loading'
 	export default {
 		data() {
 			return {
@@ -17,11 +24,13 @@
 				limit:6,
 				hasMore:true,
 				ExplosivesSaleObj:{},
-				kindId:''
+				kindId:'',
+				isLoading:false,
 			}
 		},
 		components: {
 			recNearby,
+			loading
 		},
 		methods:{
 			getFavorite(){
@@ -34,6 +43,7 @@
 					params.latitude=wx.getStorageSync('latitude')
 					params.catBackgroundId=that.kindId
 					Api.getFavorite(params).then(function(res){
+						that.isLoading=true
 						if(res.showGoodDTOS.length<that.limit){
 							that.hasMore=false
 						}
@@ -52,6 +62,10 @@
 		},
 		mounted() {
 		    let that=this
+		    that.showGoodDTOS=[]
+			that.pages=1
+			that.hasMore=true
+			that.isLoading=false
 		    that.kindId=that.$root.$mp.query.kindId
 			wx.setNavigationBarTitle({
 				title: that.$root.$mp.query.kindName
@@ -70,5 +84,12 @@
 	.headbg {
 		width: 100%;
 		height: 175px;
+	}
+	.noMoreTip{
+		font-size:14px; 
+		color:#999;
+		text-align: center;
+		height: 50px;
+		line-height: 50px;
 	}
 </style>

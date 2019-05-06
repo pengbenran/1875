@@ -3,6 +3,7 @@
 		<div class="headbg"><img :src="detailImg" /></div>
 		<div class="bg" >
 			<recNearby :recNearby="showGoodDTOS"></recNearby>
+			<div class="noMoreTip">数据到底了</div>
 		</div>
 	</div>
 </template>
@@ -54,6 +55,8 @@
 		},
 		mounted() {
 		    let that=this
+		    that.hasMore=true
+		    that.pages=1
 			that.ExplosivesSaleObj=store.state.ExplosivesSaleObj
 			that.detailImg = that.ExplosivesSaleObj.url;
 			that.bcgColor=that.ExplosivesSaleObj.fontColor
@@ -78,5 +81,12 @@
 	.headbg {
 		width: 100%;
 		height: 175px;
+	}
+	.noMoreTip{
+		font-size:14px; 
+		color:#fff;
+		text-align: center;
+		height: 50px;
+		line-height: 50px;
 	}
 </style>

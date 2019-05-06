@@ -1,5 +1,9 @@
 <template>
 	<div class="container">
+		<blockquote v-if="!isLoading">
+			<loading></loading>
+		</blockquote>
+		<blockquote v-else>
 		<!--baner-->
 		<div class="box">
 			<swiper class="swiper" @change="changeImg" :autoplay="true" :circular="true" :current="activeIndex">
@@ -23,7 +27,7 @@
              <!--转发-->
              <div class="tra">
              	<div class="img iconfont">&#xe624;</div>
-             	<div class="num">1111</div>
+             	
              </div>
 			<!--电话-->
 			<div class="phone" @click="makePhone"><div class="img iconfont">&#xe7e0;</div></div>
@@ -72,8 +76,7 @@
 			<div class="rec" @click="drawPoster">推荐分享</div>
 			<span class="buy" @click="openModel">立即购买</span>
 		</div>
-		
-
+		</blockquote>
 		<!-- 分享海报 -->
 		<goodPoster ref="goodPoster" @closePoster='closePoster' @paintOk='paintOk' :goodDetail='good'></goodPoster>
 	
@@ -92,9 +95,11 @@
     import goodPoster from '@/components/goodPoster'
     import loginModel from "@/components/loginModel"
     import Api from "@/api/home"
+    import loading from '@/components/loading'
 	export default {
 		data() {
 			return {
+				isLoading:false,
 				love: true,
 				curr: 0,
 				activeIndex: 0,
@@ -107,6 +112,7 @@
 		},
 		mounted(){
 			let that=this
+			that.$refs.goodModel.hideModel()
 			that.goodId = that.$root.$mp.query.goodsId;
 			that.$refs.goodPoster.closeClick()
 			if(that.$root.$mp.query.codeUnionid!=''){
@@ -123,7 +129,8 @@
 			goodDetailModel,
 			wxParse,
 			goodPoster,
-			loginModel
+			loginModel,
+			loading
 		},
 		methods: {
 			// 获取会员信息
@@ -132,7 +139,6 @@
 				store.commit("storecodeUnionid",that.$root.$mp.query.codeUnionid)
 				store.commit("storegoodsid",that.$root.$mp.query.goodsId)
 				await that.$refs.loginModel.userLogin()
-
 			},
 			drawPoster(){
 				let that=this
@@ -230,6 +236,7 @@
 						res.good.banner=res.good.images.split(',')
 						that.good=res.good
 						store.commit("storeGoodDetail",that.good)
+						that.isLoading=true
 					}
 					else{
 					wx.showToast({
@@ -289,14 +296,17 @@
 				})
 			},
 		},
-		   onShow() {
-		   	//重置
-		        this.show=1
-		        this.jf=''
-				this.bonus= ''
-				this.isbonus = false
-				this.isjf = false
-			},
+		onUnload(){
+			let that=this
+			that.isLoading=false
+			that.love= true
+			that.curr= 0
+			that.activeIndex= 0
+			that.good={}
+			that.isPoster=false
+			that.goodId=''
+			that.shareImg=''
+		},
 	}
 </script>
 

@@ -26,6 +26,7 @@
 			<blockquote v-for="(item,index) in recommendList" :index='index' :key="item.catId">
 				<swiper-item style="overflow: scroll;">
 					<recTwo :recTwo='item.options'></recTwo>
+					<div class="noMoretip" v-if="item.hasMore==false">数据到底了</div>
 				</swiper-item>
 			</blockquote>
 		</swiper>
@@ -46,10 +47,6 @@
 				scrollLeft: 0,
 				listcurr: 0,
 				city:'',
-				listQuery:{
-					page: 1,
-					limit: 10,
-				},
 				recommendList: [],
 				recTwo: []
 			}
@@ -76,7 +73,6 @@
 			},
 			listTab(e,catId) {
 				this.listcurr = e
-				console.log("商品分类",catId)
 			},
 			changeTab(e) {
 				let that = this
@@ -101,14 +97,12 @@
 					if(res.code == 0){
 						that.recommendList = res.goodCats.map(Mres => {
 							Mres.options = [];  //控制视图的前提是必须注册进入视图；
-							Mres.filg = true;
+							Mres.hasMore = true;
 							Mres.page = 1;
-					        Mres.limit = 4;
+					        Mres.limit = 6;
 							return Mres;
 						});			
 						that.GetGoodsList(res.goodCats[0].catId);//不影响视觉的加载第一个
-			
-						// that.ItemGoodsList(); //排除第一个加载所有的数据
 					}else{
 						Lib.showToast('失败','none')						
 					}
@@ -129,7 +123,7 @@
 				let that = this;
 				wx.showLoading({title: '加载中'})
 				let ItmeOptions = that.recommendList.find(Fres => Fres.catId == catId);
-				if(ItmeOptions.filg){
+				if(ItmeOptions.hasMore){
 					let params={}
 					params.page=ItmeOptions.page
 					params.limit=ItmeOptions.limit
@@ -139,7 +133,7 @@
 					API.getGoodsList(params).then(res => {
 						if(res.code == 0){
 							if(res.page.rows.length < ItmeOptions.limit){
-								ItmeOptions.filg = false
+								ItmeOptions.hasMore = false
 							}
 							ItmeOptions.options = ItmeOptions.options.concat(res.page.rows)
 						}else{
@@ -156,7 +150,6 @@
 
 		//小程序触底加载
 		onReachBottom:function(){
-			console.log("上拉触发 显示")
 			let that = this;
 			let Item = that.recommendList[that.listcurr];
 			Item.page += 1; 
@@ -217,7 +210,12 @@
 			}
 		}
 	}
-	
+	.noMoretip{
+		font-size:14px; 
+		color:#999999;
+		text-align: center;
+		margin-bottom: 50px;
+	}
 	.recommend-list {
 		height: 49px;
 		width: 100%;
