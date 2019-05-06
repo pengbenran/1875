@@ -345,7 +345,6 @@
 					url:'../search/main?SearchName=' + val, 
 			})
 		},
-
 		},
 
 		
