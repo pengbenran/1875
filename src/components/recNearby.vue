@@ -12,6 +12,10 @@
 					<span>丨</span>
 					<span>{{item.region}}</span>
 				</div>
+					<div class="jfjj">
+						<span class="jf">可得积分:20</span>
+						<span class="jj">可得奖金:12.34元</span>
+					</div>
 				<div class="pic">
 					<div class="pic-left">
 						<p>
@@ -57,17 +61,16 @@
 		.rec-product-li {
 			background: #FFFFFF;
 			display: flex;
+			align-items: center;
 			box-sizing: border-box;
-			padding: 8px 0 8px 8px;
-			box-shadow: 0 2px 4px 2px #f4f4f4;
+			box-shadow: 0 2px 8px #DEDEDE;
 			border-radius: 4px;
-			margin-top: 4px;
+			margin-top: 10px;
+			overflow: hidden;
 			
 			.left {
-				width: 134px;
-				height: 134px;
-				border-radius: 4px;
-				overflow: hidden;
+				width: 150px;
+				height: 150px;
 			}
 			.right {
 				margin-left: 8px;
@@ -82,19 +85,44 @@
 					display: -webkit-box;
 					-webkit-line-clamp: 2;
 					-webkit-box-orient: vertical;
-					height: 42px;
+					 height: 40px;
 				}
 				.address {
-					padding: 0 4px;
-					color: #ff4b27;
+					color: #999999;
 					font-size: 12px;
-					padding: 17px 0;
+					padding: 8px 0;
 				}
-			
+			   .jfjj{
+			   	display: flex;
+			   	align-items: center;
+			   	span{display:block;}
+			   	.jf{
+			   		width: 56px;
+			   		height: 14px;
+			   		border-radius: 6px;
+			   		text-align: center;
+			   		border: 1px solid #ffaa7f;
+			   		line-height: 14px;
+			   		font-size: 9px;
+			   		color: #ff5703;
+			   	}
+			   	.jj{
+			   		width: 79px;
+			   		height: 14px;
+			   		border-radius: 6px;
+			   		text-align: center;
+			   		border: 1px solid #7eccfc;
+			   		line-height: 14px;
+			   		font-size: 9px;
+			   		color: #21a9fd ;
+			   		margin-left: 8px;
+			   	}
+			   }
 				.pic {
 					display: flex;
 					align-items: flex-end;
 					justify-content: space-between;
+					margin-top: 8px;
 					.pic-left {
 						p {
 							display: inline-block;
