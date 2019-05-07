@@ -1,43 +1,34 @@
 <template>
 	<div class="container">
-		<div class="top_Tap">
-			<ul>
-				<li v-for="(item,index) in TopList" :key="item"><span :class="listcurr == index ? 'List_on':''" @click="onClick(index)">{{item}}</span></li>
-			</ul>
-		</div>
-		<swiper style="height:100vh" duration='350' :current="listcurr" @change="changeTab">
-			<swiper-item style="overflow: scroll;">
-				<recNearby :recNearby="GoodList" />
-					<recNearby :recNearby="GoodList" />
-			</swiper-item>
-			<swiper-item style="overflow: scroll;">
-				<recNearby :recNearby="GoodList" />
-			</swiper-item>
-		</swiper>
+		<blockquote v-if="!isLoading">
+			<loading></loading>
+		</blockquote>
+		<blockquote v-else>
+			<recNearby :recNearby="GoodList" />
+		</blockquote>
 	</div>
 </template>
 <script>
 	import API from '@/api/good'
 	import store from '@/store/store'
 	import recNearby from '@/components/collection'
+	import loading from '@/components/loading'
 	export default {
 		data() {
 			return {
-				TopList: ['可使用', '已下架'],
+				// TopList: ['可使用', '已下架'],
 				listQuery: {
 					page: 1,
 					limit: 10,
 				},
+				hasMore:true,
 				GoodList: [],
-				listcurr: 0
+				isLoading:false,
+
 			}
 		},
 		components: {
-			recNearby,
-		},
-		//监听滚动条
-		onPageScroll(e) {
-
+			recNearby,loading
 		},
 		methods: {
 			GetGoodList() {
@@ -45,46 +36,52 @@
 				let data = {
 					memberId: store.state.userInfo.memberId
 				}
-				API.GetCollectionShop(Object.assign({}, that.listQuery, data)).then(res => {
-					if(res.code == 0) {
-						that.GoodList = res.favorite.rows
-					} else {
+				if(that.hasMore){
+					API.GetCollectionShop(Object.assign({}, that.listQuery, data)).then(res => {
+						if(res.code == 0) {
+							that.isLoading=true
+							if(res.favorite.rows.length < that.listQuery.limit){
+								that.hasMore = false
+							}
+							that.GoodList = that.GoodList.concat(res.favorite.rows)
+						} else {
+							wx.showToast({
+								title: '网络错误',
+								icon: "none",
+								duration: 1500
+							})
+						}
+					}).catch(err => {
 						wx.showToast({
 							title: '网络错误',
 							icon: "none",
 							duration: 1500
 						})
-					}
-				}).catch(err => {
+					})
+				}
+				else{
 					wx.showToast({
-						title: '网络错误',
+						title: '没有更多数据',
 						icon: "none",
 						duration: 1500
 					})
-				})
+				}
 			},
-
-			//swiper选择事件
-			changeTab(e) {
-				let that = this;
-				console.log("触发的时间", e)
-				that.listcurr = e.mp.detail.current;
-			},
-
-			//top触发事件
-			onClick(e) {
-				let that = this;
-				that.listcurr = e;
-				console.log("top触发事件", e)
-			}
 		},
 
 		//小程序触底加载
 		onReachBottom: function() {
-
+			console.log('触底了');
+			let that=this
+			that.listQuery.page+=1
+			that.GetGoodList()
 		},
-		onLoad() {
-			this.GetGoodList();
+		mounted() {
+			let that=this
+			that.isLoading=false,
+			that.hasMore=true
+			that.GoodList=[]
+			that.GetGoodList();
 		}
 	}
 </script>
@@ -94,10 +91,10 @@
 		background: #f8f8f8;
 		min-height: 100vh;
 	}
-		swiper-item {
+	swiper-item {
 		width: 100%;
 		box-sizing: border-box;
-		padding: 49px 0 50px 0;
+		// padding: 49px 0 50px 0;
 	}
 	.top_Tap {
 		background: #fff;

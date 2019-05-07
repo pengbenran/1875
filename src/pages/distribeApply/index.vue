@@ -22,6 +22,7 @@
 <script>
 	import Api from '@/api/distribe'
 	import store from '@/store/store' 
+	import utils from '@/utils/index'
 	export default {
 		data() {
 			return {
@@ -59,6 +60,7 @@
 						console.log(res)
 						if(res.code==0){
 						wx.showToast({title: '提交申请成功',icon: 'success',duration: 2000})
+						utils.updateUserInfo()
 						wx.switchTab({
 					      	url:`../myself/main`			  	
 						})
