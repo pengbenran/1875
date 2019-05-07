@@ -10,9 +10,7 @@
 				<recNearby :recNearby="GoodList" />
 					<recNearby :recNearby="GoodList" />
 			</swiper-item>
-			<swiper-item style="overflow: scroll;">
-				<recNearby :recNearby="GoodList" />
-			</swiper-item>
+			
 		</swiper>
 	</div>
 </template>
