@@ -11,10 +11,11 @@
 					<span>丨</span>
 					<span>{{item.region}}</span>
 				</div>
-				<div class="piced">
-					<span>¥{{item.showPrice}}</span>
-					<span>{{item.distance}}m</span>
-				</div>
+					<div class="jfjj">
+						<span class="jf">可得积分:20</span>
+						<span class="jj">可得奖金:12.34元</span>
+					</div>
+
 				<div class="pic">
 					<div class="pic-left">
 						<p>
@@ -84,18 +85,44 @@
 					height: 38px;
 				}
 				.address {
-					border:1px solid #ff4b27;
-					border-radius: 4px;
 					padding: 0 4px;
-					color: #ff4b27;
-					font-size: 11px;
+					color: #999999;
+					font-size: 12px;
 					overflow: hidden;
 					text-overflow: ellipsis;
 					display: inline-block;
 					-webkit-line-clamp: 1;
 					-webkit-box-orient: vertical;
-					margin: 10px 0;
+					 margin: 6px 0;
 				}
+			  .jfjj{
+			   	display: flex;
+			   	margin-bottom: 6px;
+			   	align-items: center;
+			   	
+			   	span{display:block;}
+			   	.jf{
+			   		width: 56px;
+			   		height: 14px;
+			   		border-radius: 6px;
+			   		text-align: center;
+			   		border: 1px solid #ffaa7f;
+			   		line-height: 14px;
+			   		font-size: 9px;
+			   		color: #ff5703;
+			   	}
+			   	.jj{
+			   		width: 79px;
+			   		height: 14px;
+			   		border-radius: 6px;
+			   		text-align: center;
+			   		border: 1px solid #7eccfc;
+			   		line-height: 14px;
+			   		font-size: 9px;
+			   		color: #21a9fd ;
+			   		margin-left: 8px;
+			   	}
+			   }
 				.piced {
 					font-size: 13px;
 					color: #999999;

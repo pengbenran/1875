@@ -23,7 +23,7 @@
 	export default {
 		data() {
 			return {
-				TopList: ['可使用', '已下架'],
+				TopList: ['可购买', '已下架'],
 				listQuery: {
 					page: 1,
 					limit: 10,

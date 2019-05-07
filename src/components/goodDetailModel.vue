@@ -1,6 +1,6 @@
 <template>	
-		<div class="buy-wp" catchtouchmove :class="showModel?'buy-wp-on':''">
-			<div class="buy-pop" :class="showModel?'buy-pop-on':''">
+		<div class="buy-wp" catchtouchmove :class="showModel?'buy-wp-on':''"  @click="hideModel">
+			<div class="buy-pop" :class="showModel?'buy-pop-on':''" catchtap='inbtn'>
 				<!--关闭弹窗-->
 				<div class="cha" @click="hideModel">×</div>
 				<!--商品-->
@@ -120,6 +120,7 @@
 			hideModel(){
 				let that=this
 				that.showModel=false
+				
 			},
 			inputjf() {
 				let that=this

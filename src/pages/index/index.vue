@@ -56,6 +56,7 @@
 			<swiper style="height:100vh" duration='350' :current="listcurrs" @change="changeTabs">
 				<!--精品-->
 				<swiper-item>
+				 <scroll-view :scroll-y='scrolls' style="height: 100vh;">
 					<div class="goods">
 						<div class="goods-li" @click="jumpgoods('../index-hot/main')">
 							<span class="img"><img :src="kindBackGround.explosive"/></span>
@@ -69,8 +70,13 @@
 							<span class="img"><img :src="kindBackGround.costEffective"/></span>
 							<span class="name">特别划算</span>
 						</div>
-
 					</div>
+					<!--猜你喜欢 -->
+					<div class="recTwo">
+						<div class="tit">猜你喜欢</div>
+						<recTwo :recTwo='showGoodDTOS'></recTwo>
+					</div> 	
+			    </scroll-view>
 				</swiper-item>
 				<!--附近-->
 				<swiper-item>
@@ -90,7 +96,6 @@
 								</scroll-view>
 							</swiper-item>
 						</blockquote>
-
 					</swiper>
 				</swiper-item>
 			</swiper>
@@ -101,6 +106,7 @@
 
 <script>
 	import recNearby from '@/components/recNearby'
+	import recTwo from '@/components/recTwo'
     import addres from "@/components/addresMap";
 	import search from '@/components/search';
 	import Lib from '@/utils/Lib';
@@ -116,7 +122,8 @@
 			search,
 			loginModel,
 		    addres,
-		    Business
+		    Business,
+		    recTwo
 		},
 		data() {
 			return {
@@ -129,7 +136,16 @@
 				activeIndex: 0,
 				tagLits:[],
 				recommendIcon: "/static/images/recommendIcon.gif",
-
+                showGoodDTOS:[
+                   {name:"精品推荐"},
+                   {name:"精品推荐"},
+                   {name:"精品推荐"},
+                   {name:"精品推荐"},
+                   {name:"精品推荐"},
+                   {name:"精品推荐"},
+                   {name:"精品推荐"},
+                   {name:"精品推荐"},
+                ],
 				recommendWp: [{
 						name: "精品推荐"
 					},
@@ -656,6 +672,15 @@
 					font-size: 15px;
 					font-weight: bold;
 				}
+			}
+		}
+		/*猜你喜欢*/
+		.recTwo{
+			.tit{
+				color: #333333;
+				font-size: 16px;
+				font-weight: bold;
+				padding: 26px 0 20px 12px;
 			}
 		}
 	}
