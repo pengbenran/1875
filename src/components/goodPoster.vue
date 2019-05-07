@@ -174,16 +174,16 @@
 		   			isCenter:false
 			   	},
 			   	{
-		   			type: 'text',
-		   			content:that.goodDetail.price,
-		   			fontSize:22,
-		   			color: '#FD370E',
-		   			textAlign: 'left',
-		   			breakWord: true,
-		   			top: 460,
-		   			left:20,
-		   			MaxLineNumber:1,
-		   			isCenter:false
+			   		type: 'text',
+			   		content:that.goodDetail.price.toString(),
+			   		fontSize: 22,
+			   		color: '#FD370E',
+			   		textAlign: 'left',
+			   		breakWord: true,
+			   		top: 460,
+			   		left:20,
+			   		MaxLineNumber:1,
+			   		isCenter:false
 			   	},
 			   	{
 			   		type: 'image',

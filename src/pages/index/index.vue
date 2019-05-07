@@ -1,5 +1,9 @@
 <template>
 	<div class="container">
+		<blockquote v-if="!isLoading">
+			<loading></loading>
+		</blockquote>
+		<blockquote v-else>
 		<!--头部-->
 		<div class="head">
 			<div class="head-left">
@@ -48,7 +52,7 @@
 		<div class="recommend">
 			<!--1级类目-->
 			<div class="recommend-wp" id="toplist" :style="{display:isflex}">
-				<div class="recommend-wp-li" v-for="(item,index) in recommendWp" @click="recTab(index)" :class="listcurrs==index?'recommend-on':''">
+				<div class="recommend-wp-li" v-for="(item,index) in recommendWp" :class="listcurrs==index?'recommend-on':''" @click='clickTab(index)'>
 					<span class="img"><img :src="recommendIcon"/></span>
 					<span class="name">{{item.name}}</span>
 				</div>
@@ -82,7 +86,7 @@
 				<swiper-item>
 					<!--附近2级类目-->
 					<div class="recommend-list">
-						<div class="recommend-list-li" v-for="(item,index) in recommendList" @click="listTab(index)" :class="listcurr==index?'list-on':''">
+						<div class="recommend-list-li" v-for="(item,index) in recommendList" :class="listcurr==index?'list-on':''" @click='clickTabs(index)'>
 							<span class="name">{{item.name}}</span>
 							<span class="img"></span>
 						</div>
@@ -91,8 +95,9 @@
 					<swiper style="height:100vh;padding-bottom: 100px;" duration='350' :current="listcurr" @change="changeTab">
                         <blockquote v-for="(item,index) in recommendList" :index='index' :key="item.catId">
 							<swiper-item>
-								<scroll-view :scroll-y='scrolls' style="height: 100vh;">
+								<scroll-view :scroll-y='scrolls' style="height: 100vh;" @scrolltolower="scrollBottom">
 									<recNearby :recNearby="item.options"></recNearby>
+									<div class="noMoretip" v-if="item.hasMore==false">数据到底了</div>
 								</scroll-view>
 							</swiper-item>
 						</blockquote>
@@ -100,7 +105,8 @@
 				</swiper-item>
 			</swiper>
 		</div>
-		<loginModel ref="loginModel"></loginModel>
+	</blockquote>
+	<loginModel ref="loginModel"></loginModel>
 	</div>
 </template>
 
@@ -116,6 +122,7 @@
 	import API_k from '@/api/kind'
 	import API_g from '@/api/good'
 	import store from '@/store/store'
+	import loading from '@/components/loading'
 	export default {
 		components: {
 			recNearby,
@@ -123,10 +130,12 @@
 			loginModel,
 		    addres,
 		    Business,
-		    recTwo
+		    recTwo,
+		    loading
 		},
 		data() {
 			return {
+				isLoading:false,
 				istoggle: false,
 				scrolls: false,
 				scrollTop: '',
@@ -153,11 +162,7 @@
 						name: "附近"
 					},
 				],
-				listQuery:{
-					page: 1,
-					limit: 10,
-				},
-				recommendList: [],
+				recommendList: [{name:''}],
 				banner: [],
 				kindBackGround:{},
 				packet: [{
@@ -194,31 +199,63 @@
 				return this.banner.length
 			},
 		},
-		onLoad() {
-			let that = this;
-			that.listtop();	
-		},
 		mounted(){
 			let that = this;
+			that.listcurrs=0;
+			that.hideTabBar()
 			that.getUserInfo()
 			that.getIndexImage()
-			that.GetGoodsCat();
 			that.getConfig();
 			that.GetHotSearchData();
 		},
 		methods: {
+			// 点击切换分类
+			clickTab(index){
+				let that=this
+				that.listcurrs = index
+			},
+			// 点击切换小分类
+			clickTabs(index){
+				let that=this
+				that.listcurr = index
+			},
 			// 获取用户信息
 			async getUserInfo() {
 				let that = this
 				await that.$refs.loginModel.userLogin()
  				wx.stopPullDownRefresh()
 			},
+			scrollBottom(){
+				// 上拉加载更多数据
+				let that = this;
+				if(that.listcurrs==1){
+					let Item = that.recommendList[that.listcurr];
+					Item.page += 1; 
+					that.GetGoodsList(Item.catId);
+				}
+			},
 			// 获取全局配置
 			getConfig(){
+				let that=this
 				Api.getConfig().then(function(res){
 					if(res.code==0){
+						that.isLoading=true
+						that.showTabBar()
 						store.commit("storeConfig",res.globalConfigEntity)
 					}
+				})
+			},
+			//显示导航栏
+			showTabBar: function() {
+				let that = this;
+				wx.showTabBar({
+					animation: false //是否需要过渡动画
+				})
+			},
+			//隐藏导航栏
+			hideTabBar: function() {
+				wx.hideTabBar({
+					animation: false //是否需要过渡动画
 				})
 			},
 			getIndexImage(){
@@ -237,10 +274,6 @@
 				let that = this
 				that.activeIndex = e.target.current
 			},
-
-			listTab(e) {
-				this.listcurr = e
-			},
 			changeTab(e) {
 				this.listcurr = e.mp.detail.current
 				if(this.listcurr == 0) {
@@ -253,13 +286,13 @@
 				//查看触发数据			
 			},
 			//
-			recTab(e) {
-				let that = this;
-				that.listcurrs = e;
-			},
 			changeTabs(e) {
-				this.listcurrs = e.mp.detail.current
-				this.listcurr = 1
+				let that=this
+				that.listcurrs = e.mp.detail.current
+				that.listcurr = 1
+				if(that.recommendList.length==1){
+					that.GetGoodsCat();
+				}
 			},
 			//获取节点距离顶部
 			listtop() {
@@ -281,9 +314,7 @@
 				if(index == 2) {
 					that.$refs.business.showOpen()
 				} else {
-					wx.navigateTo({
-						url: urls
-					})
+					wx.showLoading({title: '功能开发中',duration:2000})
 				}
 			},
 
@@ -293,13 +324,14 @@
 				let that = this;
 			    API_k.getGoodCatData().then(res => {
 					if(res.code == 0){
-						that.recommendList =[{name:''}].concat(res.goodCats.map(Mres => {
+						that.recommendList =that.recommendList.concat(res.goodCats.map(Mres => {
 							Mres.options = [];  //控制视图的前提是必须注册进入视图；
-							Mres.filg = true;
+							Mres.hasMore = true;
 							Mres.page = 1;
 					        Mres.limit = 4;
 							return Mres;
-						})); 		
+						}));
+						that.GetGoodsList(that.recommendList[1].catId)	
 					}else{
 						Lib.showToast('失败','none')						
 					}
@@ -314,7 +346,7 @@
 				let that = this;
 				wx.showLoading({title: '加载中'})
 				let ItmeOptions = that.recommendList.find(Fres => Fres.catId == catId);
-				if(ItmeOptions.filg){
+				if(ItmeOptions.hasMore){
 					let params={}
 					params.page=ItmeOptions.page
 					params.limit=ItmeOptions.limit
@@ -324,7 +356,7 @@
 					API_k.getGoodsList(params).then(res => {
 						if(res.code == 0){
 							if(res.page.rows.length < ItmeOptions.limit){
-								ItmeOptions.filg = false
+								ItmeOptions.hasMore = false
 							}
 							ItmeOptions.options = ItmeOptions.options.concat(res.page.rows)
 						}else{
@@ -337,8 +369,6 @@
 					wx.showToast({title: '没有更多信息',icon: 'none',duration: 2000})
 				}
 			},
-
-
 			//获取热门搜索
 		GetHotSearchData(){
 				let that = this;
@@ -363,20 +393,6 @@
 		},
 
 		},
-
-		
-
-		//小程序触底加载
-		onReachBottom:function(){
-			let that = this;
-			if(that.listcurrs==1){
-				let Item = that.recommendList[that.listcurr];
-				Item.page += 1; 
-				that.GetGoodsList(Item.catId);
-			}
-			
-		},
-
 	}
 </script>
 
@@ -387,7 +403,12 @@
 	.detail {
 		padding-top: 88px;
 	}
-	
+	.noMoretip{
+		font-size:14px; 
+		color:#999999;
+		text-align: center;
+		margin-bottom: 50px;
+	}
 	.swiper {
 		height: 125px;
 		width: 351px;

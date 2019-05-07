@@ -15,6 +15,7 @@
 			</div>
 		</div>	
 		<recTwo :recTwo='showGoodDTOS'></recTwo>
+		<div class="noMoreTip">数据到底了</div>
 	</div>
 </template>
 
@@ -30,6 +31,7 @@
 				bgImg: {
 					img: "/static/images/hotbg.gif"
 				},
+				hasMore:true,
 				showGoodDTOS:[],
 				costBanner:[]
 			}
@@ -44,31 +46,61 @@
 			changeTab(e) {
 				this.listcurr = e.mp.detail.current;
 			},
+ 
 			getCost(){
 				let params={}
 				let that=this
-				params.page=that.page
-				params.limit=that.limit
-				Api.getCost(params).then(function(res){
-					that.costBanner=res.costBanner
-					that.showGoodDTOS=res.showGoodDTOS
-				})
+				if(that.hasMore){	
+					params.page=that.page
+					params.limit=that.limit
+					params.longitude=wx.getStorageSync('longitude')
+					params.latitude=wx.getStorageSync('latitude')
+					Api.getCost(params).then(function(res){
+						if(res.showGoodDTOS.length<that.limit){
+							that.hasMore=false
+						}
+						that.showGoodDTOS=that.showGoodDTOS.concat(res.showGoodDTOS)
+						that.costBanner=res.costBanner
+					})
+				}
+				else{
+					wx.showToast({
+						title:'没有更多数据了',
+						icon:"none",
+						duration:1500
+					})
+				}
 			}
 		}, 
 		mounted() {
 			let that = this;
 			that.listcurr = 0;
+			that.page=1
+			that.hasMore=true
+			that.showGoodDTOS=[]
+			that.getCost()
+		},
+		onReachBottom:function(){
+			let that = this;
+			that.page+=1
 			that.getCost()
 		}
 	}
 </script>
 
 <style scoped lang="less">
-swiper {
-display:block;
-height:100%;
+	swiper {
+		display:block;
+		height:100%;
 
-}
+	}
+	.noMoreTip{
+		font-size:14px; 
+		color:#999;
+		text-align: center;
+		height: 50px;
+		line-height: 50px;
+	}
 	/*轮播*/
 	.popularity-wp {
 		position: relative;

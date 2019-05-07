@@ -56,7 +56,7 @@
 
 <style scoped lang="less">
 	.rec-product {
-		padding: 0 12px 50px 12px;
+		padding: 0 12px 25px 12px;
 		box-sizing: border-box;
 		.rec-product-li {
 			background: #FFFFFF;

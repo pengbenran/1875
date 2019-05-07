@@ -1,48 +1,18 @@
 <template>
 	<div class="container">
-		<div class="condition">待核销</div>
+		<blockquote v-if='canCancel'>
+			<div class="condition" v-if='orderDetail.status==1'>待核销</div>
+		<div class="condition" v-if='orderDetail.status==2'>已核销</div>
+		<div class="condition" v-if='orderDetail.status==3'>已过期</div>
 		<div class="total">
-						<!--订单详情-->
 			<div class="orderinfo">
                    <div class="tit">订单信息</div>
-                   <!--<div class="ma">
-                   	 <div class="ma-left">
-                   	 	<span>订单编码 : </span>
-                   	 	<span>{{orderDetail.sn}}</span>
-                   	 </div>
-                   	 <div class="ma-right" @click='copy'>复制</div>
-                   </div>
-                   <div class="ma">
-                   	 <div class="ma-left">
-                   	 	<span>店铺地址 : </span>
-                   	 	<span>{{orderDetail.address}}</span>
-                   	 </div>
-                   	 <div class="ma-right" @click="openMap">导航</div>
-                   </div>
-                    <div class="img"><img src="/static/images/ku5p0efhhxr5.jpg"/></div>-->
-                    
                     <!--下单人-->
                     <div class="prnston">
                     	<div class="prnston-li">
                     	    <span class="title">下单人:</span>
                     	    <span class="tex">{{orderDetail.buyName}}</span>
                     	</div>
-                    	<!--<div class="prnston-li">
-                    	    <span class="title">获得积分 :</span>
-                    	    <span class="tex">{{orderDetail.gainedpoint}}</span>
-                    	</div>-->
-                    	<!--<div class="prnston-li" v-if="">
-                    	    <span class="title">推荐师优惠 :</span>
-                    	    <span class="tex">{{orderDetail.recommend}}</span>
-                    	</div>-->
-                    	<!--<div class="prnston-li">
-                    	    <span class="title">消费积分 :</span>
-                    	    <span class="tex">{{orderDetail.consumepoint}}</span>
-                    	</div>-->
-                    	<!--<div class="prnston-li">
-                    	    <span class="title">获得佣金 :</span>
-                    	    <span class="tex">{{orderDetail.recommend}}元</span>
-                    	</div>-->
                     	<div class="prnston-li">
                     		 <span class="title">下单时间 :</span>
                     	     <span class="tex"> {{orderDetail.createTime}}</span>
@@ -88,50 +58,73 @@
 			</div>
 		</div>
 		<!--按钮-->
-		<div class="btn">完成</div>
+		<div class="btn" v-if='orderDetail.status==1' @click="orderCancel">立即核销</div>
+		</blockquote>
+		<blockquote v-else>
+			<div class="kong">
+				<div class="img"><img src="/static/images/kong.png"></div>
+				<div class="text">您不是指定商户，无法核销噢~</div>
+				<div class="jumpbtn" @click="jumpHome">返回首页</div>
+			</div>
+		</blockquote>
+		<loginModel ref="loginModel" @memberCancel='memberCancel'></loginModel>
+
 	</div>
 </template>
 
 <script>
 	import Api from "@/api/order"
+	import store from "@/store/store"
+	import loginModel from "@/components/loginModel"
 	export default {
 		data() {
 			return {
 				orderDetail:{},
+				userInfo:{},
+				canCancel:true
 			}
 		},
 		mounted(){
 			let that=this
-			let orderId = that.$root.$mp.query.orderId;
-			that.getOrderDetail(orderId)
+			that.$refs.loginModel.userLogin()
+		},
+		components: {
+			loginModel
 		},
 		methods: {
-			// 获取订单详情
-			getOrderDetail(orderId){
-				let that=this
+			// 判断能否核销订单
+			memberCancel(){
 				let params={}
-				params.orderId=orderId
-				Api.getOrderDetail(params).then(function(res){
-					that.orderDetail=res.orderEntity
-				})		
-			},
-			copy(){
 				let that=this
-				wx.setClipboardData({
-					data:that.orderDetail.sn,
-					success: function(res) {
-
+				params.unionId=store.state.userInfo.unionid
+				params.orderId=that.$root.$mp.query.orderId
+				Api.memberCancel(params).then(function(res){
+					if(res.code==0){
+						that.orderDetail=res.orderEntity
+					}
+					else{
+						that.canCancel=false
 					}
 				})
 			},
-			openMap(){
+			// 返回首页
+			jumpHome(){
+				wx.switchTab({
+					url:'../index/main'
+				})
+			},
+			orderCancel(){
+				let params={}
 				let that=this
-				let latitude=that.orderDetail.latitude*1
-				let longitude=that.orderDetail.longitude*1
-				wx.openLocation({
-					latitude,
-					longitude,
-					scale: 18
+				params.unionId=store.state.userInfo.unionid
+				params.orderId=that.$root.$mp.query.orderId
+				Api.orderCancel(params).then(function(res){
+					if(res.code==0){
+					   that.orderDetail.status=2
+					}
+					else{
+
+					}
 				})
 			}
 		}
@@ -141,7 +134,35 @@
 <style scoped lang="less">
 	.container {
 		background: #f9f9f9;
-		padding-bottom: 80px;
+		/*空*/
+		.kong {
+			margin-top: 60px;
+			line-height: 1;
+			background: #fff;
+			.img {
+				width: 191px;
+				height: 78px;
+				margin: 0 auto;
+			}
+			.text {
+				font-size: 17px;
+				color: #333333;
+				text-align: center;
+				padding: 35px 0 30px;
+			}
+			.jumpbtn {
+				width: 80px;
+				height: 33px;
+				border: 1px solid;
+				border-radius: 17px;
+				text-align: center;
+				margin: 0 auto;
+				color: #ff6e6e;
+				font-size: 14px;
+				font-weight: bold;
+				line-height: 33px;
+			}
+		}
 		.condition {
 			width: 100%;
 			height: 49px;

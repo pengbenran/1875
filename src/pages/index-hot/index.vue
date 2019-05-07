@@ -53,13 +53,12 @@
 	export default {
 		data() {
 			return {
-				bg: "red",
 				listcurr: 0,
 				bcgImg:"/static/images/hotbg.gif",
 				pages:1,
 				limit:4,
 				popuPages:1,
-				popuLimit:6,
+				popuLimit:4,
 				popularityBanner: [],
 				ExplosivesSale: [],
 				showGoodDTOS: [],
@@ -89,6 +88,8 @@
 				let that=this
 				params.page=that.pages
 				params.limit=that.limit
+				params.longitude=wx.getStorageSync('longitude')
+				params.latitude=wx.getStorageSync('latitude')
 				params.catBackgroundId=0
 				Api.getExplosivesSale(params).then(function(res){
 					that.ExplosivesSale=res.ExplosivesSale
@@ -100,8 +101,9 @@
 				if(that.hasMore){
 					params.page=that.popuPages
 					params.limit=that.popuLimit
+					params.longitude=wx.getStorageSync('longitude')
+					params.latitude=wx.getStorageSync('latitude')
 					Api.getExplosivesPopularity(params).then(function(res){
-						console.log(res)
 						if(res.showGoodDTOS.length<that.popuLimit){
 							that.hasMore=false
 						}
@@ -126,18 +128,30 @@
 				this.listcurr = e;
 			},
 			changeTab(e) {
-				this.listcurr = e.mp.detail.current;
+				let that=this
+				that.listcurr = e.mp.detail.current;
+				if(that.showGoodDTOS.length==0){
+					that.getExplosivesPopularity()
+				}
 			},
 		},
 		mounted() {
 			let that = this;
 			that.listcurr = 0;
 			that.getExplosivesSale()
-			that.getExplosivesPopularity()
 		},
 		onUnload(){
 			let that = this;
 			that.listcurr = 0;
+			that.bcgImg="/static/images/hotbg.gif";
+			that.pages=1;
+			that.limit=4;
+			that.popuPages=1;
+			that.popuLimit=4;
+			that.popularityBanner= [];
+			that.ExplosivesSale= [];
+			that.showGoodDTOS= [];
+			that.hasMore=true
 		}
 	}
 </script>

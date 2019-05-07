@@ -2,6 +2,7 @@
 	"pages":[
 		"pages/index/main", 
 	    "pages/cancel/main",
+		"pages/index-news-more/main",
 	    "pages/myself-tx/main", 
 		"pages/myself-team/main",
 		"pages/bindCard/main",
