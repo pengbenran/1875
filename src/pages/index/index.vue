@@ -6,9 +6,12 @@
 		<blockquote v-else>
 		<!--头部-->
 		<div class="head">
-			<div class="head-left">
-				<span> <addres/> </span>
+			<div class="head-left" @click.stop="CityShow()">
+				<span> <addres ref="addres"/> </span>
 				<span class="iconfont">&#xe640;</span>
+				<div class="HeadMask" :class="citybool?'MaskOn':''">
+					<div class="list" v-for="(item,index) in CityList" :key='item' :index='index' @click.stop="CitySelect(item.value,item.name)">{{item.name}}</div>
+				</div>
 			</div>
 			<div class="head-right">
 				<div class="search" @click="isshow">
@@ -138,6 +141,8 @@
 				isLoading:false,
 				istoggle: false,
 				scrolls: false,
+				citybool:false,
+				CityList:[],
 				scrollTop: '',
 				idtop: '',
 				listcurr: 0,
@@ -207,6 +212,7 @@
 			that.getIndexImage()
 			that.getConfig();
 			that.GetHotSearchData();
+			that.GetAddresData();
 		},
 		methods: {
 			// 点击切换分类
@@ -316,6 +322,36 @@
 				} else {
 					wx.showLoading({title: '功能开发中',duration:2000})
 				}
+			},
+
+			//获取地址
+			GetAddresData(){
+				let that = this;
+				Api.GetAddresData().then(res=> {
+					if(res.code == 0){
+						let arr = [];
+					    res.city.map(M => {
+						   if(M.parentId != 0){
+							   arr.push(M)
+						   } 
+					   })
+					   this.CityList = arr;
+					}else{
+						Lib.showToast('失败','none')	
+					}
+				}).catch(err => {
+						Lib.showToast('失败','none')						
+				})
+			},
+
+			//显示
+			CityShow(){
+				this.citybool = !this.citybool;
+			},
+			CitySelect(val,name){
+				this.citybool = false;
+                this.$refs.addres.SetValue(name);
+				wx.setStorageSync('adcode',val);
 			},
 
 			////////////////////////////////////////////////////////////////////
@@ -462,6 +498,7 @@
 			height: 49px;
 			box-sizing: border-box;
 			.head-left {
+				position: relative;
 				display: flex;
 				align-items: center;
 				span {
@@ -469,6 +506,24 @@
 					font-size: 15px;
 				}
 			}
+			.HeadMask{
+			  z-index: 2;
+			  position: absolute;
+			  transition: all 0.4s;
+			  top: .5rem;
+			  left: -10rem;
+			  background: #fff;
+			  font-size: 16px;
+			  width: 1.4rem;
+			  text-align: center;
+			  padding: 6px 0;
+			  border-radius: 6px;
+			  box-shadow: 0 0 10px #DEDEDE;
+			  color: rgb(44, 44, 44);
+			//   opacity: 0;
+			}
+			.HeadMask .list{padding: 3px 0;}
+			.MaskOn{left: 0;}
 			.head-right {
 				display: flex;
 				align-items: center;

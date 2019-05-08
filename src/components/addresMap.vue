@@ -118,6 +118,11 @@ export default {
             // console.log(res);
         }
         });
+    },
+
+    //赋值
+    SetValue(name){
+      this.city = name;
     }
    }   
 }
