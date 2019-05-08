@@ -30,7 +30,7 @@
 					<div class="banner">
 						<swiper autoplay="true" circular="true" display-multiple-items='1' previous-margin='10px' next-margin='10px'>
 							<div v-for="(item, index) in popularityBanner">
-								<swiper-item class='item'>
+								<swiper-item class='item' @click='jumpGoodsDetail(item.goodId,item.status)'>
 									<img mode="aspectFill" :src="item.url" class="slide-image" />
 								</swiper-item>
 							</div>
@@ -77,6 +77,15 @@
 				wx.navigateTo({
 					url: '../index-hot-more/main'
 				})
+			},
+			// banner图跳转商品
+			jumpGoodsDetail(goodId,status){
+				if(status!=0){
+					wx.navigateTo({
+						url:`../product-detail/main?goodsId=${goodId}&codeUnionid=`, 
+					})
+				}
+				
 			},
 			lowerMore(){
 				let that = this;

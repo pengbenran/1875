@@ -443,7 +443,6 @@
 							margin-right: 8px;
 						}
 						&:nth-child(2) {
-							width: 90px;
 							border: 1px solid #ff6e6e;
 							background: #ff6e6e;
 							color: #ffffff;
@@ -473,7 +472,6 @@
 			.condition {
 				.condition-right {
 					span {
-						width: 90px;
 						border: 1px solid #ff6e6e;
 						background: #ff6e6e;
 						color: #ffffff;

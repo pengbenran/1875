@@ -26,8 +26,8 @@
      	overflow: hidden;
      	left: 50%;
      	top: 50%;
-     	margin-left: -62.5px;
-     	margin-top: -50px;
+     	margin-left: -86.5px;
+     	margin-top: -62.5px;
      	img{
      		width:100%;
      		height: 100%;

@@ -4,7 +4,13 @@
 			<loading></loading>
 		</blockquote>
 		<blockquote v-else>
-			<recNearby :recNearby="GoodList" />
+			<blockquote>
+				<recNearby :recNearby="GoodList" />
+			</blockquote>
+			<div v-if="GoodList.length==0" class="kong">
+				<div class="img"><img src="/static/images/kong.png" /></div>
+				<div class="text">还没有喜欢的商品哦~</div>
+			</div>
 		</blockquote>
 	</div>
 </template>
@@ -16,7 +22,6 @@
 	export default {
 		data() {
 			return {
-				// TopList: ['可使用', '已下架'],
 				listQuery: {
 					page: 1,
 					limit: 10,
@@ -87,6 +92,33 @@
 </script>
 
 <style scoped lang="less">
+.kong {
+		margin-top: 120px;
+		line-height: 1;
+		.img {
+			width: 191px;
+			height: 78px;
+			margin: 0 auto;
+		}
+		.text {
+			font-size: 17px;
+			color: #333333;
+			text-align: center;
+			padding: 35px 0 30px;
+		}
+		.btn {
+			width: 80px;
+			height: 33px;
+			border: 1px solid;
+			border-radius: 17px;
+			text-align: center;
+			margin: 0 auto;
+			color: #ff6e6e;
+			font-size: 14px;
+			font-weight: bold;
+			line-height: 33px;
+		}
+	}
 	.container {
 		background: #f8f8f8;
 		min-height: 100vh;

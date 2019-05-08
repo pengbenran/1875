@@ -81,12 +81,18 @@
 			return {
 				orderDetail:{},
 				userInfo:{},
-				canCancel:true
+				canCancel:true,
+				orderId:''
 			}
 		},
 		mounted(){
 			let that=this
 			that.$refs.loginModel.userLogin()
+			
+		},
+		onLoad(options){
+			let that=this
+			that.orderId=decodeURIComponent(options.scene)
 		},
 		components: {
 			loginModel
@@ -97,7 +103,7 @@
 				let params={}
 				let that=this
 				params.unionId=store.state.userInfo.unionid
-				params.orderId=that.$root.$mp.query.orderId
+				params.orderId=that.orderId
 				Api.memberCancel(params).then(function(res){
 					if(res.code==0){
 						that.orderDetail=res.orderEntity
@@ -117,7 +123,7 @@
 				let params={}
 				let that=this
 				params.unionId=store.state.userInfo.unionid
-				params.orderId=that.$root.$mp.query.orderId
+				params.orderId=that.orderId
 				Api.orderCancel(params).then(function(res){
 					if(res.code==0){
 					   that.orderDetail.status=2

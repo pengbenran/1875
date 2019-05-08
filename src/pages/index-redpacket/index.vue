@@ -283,7 +283,7 @@
 	
 	.container-bottom {
 		width: 100%;
-		background: #eeeeee;
+		background: #FFFFFF;
 		position: relative;
 		z-index: 9;
 		padding-top: 12px;

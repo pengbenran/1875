@@ -18,22 +18,26 @@
 				<div class="dot-li" :class="index==activeIndex?'dot-li-on':''" v-for="(item, index) in imagesUrl" @click="dot(index)"> </div>
 			</div>
 			<div class="total">
-			<!--喜欢 -->
-			<div class="like" @click="tootle">
-				<div class="img" v-if="good.isFavorite == 1"><img src="/static/images/love1.png" /></div>
-				<div class="img" v-else><img src="/static/images/love.png" /></div>
-				<div class="num">{{good.favorites}}</div>
+				<!--喜欢 -->
+				<div class="like" @click="tootle">
+					<div class="img" v-if="good.isFavorite == 1"><img src="/static/images/love1.png" /></div>
+					<div class="img" v-else><img src="/static/images/love.png" /></div>
+					<div class="num">{{good.favorites}}</div>
+				</div>
+				<!--转发-->
+				<div class="tra" @click="drawPoster">
+					<div class="img iconfont">&#xe624;</div>
+				</div>
+				<!--电话-->
+				<div class="phone" @click="makePhone">
+					<div class="img iconfont">&#xe7e0;</div>
+				</div>
+				<!--地址-->
+				<div class="site" @click="openMap">
+					<div class="img iconfont">&#xe62c;</div>
+				</div>
 			</div>
-             <!--转发-->
-             <div class="tra" @click="drawPoster">
-             	<div class="img iconfont">&#xe624;</div>
-             </div>
-			<!--电话-->
-			<div class="phone" @click="makePhone"><div class="img iconfont">&#xe7e0;</div></div>
-			<!--地址-->
-			<div class="site" @click="openMap"><div class="img iconfont">&#xe62c;</div></div>
-			</div>
-			
+
 		</div>
 		<!--详情-->
 		<div class="list">
@@ -78,7 +82,6 @@
 		</blockquote>
 		<!-- 分享海报 -->
 		<goodPoster ref="goodPoster" @closePoster='closePoster' @paintOk='paintOk' :goodDetail='good'></goodPoster>
-	
 
 		<!--购买弹窗-->
 		<goodDetailModel ref="goodModel"></goodDetailModel>
@@ -102,11 +105,11 @@
 				love: true,
 				curr: 0,
 				activeIndex: 0,
-				userInfo:{},
-				good:{},	
-				isPoster:false,	
-				goodId:'',
-				shareImg:''	
+				userInfo: {},
+				good: {},
+				isPoster: false,
+				goodId: '',
+				shareImg: ''
 			}
 		},
 		mounted(){
@@ -114,7 +117,7 @@
 			that.$refs.goodModel.hideModel()
 			that.goodId = that.$root.$mp.query.goodsId;
 			that.$refs.goodPoster.closeClick()
-			if(that.$root.$mp.query.codeUnionid!=''){
+			if(that.$root.$mp.query.codeUnionid != '') {
 				that.getUserInfo()
 				that.getConfig()
 			}
@@ -133,19 +136,19 @@
 		},
 		methods: {
 			// 获取会员信息
-			async getUserInfo(){
-				let that=this
-				store.commit("storecodeUnionid",that.$root.$mp.query.codeUnionid)
-				store.commit("storegoodsid",that.$root.$mp.query.goodsId)
+			async getUserInfo() {
+				let that = this
+				store.commit("storecodeUnionid", that.$root.$mp.query.codeUnionid)
+				store.commit("storegoodsid", that.$root.$mp.query.goodsId)
 				await that.$refs.loginModel.userLogin()
 			},
-			drawPoster(){
-				let that=this
+			drawPoster() {
+				let that = this
 				that.$refs.goodPoster.getErCode(that.good.goodId)
 			},
 			// 保存图片
 			eventSave() {
-				let that=this
+				let that = this
 				wx.saveImageToPhotosAlbum({
 					filePath: that.shareImg,
 					success(res) {
@@ -158,14 +161,14 @@
 				})
 			},
 			// 绘制好了触发事件
-			paintOk(shareImg){
-				let that=this
-				that.isPoster=true
-				that.shareImg=shareImg
+			paintOk(shareImg) {
+				let that = this
+				that.isPoster = true
+				that.shareImg = shareImg
 			},
-			closePoster(){
-				let that=this
-				that.isPoster=false
+			closePoster() {
+				let that = this
+				that.isPoster = false
 			},
 			changeImg(e) {
 				let that = this
@@ -176,14 +179,13 @@
 				let that = this
 				that.activeIndex = e
 			},
-
 			//点击收藏指定商品
 			tootle() {
 				let that = this
-				if(that.good.isFavorite == 1){
-                    that.DeletePostCollectionShop();
-				}else{
-                    that.PostCollectionShop();
+				if(that.good.isFavorite == 1) {
+					that.DeletePostCollectionShop();
+				} else {
+					that.PostCollectionShop();
 				}
 
 			},
@@ -194,14 +196,14 @@
 			},
 			// 打开立即购买模态框
 			openModel() {
-				let that=this
+				let that = this
 				that.$refs.goodModel.openModel()
 			},
 			// 打开地图导航
-			openMap(){
-				let that=this
-				let latitude=that.good.latitude*1
-				let longitude=that.good.longitude*1
+			openMap() {
+				let that = this
+				let latitude = that.good.latitude * 1
+				let longitude = that.good.longitude * 1
 				wx.openLocation({
 					latitude,
 					longitude,
@@ -209,8 +211,8 @@
 				})
 			},
 			// 拨打电话
-			makePhone(){
-				let that=this
+			makePhone() {
+				let that = this
 				wx.makePhoneCall({
 					phoneNumber: that.good.phone,
 				})
@@ -224,12 +226,12 @@
 				})
 			},
 			//获取商品详情
-			GetGoodsInfo(){
+			GetGoodsInfo() {
 				let that = this;
 				let data = {
-					goodId:that.goodId,
-					memberId:store.state.userInfo.memberId,
-				}; 
+					goodId: that.goodId,
+					memberId: store.state.userInfo.memberId,
+				};
 				API.GetGoodDetail(data).then(res => {
 					if(res.code==0){
 						res.good.banner=res.good.images.split(',')
@@ -245,53 +247,77 @@
 					})
 					}
 				}).catch(err => {
-				   wx.showToast({
-						title:'网络错误',
-						icon:"none",
-						duration:1500
+					wx.showToast({
+						title: '网络错误',
+						icon: "none",
+						duration: 1500
 					})
 				})
 			},
 
 			//点击收藏指定商品
-			PostCollectionShop(){
+			PostCollectionShop() {
 				let that = this
 				let data = {
-					memberId:store.state.userInfo.memberId,
-					goodId:this.goodId
+					memberId: store.state.userInfo.memberId,
+					goodId: this.goodId
 				}
-				API.CollectionShop(data).then(res =>{
+				API.CollectionShop(data).then(res => {
 					if(res.code == 0) {
 						that.good.favorites += 1
 						that.good.isFavorite = 1
-						wx.showToast({title:'成功',icon:"success",duration:1500})
-					}else{
-						wx.showToast({title:'网络错误',icon:"none",duration:1500})
+						wx.showToast({
+							title: '成功',
+							icon: "success",
+							duration: 1500
+						})
+					} else {
+						wx.showToast({
+							title: '网络错误',
+							icon: "none",
+							duration: 1500
+						})
 					}
 				}).catch(err => {
-						wx.showToast({title:'网络错误',icon:"none",duration:1500})
+					wx.showToast({
+						title: '网络错误',
+						icon: "none",
+						duration: 1500
+					})
 				})
 			},
 
 			//点击取消收藏
-			DeletePostCollectionShop(){
+			DeletePostCollectionShop() {
 				let that = this
 				let data = {
-					memberId:store.state.userInfo.memberId,
-					goodId:this.goodId
+					memberId: store.state.userInfo.memberId,
+					goodId: this.goodId
 				}
-				API.DeleteCollectionShop(data).then(res =>{
+				API.DeleteCollectionShop(data).then(res => {
 					if(res.code == 0) {
-						console.log("获取商品的信息：",that.good)
+						console.log("获取商品的信息：", that.good)
 						that.good.favorites -= 1
 						that.good.isFavorite = 2
 						// that.good
-						wx.showToast({title:'成功',icon:"success",duration:1500})
-					}else{
-						wx.showToast({title:'网络错误',icon:"none",duration:1500})
+						wx.showToast({
+							title: '成功',
+							icon: "success",
+							duration: 1500
+						})
+					} else {
+						wx.showToast({
+							title: '网络错误',
+							icon: "none",
+							duration: 1500
+						})
 					}
 				}).catch(err => {
-						wx.showToast({title:'网络错误',icon:"none",duration:1500})
+					wx.showToast({
+						title: '网络错误',
+						icon: "none",
+						duration: 1500
+					})
 				})
 			},
 		},
@@ -310,7 +336,7 @@
 </script>
 
 <style scoped lang="less">
-@import url("~mpvue-wxparse/src/wxParse.css");
+	@import url("~mpvue-wxparse/src/wxParse.css");
 	.box {
 		position: relative;
 		.swiper {
@@ -336,33 +362,62 @@
 				background: #FFFFFF;
 			}
 		}
-		.total{
+		.total {
 			position: absolute;
-			left:0;
+			left: 0;
 			bottom: 11px;
 			display: flex;
 			align-items: center;
-			padding-left:12px;
+			padding-left: 12px;
 			box-sizing: border-box;
 			text-align: center;
 			color: #FFFFFF;
-			.like,.tra,.phone,.site {			
-				width: 37px;
-				height: 37px;
+			.like,
+			.tra,
+			.phone,
+			.site {
+				width: 38px;
+				height: 38px;
 				background: rgba(0, 0, 0, .3);
 				border-radius: 50%;
+			}
+			.tra {
+				margin-left: 26px;
 				.img {
-					width: 23px;
-					height: 20px;
-					margin: 9px auto;
+					width: 100%;
+					height: 100%;
+					font-size: 16px;
+					text-align: center;
+					line-height: 38px;
+					color: #FFFFFF;
 				}
 			}
-			.tra{margin-left: 26px;font-size: 16px;}
-			.phone{margin-left: 60px;font-size: 21px;.img{margin: 7px auto;}} 
-			.site{margin-left: 26px;font-size: 20px;}
-			.like,.tra{
+			.phone {
+				margin-left: 60px;
+				.img {
+					width: 100%;
+					height: 100%;
+					font-size: 22px;
+					text-align: center;
+					line-height: 38px;
+					color: #FFFFFF;
+				}
+			}
+			.site {
+				margin-left: 26px;
+				.img {
+					width: 100%;
+					height: 100%;
+					font-size: 18px;
+					text-align: center;
+					line-height: 38px;
+					color: #FFFFFF;
+				}
+			}
+			.like,
+			.tra {
 				position: relative;
-				.num{
+				.num {
 					position: absolute;
 					top: -8px;
 					left: 17px;
@@ -376,8 +431,15 @@
 					border-radius: 8px;
 				}
 			}
+			.like { 
+					vertical-align: middle;
+				.img {
+					width: 18px;
+					height: 18px;
+					margin: 9px auto;
+				}
+			}
 		}
-		
 	}
 	
 	.list {
@@ -415,7 +477,7 @@
 				&:nth-child(2) {
 					padding: 0 5px;
 					height: 16px;
-					background: #21a9fd;
+					background: #ff6666;
 					text-align: center;
 					line-height: 16px;
 					color: #FFFFFF;
@@ -429,7 +491,7 @@
 					font-size: 12px;
 					padding: 0 5px;
 					height: 16px;
-					background: #ff6666;
+					background: #21a9fd;
 					text-align: center;
 					line-height: 16px;
 					color: #FFFFFF;
@@ -490,7 +552,8 @@
 		}
 	}
 	/*底部*/
-	.footer {
+	
+	.footer{
 		display: flex;
 		align-items: center;
 		width: 100%;
@@ -498,20 +561,20 @@
 		position: fixed;
 		bottom: 0;
 		z-index: 88;
-		.saveImg{
-			width:50%;
+		.saveImg {
+			width: 50%;
 			background: #ff9999;
 			line-height: 57px;
-			text-align: center;	
+			text-align: center;
 			color: #ffffff;
 			font-size: 17px;
 			font-weight: bold;
 		}
-		.shareFriend{
-			width:50%;
+		.shareFriend {
+			width: 50%;
 			background: #ff6666;
 			line-height: 57px;
-			text-align: center;	
+			text-align: center;
 			color: #ffffff;
 			font-size: 17px;
 			font-weight: bold;
@@ -556,6 +619,4 @@
 			font-weight: bold;
 		}
 	}
-	
-	
 </style>
