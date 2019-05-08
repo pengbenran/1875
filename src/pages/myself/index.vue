@@ -203,7 +203,7 @@
 		width: 180px;
 		height: 153px;
 		position: absolute;
-		right: 10px;
+		right: 25px;
 	}
 }
 	.container {
