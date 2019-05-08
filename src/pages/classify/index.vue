@@ -4,8 +4,8 @@
 		<!--head-->
 		<div class="head">
 			<div class="head-left">
-				<span>{{city}}</span>
-				<span class="iconfont">&#xe6bd;</span>
+				<!-- <span>{{city}}</span>
+				<span class="iconfont">&#xe6bd;</span> -->
 			</div>
 			<div class="head-right" @click="isshow">
 				<span class="iconfont">&#xe6aa;</span>

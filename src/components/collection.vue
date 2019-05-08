@@ -1,35 +1,7 @@
 <template>
 	<div class="rec-product">
-		<div class="rec-product-warp" v-for="(item,index) in recNearby">
-			<div class="rec-product-li">
-				<div class="left">
-					<img :src="item.thumbnail" />
-				</div>
-				<div class="right">
-					<div class="tit">{{item.goodName}}</div>
-
-					<div class="address">
-						<span>{{item.address}}</span>
-						<span>丨</span>
-						<span>{{item.subway}}</span>
-					</div>
-					<div class="pic">
-						<div class="pic-left">
-							<p>
-								<span class="rmb">¥</span>
-								<span>{{item.price}}</span>
-							</p>
-							<p>¥{{item.showPrice}}</p>
-						</div>
-						<!-- <div class="pic-right">200m</div> -->
-					</div>
-				</div>
-			</div>
-			<div class="bar">
-				<div class="bar_left">
-					<div class="bar_Img"><img src="/static/images/love1.png" /></div> <span>{{item.favorites}}人喜欢</span> </div>
-				<div class="bar_right"><span @click="jumpdetail(item.goodId)">立即购买</span></div>
-			</div>
+		<div class="rec-product-warp" v-for="(item,index) in recNearby" :index='index'>
+			123
 		</div>
 	</div>
 </template>

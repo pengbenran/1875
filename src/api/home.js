@@ -15,6 +15,10 @@ export default {
 	// 获取小程序全局设置
 	getConfig(){
 		return API.GET('/api/member/getGlobalConfig')
+	},
+	//获取地址
+	GetAddresData(params){
+		return API.GET('/api/member/openCity',params)
 	}
 
 
