@@ -7,7 +7,6 @@
 		</div>
 		<swiper style="height:100vh" duration='350' :current="listcurr" @change="changeTab">
 			<swiper-item style="overflow: scroll;">
-				<recNearby :recNearby="GoodList" />
 					<recNearby :recNearby="GoodList" />
 			</swiper-item>
 			
