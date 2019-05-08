@@ -128,6 +128,7 @@
 					params.page=ItmeOptions.page
 					params.limit=ItmeOptions.limit
 					params.catId=catId
+					params.adCode=wx.getStorageSync('adcode')
 					params.longitude=wx.getStorageSync('longitude')
 					params.latitude=wx.getStorageSync('latitude')
 					API.getGoodsList(params).then(res => {

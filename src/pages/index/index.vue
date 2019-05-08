@@ -359,6 +359,7 @@
 					let params={}
 					params.page=ItmeOptions.page
 					params.limit=ItmeOptions.limit
+					params.adCode=wx.getStorageSync('adcode')
 					params.catId=catId
 					params.longitude=wx.getStorageSync('longitude')
 					params.latitude=wx.getStorageSync('latitude')

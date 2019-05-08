@@ -28,7 +28,7 @@
 			return {
 			tip:'',
 			applyFrom:{
-				memberId:'3808',
+				memberId:'',
 				name:'',
 				mobile:'',
 				wechat:''
@@ -57,12 +57,11 @@
 				if(that.tip==''&&that.canSubmit){
 					that.canSubmit=false
 					Api.distribeApply(that.applyFrom).then(function(res){
-						console.log(res)
 						if(res.code==0){
 						wx.showToast({title: '提交申请成功',icon: 'success',duration: 2000})
 						utils.updateUserInfo()
 						wx.switchTab({
-					      	url:`../myself/main`			  	
+					      	url:`../index/main`			  	
 						})
 						}
 						else{
@@ -76,7 +75,6 @@
 		mounted() {
 			let that=this
 			that.applyFrom.memberId=store.state.userInfo.memberId
-			console.log(that.applyFrom);
 		},
 	}
 </script>
