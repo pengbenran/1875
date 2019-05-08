@@ -434,9 +434,9 @@
 			.like { 
 					vertical-align: middle;
 				.img {
-					width: 18px;
-					height: 18px;
-					margin: 9px auto;
+					width: 20px;
+					height: 17px;
+					margin: 12px auto; 
 				}
 			}
 		}

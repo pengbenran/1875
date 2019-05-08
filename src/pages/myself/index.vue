@@ -1,5 +1,9 @@
 <template>
 	<div class="container">
+		<!--提示弹窗-->
+		<div class="popup" v-if="ispopup" @click="popup">
+			<div class="img"><img src="/static/images/popup.png"/></div>			
+		</div>
 		<!--用户信息-->
 		<div class="userinfo">
 			<div class="img"><img :src="userInfo.face" /></div>
@@ -89,6 +93,7 @@
 	export default {
 		data() {
 			return {
+				ispopup:true,
 				vip:1,
 				userInfo:{},
 				distribInfo:{}
@@ -108,6 +113,9 @@
 			}
 		},
 		methods: {
+			popup(){
+				this.ispopup=false
+			},
 			listLi2() {
 				wx.navigateTo({
 					url: "../myself-red/main"
@@ -182,6 +190,22 @@
 </script>
 
 <style scoped lang="less">
+/*提示弹窗*/
+.popup{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,.4);
+	z-index: 99;
+	.img{
+		width: 180px;
+		height: 153px;
+		position: absolute;
+		right: 10px;
+	}
+}
 	.container {
 		background: #f4f4f4;
 		position: absolute;
