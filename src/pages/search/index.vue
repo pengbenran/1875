@@ -26,8 +26,8 @@
 			<div class="list">
 				<div class="tit">最近搜索</div>
 				<div class="list-wp">
-					<div class="list-li" v-for="(item,index) in Searchinput"  @click="GetSearckClick(item)">
-						<span hover="true" hover-class="detail-hover">{{item}}</span>
+					<div class="list-li" v-for="(item,index) in Searchinput"  @click.stop="GetSearckClick(item)">
+						<span hover="true" hover-class="detail-hover"><label>{{item}}</label> <label class="iconfont" @click.stop="closeTag(item)">&#xe809;</label></span>
 					</div>
 				</div>
 			</div>
@@ -97,6 +97,15 @@
 					Lib.ShowToast('失败','none')
 				})
 				
+			},
+
+			//点击删除最近搜索
+			closeTag(val){
+				let that = this;
+				let TagList = wx.getStorageSync('SearchData')
+				TagList.splice(TagList.indexOf(val), 1)
+				that.Searchinput = TagList
+				wx.setStorageSync('SearchData',TagList)
 			},
 
 			//点击搜索
@@ -231,8 +240,12 @@
 				height: 44px;
 				/*line-height: 32px;*/
 				border-top: 1px solid #f4f4f4;
+		
 				span {
-					display: inline-block;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					padding: 0 5px;
 					margin-left: 22px;
 					color: #333333;
 					font-size: 15px;

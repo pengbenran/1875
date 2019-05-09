@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-<<<<<<< HEAD
+
 		<div class="top_Tap">
 			<ul>
 				<li v-for="(item,index) in TopList" :key="item"><span :class="listcurr == index ? 'List_on':''" @click="onClick(index)">{{item}}</span></li>
@@ -12,8 +12,8 @@
 			</swiper-item>
 			
 		</swiper>
-=======
-		<blockquote v-if="!isLoading">
+
+		<!-- <blockquote v-if="!isLoading">
 			<loading></loading>
 		</blockquote>
 		<blockquote v-else>
@@ -24,8 +24,8 @@
 				<div class="img"><img src="/static/images/kong.png" /></div>
 				<div class="text">还没有喜欢的商品哦~</div>
 			</div>
-		</blockquote>
->>>>>>> 72e238b40103bc5a15311e168f79bc2900318f88
+		</blockquote> -->
+
 	</div>
 </template>
 <script>
