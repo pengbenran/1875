@@ -34,8 +34,8 @@
 		<div class="expenditure">
 			<div class="expenditure-tit">
 				<div class="tit1">流水记录</div>
-				<div class="tit2">
-					<span @click="btntrue">{{tit}}</span>
+				<div class="tit2" @click="btntrue">
+					<span>{{tit}}</span>
 					<span class="iconfont">&#xe6bd;</span>
 				</div>
 			</div>

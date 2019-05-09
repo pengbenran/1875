@@ -26,10 +26,10 @@
 					<div class="iconfont icon"> &#xe62d;</div>
 					<div class="name">邀请</div>
 				</div>
-				<div class="list-li2" @click="listLi2">
+				<!-- <div class="list-li2" @click="listLi2">
 					<div class="iconfont icon">&#xe629;</div>
 					<div class="name">红包</div>
-				</div>
+				</div> -->
 				<div class="list-li4" @click="listLi4">
 					<div class="iconfont icon">&#xe626;</div> 
 					<div class="name">喜欢</div>

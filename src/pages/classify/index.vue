@@ -156,8 +156,9 @@
 			Item.page += 1; 
 			that.GetGoodsList(Item.catId);
 		},
-		onLoad() {
+		onShow() {
 			let that = this
+			that.listcurr=0
 			//获取手机宽
 			wx.getSystemInfo({
 				success: (res) => {

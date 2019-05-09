@@ -14,7 +14,7 @@
 				<swiper-item style="overflow: scroll;">
 					<div v-if="item.options.length!==0" class="cates0">
 						<div class="cate-list" v-for="(child,cindex) in item.options">
-							<div class="top">
+							<div class="top"  @click="jumpdetail(child.orderId)">
 								<div class="img"><img :src="child.goodThumbnail" /></div>
 								<div class="cant">
 									<div class="name">{{child.goodName}}</div>

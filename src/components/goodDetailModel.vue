@@ -28,7 +28,7 @@
 						<div class="bottom">
 							<span><input  @input='inputjf' type="number" v-model="jf" placeholder-style='color:#dedede;font-size: 13px;' placeholder="请输入抵扣积分"/></span>
 							<span>抵扣</span>
-							<span v-if="isjf">{{jf*config.pointDeduction}}元</span>
+							<span v-if="isjf">{{usePoint}}元</span>
 						</div>
 					</div>
 					<!--奖金折扣-->
@@ -94,9 +94,9 @@
 				let jf=that.jf==''?0:that.jf
 				let bonus=that.bonus==''?0:that.bonus
 				// 会员折扣之后的价格减去分享师优惠金额
-				let accSubRes=utils.accSub(that.goodDetail.price*that.userInfo.discount,that.goodDetail.commission)
+				let accSubRes=utils.accSub((that.goodDetail.price*that.userInfo.discount).toFixed(2),that.goodDetail.commission)
 				// 减去积分抵扣之后的金额
-				let accSubRes1=utils.accSub(accSubRes,jf*that.config.pointDeduction)>0?utils.accSub(accSubRes,jf*that.config.pointDeduction):0.01
+				let accSubRes1=utils.accSub(accSubRes,(jf*that.config.pointDeduction).toFixed(2))>0?utils.accSub(accSubRes,(jf*that.config.pointDeduction).toFixed(2)):0.01
 				if(accSubRes1-bonus<0){
 					bonus=accSubRes1-0.01
 					that.bonus=accSubRes1-0.01
@@ -104,12 +104,17 @@
 					that.bonusTip="已抵扣最大金额"
 				}
 				return utils.accSub(accSubRes1,bonus)>0?utils.accSub(accSubRes1,bonus):0.01
+			},
+			usePoint(){
+				let that=this
+				return (that.jf*that.config.pointDeduction).toFixed(2)
 			}
 		},
 		methods: {
 			openModel() {
 				let that=this
 				that.showModel=true
+				that.isSubmit=false
 				that.goodDetail=store.state.goodDetail
 				that.userInfo=store.state.userInfo
 				that.config=store.state.config

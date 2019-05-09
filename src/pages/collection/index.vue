@@ -93,7 +93,8 @@
 
 <style scoped lang="less">
 .kong {
-		margin-top: 120px;
+		padding-top: 120px;
+		box-sizing: border-box;
 		line-height: 1;
 		.img {
 			width: 191px;
