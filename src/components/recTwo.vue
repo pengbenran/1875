@@ -11,10 +11,10 @@
 					<span>丨</span>
 					<span>{{item.region}}</span>
 				</div>
-					<div class="jfjj">
+					<!-- <div class="jfjj">
 						<span class="jf">可得积分:20</span>
 						<span class="jj">可得奖金:12.34元</span>
-					</div>
+					</div> -->
 
 				<div class="pic">
 					<div class="pic-left">
