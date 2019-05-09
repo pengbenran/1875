@@ -21,7 +21,7 @@
 		methods: {
 			jumpdetail(goodsId) {
 				wx.navigateTo({
-					url: '../product-detail/main?goodsId=' + goodsId
+					url: `../product-detail/main?goodsId=${goodsId}&codeUnionid=`
 				})
 			}
 		},
@@ -29,6 +29,7 @@
 </script>
 
 <style scoped lang="less">
+
 	.rec-product-warp {
 		background: #FFFFFF;
 		box-sizing: border-box;

@@ -2,7 +2,7 @@
 	<div class="goodPoster">
 		<div class="paintImg" v-if="paintOk">
 			<div class="bcg" @click="closeClick"></div>
-			<div class="img" :style="{width:Width+'px',height:Height+'px',left:Left+'px'}">
+			<div class="img" :style="{width:imgWidth+'px',height:imgHight+'px',left:Left+'px'}">
 				<img :src="shareImage">
 			</div>
 		</div>
@@ -24,7 +24,9 @@
 				painting:'',
 				paintOk:false,
 				shareImage:'',
-				Left:''
+				Left:'',
+				imgWidth:'',
+				imgHight:''
 			}
 		},
 		components: {
@@ -54,7 +56,9 @@
 			// 获取二维码
 			getErCode(goodsId){
 				let that=this
-				that.Left=(wx.getSystemInfoSync().windowWidth-300)/2
+				that.Left=(wx.getSystemInfoSync().windowWidth)*0.1
+				that.imgWidth=(wx.getSystemInfoSync().windowWidth)*0.8
+				that.imgHight=that.imgWidth*1.612
 				that.userInfo = store.state.userInfo	
 				let params={}
 				params.params=`${that.userInfo.unionid},${goodsId},1`
@@ -240,7 +244,7 @@
 			overflow: hidden;
 			z-index: 10;
 			position: absolute;
-			top: 50px;
+			top: 30px;
 		}
 	}
 </style>

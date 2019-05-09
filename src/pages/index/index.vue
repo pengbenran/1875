@@ -33,7 +33,7 @@
 		<!--baner-->
 		<div class="box">
 			<swiper class="swiper" @change="changeImg" :autoplay="true" :circular="true" current=0>
-				<div v-for="(item, index) in banner">
+				<div v-for="(item, index) in banner" @click="jumpGoodsDetail(item.goodId,item.status)">
 					<swiper-item class="item">
 						<img mode="aspectFill" :src="item.url" class="slide-image" />
 					</swiper-item>
@@ -79,10 +79,10 @@
 						</div>
 					</div>
 					<!--猜你喜欢 -->
-					<div class="recTwo">
+					<!-- <div class="recTwo">
 						<div class="tit">猜你喜欢</div>
 						<recTwo :recTwo='showGoodDTOS'></recTwo>
-					</div> 	
+					</div>  -->	
 			    </scroll-view>
 				</swiper-item>
 				<!--附近-->
@@ -220,6 +220,15 @@
 				let that=this
 				that.listcurrs = index
 			},
+			// banner图跳转商品
+			jumpGoodsDetail(goodId,status){
+				if(status!=0){
+					wx.navigateTo({
+						url:`../product-detail/main?goodsId=${goodId}&codeUnionid=`, 
+					})
+				}
+				
+			},
 			// 点击切换小分类
 			clickTabs(index){
 				let that=this
@@ -349,9 +358,13 @@
 				this.citybool = !this.citybool;
 			},
 			CitySelect(val,name){
-				this.citybool = false;
-                this.$refs.addres.SetValue(name);
+				let that=this
+				that.citybool = false;
+                that.$refs.addres.SetValue(name);
+				wx.setStorageSync('City',name);
 				wx.setStorageSync('adcode',val);
+				that.listcurrs=0;
+				that.recommendList=[{name:''}]
 			},
 
 			////////////////////////////////////////////////////////////////////
@@ -386,6 +399,7 @@
 					let params={}
 					params.page=ItmeOptions.page
 					params.limit=ItmeOptions.limit
+					params.adCode=wx.getStorageSync('adcode')
 					params.catId=catId
 					params.longitude=wx.getStorageSync('longitude')
 					params.latitude=wx.getStorageSync('latitude')

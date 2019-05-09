@@ -13,9 +13,9 @@
 				<div class="vip-img" v-if="userInfo.lvId==24&&userInfo.distributorStatus==2"><img src="/static/images/VIP1.gif"/></div>
 				<div class="vip-img" v-if="userInfo.lvId==25&&userInfo.distributorStatus==2"><img src="/static/images/VIP2.gif"/></div>
 				<div class="vip-img" v-if="userInfo.lvId==26&&userInfo.distributorStatus==2"><img src="/static/images/VIP3.gif"/></div>	 			
-				<div class="vip-img" v-if="distribInfo.lvId==14&&userInfo.distributorStatus==1"><img src="/static/images/share1.gif"/></div>
-				<div class="vip-img" v-if="distribInfo.lvId==15&&userInfo.distributorStatus==1"><img src="/static/images/share2.gif"/></div>
-				<div class="vip-img" v-if="distribInfo.lvId==16&&userInfo.distributorStatus==1"><img src="/static/images/share3.gif"/></div>	 			
+				<div class="vip-img" v-if="distribInfo.lvId==18&&userInfo.distributorStatus==1"><img src="/static/images/share1.gif"/></div>
+				<div class="vip-img" v-if="distribInfo.lvId==19&&userInfo.distributorStatus==1"><img src="/static/images/share2.gif"/></div>
+				<div class="vip-img" v-if="distribInfo.lvId==20&&userInfo.distributorStatus==1"><img src="/static/images/share3.gif"/></div>	 			
 				<div class="iconfont icon">&#xe625;</div> 
 			</div> 
 		</div>
@@ -79,7 +79,7 @@
 				</div>
 			</div>
 			<!--客服-->
-			<div class="phone">
+			<div class="phone"  @click='makePhone'>
 				<span>客服热线</span>
 				<span class="iconfont">&#xe625; </span>
 			</div>
@@ -107,6 +107,7 @@
 		},
 		onShow(){
 			let that=this
+			console.log('执行了onShow')
 			that.userInfo=store.state.userInfo
 			if(that.userInfo.distributorStatus==1){
 				that.distribInfo=store.state.distribInfo
@@ -115,6 +116,12 @@
 		methods: {
 			popup(){
 				this.ispopup=false
+			},
+			makePhone(){
+				let that=this
+				wx.makePhoneCall({
+					phoneNumber: '19179131875',
+				})
 			},
 			listLi2() {
 				wx.navigateTo({

@@ -4,8 +4,8 @@
 		<!--head-->
 		<div class="head">
 			<div class="head-left">
-				<span>{{city}}</span>
-				<span class="iconfont">&#xe6bd;</span>
+				<!-- <span>{{city}}</span>
+				<span class="iconfont">&#xe6bd;</span> -->
 			</div>
 			<div class="head-right" @click="isshow">
 				<span class="iconfont">&#xe6aa;</span>
@@ -128,6 +128,7 @@
 					params.page=ItmeOptions.page
 					params.limit=ItmeOptions.limit
 					params.catId=catId
+					params.adCode=wx.getStorageSync('adcode')
 					params.longitude=wx.getStorageSync('longitude')
 					params.latitude=wx.getStorageSync('latitude')
 					API.getGoodsList(params).then(res => {

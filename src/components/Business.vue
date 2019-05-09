@@ -44,8 +44,8 @@
 		data() {
 			return {
 				isOpen:false,
-				wechat:'yqy8888504',
-				phoneNum:'159566442323'
+				wechat:'GUQIN1875',
+				phoneNum:'18521508899'
 
 			}
 		},

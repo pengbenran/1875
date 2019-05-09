@@ -22,7 +22,6 @@ export default {
     let vm = this;
     wx.getSetting({
       success: (res) => {
-        console.log(JSON.stringify(res),"授权后的数据")
         // res.authSetting['scope.userLocation'] == undefined    表示 初始化进入该页面
         // res.authSetting['scope.userLocation'] == false    表示 非初始化进入该页面,且未授权
         // res.authSetting['scope.userLocation'] == true    表示 地理位置授权
@@ -106,9 +105,10 @@ export default {
             // console.log(JSON.stringify(res));
             let province = res.result.ad_info.province
             let city = res.result.ad_info.city
-            console.log("打印一下地址数据",res)
             vm.city = res.result.address_component.city
             wx.setStorageSync('City',vm.city)
+            console.log('res.result.ad_info.adcode',res.result.ad_info.adcode)
+            wx.setStorageSync('adcode',res.result.ad_info.adcode)
             // vm.$emit('GetLoctionData',res.result.address_component.city)
         },
         fail: function (res) {

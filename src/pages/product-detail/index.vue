@@ -25,7 +25,7 @@
 					<div class="num">{{good.favorites}}</div>
 				</div>
 				<!--转发-->
-				<div class="tra">
+				<div class="tra" @click="drawPoster">
 					<div class="img iconfont">&#xe624;</div>
 				</div>
 				<!--电话-->

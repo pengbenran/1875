@@ -9,7 +9,7 @@
 			<div class="right">
 				<span>可用积分</span>
 				<span>{{userInfo.point}}</span>
-				<span>去使用</span>
+				<span @click="jumpGood">去使用</span>
 			</div>
 		</div>
 		<!--奖金-->
@@ -117,13 +117,25 @@
 							<div class="pic">-{{item.point}}</div>
 						</div>
 					</div>
-					<div  class="list-li3" v-else> 
+					<div  class="list-li3" v-if="item.type==1"> 
 						<div class="left">
 							<div class="img"><img :src="item.face" /></div>
 						</div>
 						<div class="right">
 							<div class="cant">
 								<span>{{item.name}}-购买商品获得积分</span>
+								<span>{{item.addTime}}</span>
+							</div>
+							<div class="pic">+{{item.point}}</div>
+						</div>
+					</div>
+					<div  class="list-li3" v-if="item.type==2"> 
+						<div class="left">
+							<div class="img"><img :src="item.face" /></div>
+						</div>
+						<div class="right">
+							<div class="cant">
+								<span>{{item.name}}-分享商品获得积分</span>
 								<span>{{item.addTime}}</span>
 							</div>
 							<div class="pic">+{{item.point}}</div>
@@ -208,13 +220,17 @@
 			btnfalse() {
 				this.isPop = false
 			},
+			jumpGood(){
+				wx.switchTab({
+				   url:"../classify/main"
+				})
+			},
 			btnList(index) {
 				let that = this
+				that.dataUpdate()
 				that.curr = index
 				that.isPop = false
 				that.tit = that.expenditure[index].name
-				that.distributorLogData=[]
-				that.pointLogEntities=[]
 				if(that.tit.indexOf("奖金")!=-1){
 					that.distributorLog()
 				}
