@@ -1,6 +1,19 @@
 <template>
 	<div class="container">
-		<blockquote v-if="!isLoading">
+
+		<div class="top_Tap">
+			<ul>
+				<li v-for="(item,index) in TopList" :key="item"><span :class="listcurr == index ? 'List_on':''" @click="onClick(index)">{{item}}</span></li>
+			</ul>
+		</div>
+		<swiper style="height:100vh" duration='350' :current="listcurr" @change="changeTab">
+			<swiper-item style="overflow: scroll;">
+					<recNearby :recNearby="GoodList" />
+			</swiper-item>
+			
+		</swiper>
+
+		<!-- <blockquote v-if="!isLoading">
 			<loading></loading>
 		</blockquote>
 		<blockquote v-else>
@@ -11,7 +24,8 @@
 				<div class="img"><img src="/static/images/kong.png" /></div>
 				<div class="text">还没有喜欢的商品哦~</div>
 			</div>
-		</blockquote>
+		</blockquote> -->
+
 	</div>
 </template>
 <script>
