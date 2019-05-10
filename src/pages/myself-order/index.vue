@@ -154,9 +154,8 @@
 					status: that.recommendList[that.listcurr].status,
 					expiredStatus: that.recommendList[that.listcurr].expiredStatus
 				}
-				if(that.recommendList[that.listcurr].options.length < 1) {
-					that.GetOrderListData(data, that.listcurr)
-				}
+				that.GetOrderListData(data, that.listcurr)
+				
 			},
 			jumpdetail(orderId) {
 				wx.navigateTo({

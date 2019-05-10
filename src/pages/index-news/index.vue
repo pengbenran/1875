@@ -5,7 +5,7 @@
 				<div class="img"><img :src="item.url" /></div>
 				<div class="cate-name">{{item.catName}}</div>
 				<div class="cate-list">
-					<div class="cate-list-li" v-for="(list,index1) in item.showGoodDTO">
+					<div class="cate-list-li" v-for="(list,index1) in item.showGoodDTO" @click="jumpDetail(list.goodId)">
 						<img :src="list.thumbnail" />
 					</div>
 				</div>
@@ -46,6 +46,11 @@
 				Api.getFavorite(params).then(function(res){
 					that.FavoriteGoods=res.FavoriteGoods
 				})
+			},
+			jumpDetail(goodsId){
+				wx.navigateTo({  
+                 url:`../product-detail/main?goodsId=${goodsId}&codeUnionid=`		  	
+			  })
 			},
 			//禁止滑动
 			stopTouchMove: function() {

@@ -58,7 +58,7 @@
 							<span>累计积分</span>
 						</div>
 						<div class="num">
-							<span>{{userInfo.point}}</span>
+							<span>{{point}}</span>
 							<span>可用积分</span>
 						</div>
 					</div>
@@ -66,13 +66,11 @@
 					<div class="xian"></div>
 					<div class="integral-right">
 						<div class="num">
-							<span v-if='userInfo.distributorStatus==1'>{{distribInfo.total}}</span>
-							<span v-else>0</span>
+							<span>{{total}}</span>
 							<span>累计奖金</span>
 						</div>
 						<div class="num">
-							<span v-if='userInfo.distributorStatus==1'>{{distribInfo.balance}}</span>
-							<span v-else>0</span>
+							<span>{{balance}}</span>
 							<span>可提现奖金</span>
 						</div>
 					</div>
@@ -82,6 +80,10 @@
 			<div class="phone"  @click='makePhone'>
 				<span>客服热线</span>
 				<span class="iconfont">&#xe625; </span>
+			</div>
+			<!-- 底部技术支持 -->
+			<div class="footer">
+				<img src="https://shop.guqinet.com/html/images/shuiguo/index/footerImg.png"/>
 			</div>
 		</div>
 	</div>
@@ -102,7 +104,33 @@
 		computed:{
 			totalPoint(){
 				let that=this
-				return utils.accAdd(that.userInfo.point,that.userInfo.consumePoint)
+				return utils.accAdd(store.state.userInfo.point,store.state.userInfo.consumePoint)
+			},
+			consumePoint(){
+				let that=this
+				return store.state.userInfo.consumePoint
+			},
+			point(){
+				let that=this
+				return store.state.userInfo.point
+			},
+			total(){
+				let that=this
+				if(store.state.userInfo.distributorStatus==1){
+					return store.state.distribInfo.total
+				}
+				else{
+					return 0
+				}				
+			},
+			balance(){
+				let that=this
+				if(store.state.userInfo.distributorStatus==1){
+					return store.state.distribInfo.balance
+				}
+				else{
+					return 0
+				}				
 			}
 		},
 		onShow(){
@@ -419,6 +447,13 @@
 					color: #dedede;
 				}
 			}
+		}
+	}
+	.footer{height: 80rpx;padding: 20rpx 30rpx 10rpx 0; 
+		img{
+			width: 100%;
+			height: 100%;
+			display: block;
 		}
 	}
 </style>

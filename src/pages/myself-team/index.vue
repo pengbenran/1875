@@ -18,7 +18,7 @@
 							<div class="img"><img :src="itemc.face" /></div>
 							<div class="name">
 								<p>{{itemc.memberName}}</p>
-								<p>累计积分 : {{itemc.consumePoint}}</p>
+								<p>消耗积分 : {{itemc.consumePoint}}</p>
 							</div>
 						</div>
 						<div class="right">{{itemc.boundTime}}</div>
@@ -56,7 +56,6 @@ import store from '@/store/store'
 			that.listcurr = 0
 			await that.GetMenberLv();
 			await that.GetDistributor();
-			console.log(this.recommendList[0].type,"拿到的类型数据")
 			this.recommendList[0].type == 1 ?
 						this.GetList(0,{tjUnionid:this.userInfo.unionid,lvId:this.recommendList[0].id}):
 						this.GetList(0,{tjUnionid:this.userInfo.unionid,distributorLvId:this.recommendList[0].id,distributorStatus:1})

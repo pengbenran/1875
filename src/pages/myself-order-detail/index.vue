@@ -31,6 +31,10 @@
                     <!--下单人-->
                     <div class="prnston">
                     	<div class="prnston-li">
+                    	    <span class="title">店铺名称:</span>
+                    	    <span class="tex">{{orderDetail.shopName}}</span>
+                    	</div>
+                    	<div class="prnston-li">
                     	    <span class="title">下单人:</span>
                     	    <span class="tex">{{orderDetail.buyName}}</span>
                     	</div>

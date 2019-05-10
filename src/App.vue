@@ -11,6 +11,10 @@ export default {
         wx.setStorageSync('longitude', longitude)
       }
     })
+    const updateManager = wx.getUpdateManager()
+    updateManager.onUpdateReady(function () {
+      updateManager.applyUpdate()
+    })
   }
 }
 </script>
