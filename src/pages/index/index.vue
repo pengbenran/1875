@@ -581,6 +581,7 @@
 			.searches-li {
 				width: 64px;
 				height: 20px;
+				margin: 0 4px;
 				background: #ffebeb;
 				border-radius: 10px;
 				line-height: 20px;

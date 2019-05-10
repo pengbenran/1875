@@ -13,7 +13,7 @@
 			</div>
 			<div class="name">当前可提奖金{{distribInfo.balance}}元</div>
 			<div class="tip">{{tip}}</div>
-			<div :class="withdrawal==''?'btn-on':''" class="btn" @click="withdrawalSubmit">提现</div>
+			<div :class="withdrawal==''?'':'btn-on'" class="btn" @click="withdrawalSubmit">提现</div>
 		</blockquote>
 		<!--提现成功弹窗-->		
 		<div class="pop" v-else>

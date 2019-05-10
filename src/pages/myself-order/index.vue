@@ -23,33 +23,36 @@
 										<span>丨</span>
 										<span>{{child.shopId}}</span>
 									</div>
-									<div class="pic">应付 : ¥{{child.goodsAmount}}</div>
+									<div class="pic" v-if="child.status == 0">应付 : ¥{{child.needPayMoney}}</div>
+									<div class="pic" v-else style="color:#666666;">实付 : ¥{{child.paymoney}}</div>
 									<div class="xdday">下单时间 : {{child.createTime}}</div>
 								</div>
 							</div>
 							<div class="Warp">
 								<div class="condition" v-if="child.status == 0">
-									<div class="condition-left"><span>{{child.condition}}</span></div>
+									<div class="condition-left"><span>待付款</span></div>
 									<div class="condition-right">
-										<span @click="CloseOrder(child.orderId,index,cindex)">取消</span>
-										<span @click="Pay(child.orderId,child.needPayMoney)">立即付款</span>
+										<span @click="CloseOrder(child.orderId,index,cindex)">取消订单</span>
+										<span class="BtnR" @click="Pay(child.orderId,child.needPayMoney)">立即付款</span>
 									</div>
 								</div>
 
 								<div class="condition" v-if="child.status == 1">
-									<div class="condition-left"><span>{{child.condition}}</span></div>
+									<div class="condition-left"><span>待使用</span></div>
 									<div class="condition-right">
-										<!--<span>取消</span>--><span @click="jumpdetail(child.orderId)">订单详情</span></div>
+											<span @click="jumpdetail(child.orderId)">订单详情</span>
+											<span @click="toIndex">回到首页</span>
+										</div>
 								</div>
 
 								<div class="condition" v-if="child.status == 2">
-									<div class="condition-left"><span>{{child.condition}}</span></div>
+									<div class="condition-left"><span>已使用</span></div>
 									<div class="condition-right"><span @click="CloseOrder(child.orderId,index,cindex)">取消</span><span @click="jumpdetail(child.orderId)">订单详情</span></div>
 								</div>
 
 								<div class="condition" v-if="child.status == 3">
-									<div class="condition-left"><span>{{child.condition}}</span></div>
-									<div class="condition-right"><span  @click="CloseOrder(child.orderId,index,cindex)">取消</span></div>
+									<div class="condition-left"><span>已过期</span></div>
+									<div class="condition-right"><span  @click="CloseOrder(child.orderId,index,cindex)">取消</span><span @click="toIndex">回到首页</span></div>
 
 								</div>
 							</div>
@@ -274,7 +277,13 @@
 						url: '../myself-order-detail/main?orderId=' + orderId
 					})
 				}
-			}
+			},
+			
+			toIndex(){
+				wx.switchTab({
+					url: '../index/main', 
+				})
+			},
 		},
 	}
 </script>
@@ -435,17 +444,15 @@
 						text-align: center;
 						padding: 8px 15px;
 						font-size: 14px;
-						&:nth-child(1) {
 							border: 1px solid #dedede;
 							background: #FFFFFF;
 							color: #333333;
 							margin-right: 8px;
-						}
-						&:nth-child(2) {
+					}
+					.BtnR {
 							border: 1px solid #ff6e6e;
 							background: #ff6e6e;
 							color: #ffffff;
-						}
 					}
 				}
 			}

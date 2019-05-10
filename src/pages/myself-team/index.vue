@@ -28,7 +28,7 @@
 		       <div v-if="item.total==0" class="kong">
 		       	<div class="img"><img src="/static/images/kong.png"/></div>
 		       	<div class="text">暂无队友，快去邀请吧~</div>
-		       	<div class="btn">去邀请</div>
+		       	<div class="btn" @click="toShear">去邀请</div>
 		      </div>
        
 			</swiper-item>
@@ -125,6 +125,12 @@ import store from '@/store/store'
 					}
 				}).catch(err => {
 				   console.log("报错的数据",err)
+				})
+			},
+
+			toShear(){
+				wx.navigateTo({
+					url:'../poster/main',
 				})
 			},
 		},

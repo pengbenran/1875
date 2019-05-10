@@ -63,7 +63,7 @@
 		padding: 8px 0 0px 8px;
 		box-shadow: 0 2px 4px 2px #f4f4f4;
 		border-radius: 4px;
-		margin-top: 4px;
+		margin-top: 12px;
 	}
 	
 	.rec-product {

@@ -36,6 +36,9 @@
 				<div class="site" @click="openMap">
 					<div class="img iconfont">&#xe62c;</div>
 				</div>
+				<div class="site siteNum">
+					<div class="img iconfont">{{activeIndex+1}}/{{good.banner.length}}</div>
+				</div>
 			</div>
 
 		</div>
@@ -381,6 +384,7 @@
 				background: rgba(0, 0, 0, .3);
 				border-radius: 50%;
 			}
+			
 			.tra {
 				margin-left: 26px;
 				.img {
@@ -439,6 +443,7 @@
 					margin: 12px auto; 
 				}
 			}
+			.siteNum .iconfont{font-size: 14px;}
 		}
 	}
 	

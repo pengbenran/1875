@@ -66,7 +66,7 @@
 			</div>
 			<!--商品信息-->
 			<div class="shopinfo">
-				<div class="top">
+				<div class="top" @click="toShopDetail(orderDetail.goodsId)">
 					<div class="img"><img :src="orderDetail.goodThumbnail" /></div>
 					<div class="cant">
 						<div class="des">{{orderDetail.goodName}}</div>
@@ -98,7 +98,7 @@
 					<!--积分抵扣：-->
 					<div class="name4">
                         <span>积分抵扣</span>
-						<span>¥ {{}}</span> 	
+						<span>¥ {{orderDetail.pointDiscount==null?0:orderDetail.pointDiscount}}</span> 	
 					</div>
 					<!--佣金抵扣：-->
 					<div class="name5">
@@ -112,7 +112,7 @@
 					</div>
 					<!--应付金额：-->
 					<div class="name7">
-						<span>应付金额</span>
+						<span>实付金额</span>
 						<span>¥ {{orderDetail.orderAmount}}</span>
 					</div>
 
@@ -166,6 +166,11 @@
 				mpvue.reLaunch({
 					url: '../index/main'
 				})
+			},
+			toShopDetail(goodsId){
+				wx.navigateTo({  
+                   url:`../product-detail/main?goodsId=${goodsId}&codeUnionid=`		  	
+			    })
 			},
 			copy(){
 				let that=this

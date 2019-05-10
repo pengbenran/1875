@@ -7,7 +7,7 @@
 			<input type="text" placeholder="填写微信号" placeholder-style="color:#999" v-model="applyFrom.wechat">	
 		</div>
 		<div class="inpList">
-			<input type="text" placeholder="填写手机号" placeholder-style="color:#999" v-model='applyFrom.mobile'>	
+			<input type="number" placeholder="填写手机号" placeholder-style="color:#999" v-model='applyFrom.mobile'>	
 		</div>
 		<div class="inpList">
 			<input type="text" placeholder="填写真实姓名" placeholder-style="color:#999" v-model="applyFrom.name">	
