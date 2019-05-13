@@ -9,9 +9,9 @@
 			<div class="head-left" @click.stop="CityShow()">
 				<span> <addres ref="addres"/> </span>
 				<span class="iconfont">&#xe640;</span>
-				<div class="HeadMask" :class="citybool?'MaskOn':''">
+				<!-- <div class="HeadMask" :class="citybool?'MaskOn':''">
 					<div class="list" v-for="(item,index) in CityList" :key='item' :index='index' @click.stop="CitySelect(item.value,item.name)">{{item.name}}</div>
-				</div>
+				</div> -->
 			</div>
 			<div class="head-right">
 				<div class="search" @click="isshow">
@@ -142,7 +142,6 @@
 				istoggle: false,
 				scrolls: false,
 				citybool:false,
-				CityList:[],
 				scrollTop: '',
 				idtop: '',
 				listcurr: 0,
@@ -212,7 +211,7 @@
 			that.getIndexImage()
 			that.getConfig();
 			that.GetHotSearchData();
-			that.GetAddresData();
+			// that.GetAddresData();
 		},
 		methods: {
 			// 点击切换分类
@@ -333,29 +332,14 @@
 				}
 			},
 
-			//获取地址
-			GetAddresData(){
-				let that = this;
-				Api.GetAddresData().then(res=> {
-					if(res.code == 0){
-						let arr = [];
-					    res.city.map(M => {
-						   if(M.parentId != 0){
-							   arr.push(M)
-						   } 
-					   })
-					   this.CityList = arr;
-					}else{
-						Lib.showToast('失败','none')	
-					}
-				}).catch(err => {
-						Lib.showToast('失败','none')						
-				})
-			},
+
 
 			//显示
 			CityShow(){
-				this.citybool = !this.citybool;
+				// this.citybool = !this.citybool;
+				wx.navigateTo({
+					url:'../City/main'
+			    })
 			},
 			CitySelect(val,name){
 				let that=this

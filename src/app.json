@@ -25,7 +25,8 @@
 		"pages/myself-red/main" ,
 		"pages/search/main",
 		"pages/poster/main",
-		"pages/collection/main"
+		"pages/collection/main",
+		"pages/City/main"
 	],
 	"permission":{
 		"scope.userLocation":{

@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import goodcat from './modules/goodCat'
+import city from './modules/City'
 Vue.use(Vuex)
  
 export default new Vuex.Store({
   modules:{
+    city,
     goodcat
   },
   state:{

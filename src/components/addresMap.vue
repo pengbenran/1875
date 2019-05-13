@@ -1,23 +1,30 @@
 <template>
-    <div>{{city}} </div>
+    <div>{{City}} </div>
 </template>
 <script>
 import globalLoca from  '@/utils/qqmap-wx-jssdk'
+import { mapState,mapActions } from 'vuex'
+// import store from '@/store/store'
 export default {
    data () {
        return {
-          city:''
+          // city:''
        }
    },
+   computed:{
+     ...mapState('city',['City'])
+   },
    mounted(){
-     if(wx.getStorageSync('City')){
-       this.city = wx.getStorageSync('City')
-     }else{
+    //  if(wx.getStorageSync('City')){
+    //    this.city = wx.getStorageSync('City')
+    //  }else{
        this.getUserLocation();
-     }
-     
+    //  }
+    //  this.GetVal();
    },
    methods:{
+   ...mapActions('city',['SetCity']),
+
   getUserLocation: function () {
     let vm = this;
     wx.getSetting({
@@ -105,9 +112,9 @@ export default {
             // console.log(JSON.stringify(res));
             let province = res.result.ad_info.province
             let city = res.result.ad_info.city
-            vm.city = res.result.address_component.city
+            // vm.city = res.result.address_component.city
+            vm.SetCity(res.result.address_component.city)
             wx.setStorageSync('City',vm.city)
-            console.log('res.result.ad_info.adcode',res.result.ad_info.adcode)
             wx.setStorageSync('adcode',res.result.ad_info.adcode)
             // vm.$emit('GetLoctionData',res.result.address_component.city)
         },
